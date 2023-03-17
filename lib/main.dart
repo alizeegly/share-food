@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:sharefood/Screens/close_products.dart';
 import 'package:sharefood/SplashScreen/splash_screen.dart';
 
 Future<void> main() async {
@@ -16,7 +17,7 @@ class MyApp extends StatelessWidget {
       theme: ThemeData(
         primaryColor: const Color(0xFF4C9311),
       ),
-      home: const SplashScreen()
+      home: const CloseProductsList()
     );
   }
 }
