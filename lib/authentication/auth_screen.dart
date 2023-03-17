@@ -21,7 +21,7 @@ class _AuthScreenState extends State<AuthScreen> {
               color: Colors.white
             ),
           ),
-          toolbarHeight: 200,
+          toolbarHeight: 150,
           title: Image.asset(
             "assets/images/image2.png",
             width: 120
