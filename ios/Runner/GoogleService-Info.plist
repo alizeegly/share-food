@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>CLIENT_ID</key>
+	<string>934591545381-ae2dkme85vvv3bs1427e3j556m95sgse.apps.googleusercontent.com</string>
+	<key>REVERSED_CLIENT_ID</key>
+	<string>com.googleusercontent.apps.934591545381-ae2dkme85vvv3bs1427e3j556m95sgse</string>
+	<key>API_KEY</key>
+	<string>AIzaSyBbPEyhd5O8XbMVe4dcJOx_ilzFaQ01I-c</string>
+	<key>GCM_SENDER_ID</key>
+	<string>934591545381</string>
+	<key>PLIST_VERSION</key>
+	<string>1</string>
+	<key>BUNDLE_ID</key>
+	<string>com.alizeegly.sharefood</string>
+	<key>PROJECT_ID</key>
+	<string>share-food-d3e9b</string>
+	<key>STORAGE_BUCKET</key>
+	<string>share-food-d3e9b.appspot.com</string>
+	<key>IS_ADS_ENABLED</key>
+	<false></false>
+	<key>IS_ANALYTICS_ENABLED</key>
+	<false></false>
+	<key>IS_APPINVITE_ENABLED</key>
+	<true></true>
+	<key>IS_GCM_ENABLED</key>
+	<true></true>
+	<key>IS_SIGNIN_ENABLED</key>
+	<true></true>
+	<key>GOOGLE_APP_ID</key>
+	<string>1:934591545381:ios:c6854d520cd52c0b333fcc</string>
+</dict>
+</plist>
