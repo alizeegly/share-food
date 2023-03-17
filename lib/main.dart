@@ -14,7 +14,7 @@ class MyApp extends StatelessWidget {
     return MaterialApp(
       title: 'Share Food',
       theme: ThemeData(
-        primarySwatch: Colors.red,
+        primaryColor: const Color(0xFF4C9311),
       ),
       home: const SplashScreen()
     );
