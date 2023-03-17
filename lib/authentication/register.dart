@@ -2,6 +2,7 @@ import 'dart:io';
 
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
+import 'package:sharefood/widgets/custom_button.dart';
 import 'package:sharefood/widgets/custom_text_field.dart';
 
 class RegisterScreen extends StatefulWidget {
@@ -26,6 +27,14 @@ class _RegisterState extends State<RegisterScreen> {
   XFile? imageXFile;
   final ImagePicker _picker = ImagePicker();
 
+  Future<void> _getImage() async {
+    imageXFile = await _picker.pickImage(source: ImageSource.gallery);
+
+    setState(() {
+      imageXFile;
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
     return SingleChildScrollView(
@@ -36,6 +45,9 @@ class _RegisterState extends State<RegisterScreen> {
           children: [
             const SizedBox(height: 30),
             InkWell(
+              onTap: () {
+                _getImage();
+              },
               child: CircleAvatar(
                 backgroundColor: Colors.white,
                 radius: MediaQuery.of(context).size.width * 0.1,
@@ -102,23 +114,18 @@ class _RegisterState extends State<RegisterScreen> {
                     ),
                     // Get my current location
                     // https://youtu.be/KLmNCzjsokM?list=PLxefhmF0pcPlKgRigYdXvrTOawobNyqUS&t=1050
+                    // geolocator
                   ],
                 )
               ),
             ),
             const SizedBox(height: 30),
-            ElevatedButton(
+            CustomButton(
               onPressed: () => print("hello"),
-              style: ElevatedButton.styleFrom(
-                backgroundColor: Theme.of(context).primaryColor,
-                padding: const EdgeInsets.symmetric(horizontal: 50, vertical: 10)
-              ),
-              child: const Text(
-                "S'inscrire",
-                style: TextStyle(color: Colors.white),
-              )
+              color: Theme.of(context).primaryColor,
+              text: "S'inscrire",
             ),
-            const SizedBox(height: 30),
+            const SizedBox(height: 50),
           ],
         )
       ),
