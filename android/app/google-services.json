@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "934591545381",
+    "project_id": "share-food-d3e9b",
+    "storage_bucket": "share-food-d3e9b.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:934591545381:android:5c1c460c6f181be3333fcc",
+        "android_client_info": {
+          "package_name": "com.alizeegly.sharefood"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "934591545381-r1arho69muq9oi2fic8g6f8unoc9hv4e.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAZk8k16d1KESxK_ZTACGcXILq0tZmmpvc"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "934591545381-r1arho69muq9oi2fic8g6f8unoc9hv4e.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
