@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:sharefood/widgets/custom_button.dart';
 import 'package:sharefood/widgets/custom_text_field.dart';
+import 'package:sharefood/widgets/error_dialog.dart';
 
 class RegisterScreen extends StatefulWidget {
   const RegisterScreen({super.key});
@@ -34,6 +35,17 @@ class _RegisterState extends State<RegisterScreen> {
       imageXFile;
     });
   }
+
+  Future<void> formValidation() async {
+    if(imageXFile == null){
+      showDialog(
+        context: context, 
+        builder: (c){
+          return ErrorDialog(message: "Veuillez choisir une image de profile.");
+        }
+      );
+    }
+  }  
 
   @override
   Widget build(BuildContext context) {
@@ -121,7 +133,7 @@ class _RegisterState extends State<RegisterScreen> {
             ),
             const SizedBox(height: 30),
             CustomButton(
-              onPressed: () => print("hello"),
+              onPressed: () => formValidation(),
               color: Theme.of(context).primaryColor,
               text: "S'inscrire",
             ),
