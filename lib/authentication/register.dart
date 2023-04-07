@@ -44,6 +44,26 @@ class _RegisterState extends State<RegisterScreen> {
           return ErrorDialog(message: "Veuillez choisir une image de profile.");
         }
       );
+    } else {
+      if(passwordController.text == confirmPasswordController.text){
+        if(nameController.text.isNotEmpty && firstnameController.text.isNotEmpty && emailController.text.isNotEmpty && addressController.text.isNotEmpty && zipcodeController.text.isNotEmpty && cityController.text.isNotEmpty){
+          // uplaod image
+        } else {
+          showDialog(
+            context: context, 
+            builder: (c){
+              return ErrorDialog(message: "Veuillez remplir tous les champs nécessaire à l'inscription.");
+            }
+          );
+        }
+      } else {
+        showDialog(
+          context: context, 
+          builder: (c){
+            return ErrorDialog(message: "Les mots de passe ne correspondent pas.");
+          }
+        );
+      }
     }
   }  
 
@@ -133,7 +153,7 @@ class _RegisterState extends State<RegisterScreen> {
             ),
             const SizedBox(height: 30),
             CustomButton(
-              onPressed: () => formValidation(),
+              onPressed: (){formValidation();},
               color: Theme.of(context).primaryColor,
               text: "S'inscrire",
             ),
