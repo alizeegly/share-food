@@ -45,7 +45,7 @@ class _CloseProductsListState extends State<CloseProductsList> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar:
-          AppBar(title: const Text("Produits à proximité"), centerTitle: false),
+          AppBar(title: const Text("Produits proches"), centerTitle: false, backgroundColor: Theme.of(context).primaryColor),
       body: CustomScrollView(
         slivers: [
           SliverToBoxAdapter(child: FutureBuilder<List>(

@@ -36,13 +36,35 @@ class _ProductItemState extends State<ProductItem> {
             child:
               Column(
                 children: [
-                  Text(widget.product.name),
-                  const Text("Type de produit :"),
-                  Text(widget.product.type),
-                  const Text("Localisation :"),
-                  Text("${widget.product.seller.address.street}\n${widget.product.seller.address.zipcode} ${widget.product.seller.address.city}"),
-                  Text('${widget.product.price.toStringAsFixed(2)}€'),
-                  ElevatedButton(onPressed: () {}, child: const Text("Ajouter au panier"))
+                  Text(widget.product.name, style: Theme.of(context).textTheme.headlineSmall, textAlign: TextAlign.center),
+
+                  Container(
+                    margin: const EdgeInsets.fromLTRB(0, 10, 0, 0),
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.stretch,
+                      children: [
+                        Text("Type de produit :", style: Theme.of(context).textTheme.titleSmall),
+                        Text(widget.product.type, style: Theme.of(context).textTheme.bodySmall),
+                      ],
+                    ),
+                  ),
+
+                  Container(
+                    margin: const EdgeInsets.fromLTRB(0, 10, 0, 0),
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.stretch,
+                      children: [
+                        Text("Localisation :", style: Theme.of(context).textTheme.titleSmall),
+                        Text("${widget.product.seller.address.street}\n${widget.product.seller.address.zipcode} ${widget.product.seller.address.city}", style: Theme.of(context).textTheme.bodySmall)
+                      ],
+                    ),
+                  ),
+
+                  const Spacer(),
+
+                  Container(margin: const EdgeInsets.symmetric(vertical: 10, horizontal: 0), child: Text('${widget.product.price.toStringAsFixed(2)}€', style: const TextStyle(fontFamily: 'Montserrat SemiBold', fontSize: 20), textAlign: TextAlign.center)),
+
+                  ElevatedButton(onPressed: () {}, style: ElevatedButton.styleFrom(shape: const StadiumBorder(), backgroundColor: Theme.of(context).primaryColor),  child: Text("Ajouter au panier", style: TextStyle(fontSize: Theme.of(context).textTheme.labelSmall?.fontSize, color: Colors.white), textAlign: TextAlign.center))
                 ]
               ),
           ),
@@ -51,12 +73,22 @@ class _ProductItemState extends State<ProductItem> {
             top: -50.0,
             height: 120,
             width: 120,
-            child: ClipRRect(
-                borderRadius: BorderRadius.circular(120),
-                child: FittedBox(
-                  fit: BoxFit.cover,
-                  child: Image.network(widget.product.pictureUrl)
-                ) 
+            child: Container(
+              decoration: const BoxDecoration(
+                boxShadow: [BoxShadow(
+                  color: Color(0x12000000),
+                  spreadRadius: 0,
+                  blurRadius: 40,
+                  offset: Offset(0, 40)
+                )]
+              ),
+              child: ClipRRect(
+                  borderRadius: BorderRadius.circular(120),
+                  child: FittedBox(
+                    fit: BoxFit.cover,
+                    child: Image.network(widget.product.pictureUrl)
+                  ) 
+              ),
             ),
           ),
         ],
