@@ -23,10 +23,8 @@ class CustomTextField extends StatelessWidget {
       decoration: const BoxDecoration(
         // color: Colors.white,
         // borderRadius: BorderRadius.all(Radius.circular(10)),
-        border: Border(bottom: BorderSide(color: Colors.black, style: BorderStyle.solid))
+        border: Border(bottom: BorderSide(color: Colors.black, style: BorderStyle.solid)),
       ),
-      padding: const EdgeInsets.all(8.0),
-      margin: const EdgeInsets.all(10),
       child: TextFormField(
         enabled: enabled,
         controller: controller,
@@ -34,11 +32,15 @@ class CustomTextField extends StatelessWidget {
         cursorColor: Theme.of(context).primaryColor,
         decoration: InputDecoration(
           border: InputBorder.none,
+          contentPadding: const EdgeInsets.symmetric(vertical: 5.0, horizontal: 5.0),
           // prefixIcon: Icon(
           //   data,
           //   color: Colors.cyan
           // ),
           focusColor: Colors.grey,
+          labelStyle: const TextStyle(
+            fontSize: 15
+          ),
           // hintText: hintText,
           labelText: hintText
         ),
