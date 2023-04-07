@@ -1,7 +1,6 @@
-import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:sharefood/data/products.dart';
-import 'package:sharefood/widgets/products/product_item.dart';
+import 'package:sharefood/widgets/products/product_item_layout_grid.dart';
 // import 'package:http/http.dart' as http;
 // import 'package:flutter_dotenv/flutter_dotenv.dart';
 
@@ -26,7 +25,7 @@ Future<List> fetchCloseProducts() async {
   //   var jsonResponse = jsonDecode(response.body)['data'];
   //   return jsonResponse;
   // } else {
-    // throw Exception(response.reasonPhrase);
+  // throw Exception(response.reasonPhrase);
   // }
 
   // En attendant d'avoir l'API
@@ -45,27 +44,15 @@ class _CloseProductsListState extends State<CloseProductsList> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: Column(children: [
-      const Padding(
-        padding: EdgeInsets.all(8.0),
-        child: Text(
-          "Produits proches"
-        ),
-      ),
-      Flexible(
-        child: FutureBuilder<List>(
+      appBar:
+          AppBar(title: const Text("Produits à proximité"), centerTitle: false),
+      body: CustomScrollView(
+        slivers: [
+          SliverToBoxAdapter(child: FutureBuilder<List>(
             future: futureCloseProductsList,
             builder: (context, snapshot) {
               if (snapshot.hasData) {
-                return ListView.builder(
-                  itemCount: snapshot.data!.length,
-                  scrollDirection: Axis.vertical,
-                  itemBuilder: (context, index) {
-                    return ListTile(
-                      title: ProductItem(product: snapshot.data![index]),
-                    );
-                  },
-                );
+                return ProductItemLayoutGrid(products: products);
               } else if (snapshot.hasError) {
                 return Text('${snapshot.error}');
               }
@@ -73,9 +60,9 @@ class _CloseProductsListState extends State<CloseProductsList> {
               // By default, show a loading spinner.
               return const Center(child: CircularProgressIndicator());
             },
-          ),
-      ),
-    ]),
+          ))
+        ]
+      )
     );
   }
 }
