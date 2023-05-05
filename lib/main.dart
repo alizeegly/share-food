@@ -16,10 +16,8 @@ class MyApp extends StatelessWidget {
     return MaterialApp(
       title: 'Share Food',
       theme: ThemeData(
-        // Colors
-        primaryColor: const Color(0xFF4C9311),
-        primaryColorLight: const Color(0xFF6FAE3A),
-        
+        useMaterial3: true,
+
         // Fonts
         fontFamily: 'Montserrat Medium',
 
@@ -39,6 +37,13 @@ class MyApp extends StatelessWidget {
           labelMedium: TextStyle(fontFamily: 'Montserrat SemiBold', fontSize: 14),
           labelSmall: TextStyle(fontFamily: 'Montserrat SemiBold', fontSize: 12)
         ),
+
+        colorScheme: ColorScheme.fromSeed(seedColor: const Color(0xFF4C9311),
+          primary: const Color(0xFF4C9311),
+          onPrimary: const Color(0xffffffff),
+          error: const Color(0xffcc1111),
+          onError: const Color(0xffffffff)
+        )
       ),
       home: const CartScreen()
     );

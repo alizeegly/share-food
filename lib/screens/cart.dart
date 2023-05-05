@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:sharefood/data/products.dart';
-import 'package:sharefood/widgets/products/product_item_layout_grid.dart';
+//import 'package:sharefood/widgets/products/product_item_layout_grid.dart';
+import '../widgets/products/cart_product_item_layout_grid.dart';
 // import 'package:http/http.dart' as http;
 // import 'package:flutter_dotenv/flutter_dotenv.dart';
 
@@ -53,7 +54,7 @@ class _CartScreenState extends State<CartScreen> {
               future: futureCartScreen,
               builder: (context, snapshot) {
                 if (snapshot.hasData) {
-                  return ProductItemLayoutGrid(products: products);
+                  return CartProductItemLayoutGrid(products: products);
                 } else if (snapshot.hasError) {
                   return Text('${snapshot.error}');
                 }
