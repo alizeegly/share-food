@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:sharefood/Screens/close_products.dart';
 import 'package:sharefood/SplashScreen/splash_screen.dart';
+import 'package:sharefood/screens/cart.dart';
 
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -39,7 +40,7 @@ class MyApp extends StatelessWidget {
           labelSmall: TextStyle(fontFamily: 'Montserrat SemiBold', fontSize: 12)
         ),
       ),
-      home: const CloseProductsList()
+      home: const CartScreen()
     );
   }
 }
