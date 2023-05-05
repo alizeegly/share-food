@@ -7,6 +7,7 @@ import 'package:sharefood/widgets/custom_button.dart';
 import 'package:sharefood/widgets/custom_text_field.dart';
 import 'package:sharefood/widgets/error_dialog.dart';
 import 'package:sharefood/widgets/loading_dialog.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class LoginScreen extends StatefulWidget {
   const LoginScreen({super.key});
@@ -31,6 +32,8 @@ class _LoginState extends State<LoginScreen> {
   }
   
   Future<void> _signInWithEmailAndPassword() async {
+    User? currentUser;
+
     try {
       final email = emailController.text.trim();
       final password = passwordController.text.trim();
@@ -44,11 +47,44 @@ class _LoginState extends State<LoginScreen> {
       await FirebaseAuth.instance.signInWithEmailAndPassword(
         email: email,
         password: password,
-      );
+      ).then((auth) {
+        currentUser = auth.user;
+      });
+
+      final DocumentSnapshot snapshot = await FirebaseFirestore.instance
+        .collection('sellers')
+        .doc(currentUser!.uid)
+        .get();
+      
+      if (snapshot.exists) {
+        // Les données de l'utilisateur existent dans Firestore
+        final data = snapshot.data();
+        
+        Map<String, dynamic> data2 = snapshot.data() as Map<String, dynamic>;
+
+        // Faites quelque chose avec les données de l'utilisateur ici
+        if (data != null) {
+          sharedPreferences = await SharedPreferences.getInstance();
+          await sharedPreferences!.setString("uid", data2["sellersUID"]);
+          await sharedPreferences!.setString("name", data2["sellerName:"]);
+          await sharedPreferences!.setString("firstName", data2["sellerFirstName:"]);
+          await sharedPreferences!.setString("email", data2["sellerEmail:"]);
+          await sharedPreferences!.setString("photoUrl", data2["sellerAvatarUrl:"]);
+        }
+        // etc.
+      } else {
+        // Les données de l'utilisateur n'existent pas dans Firestore
+        print('Aucune donnée d\'utilisateur trouvée dans Firestore');
+      }
+
 
       // Connexion réussie
-      Navigator.push(context, MaterialPageRoute(builder: ((context) => const HomeScreen())));
-      // Navigator.pushReplacementNamed(context, '/home');
+      Navigator.pushReplacement(
+        context,
+        MaterialPageRoute(builder: (context) => HomeScreen()),
+      );
+
+      
     } catch (e) {
       // Gestion des erreurs de connexion
       setState(() {

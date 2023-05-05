@@ -13,7 +13,10 @@ class _ProfileScreenState extends State<ProfileScreen> {
 
   Future<void> _signOut() async {
     await FirebaseAuth.instance.signOut();
-    Navigator.push(context, MaterialPageRoute(builder: ((context) => const AuthScreen())));
+    Navigator.pushReplacement(
+      context,
+      MaterialPageRoute(builder: (context) => AuthScreen()),
+    );
   }
 
   @override
