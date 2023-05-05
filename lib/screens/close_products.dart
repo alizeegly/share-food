@@ -41,9 +41,11 @@ class _CloseProductsListState extends State<CloseProductsList> {
 
   @override
   Widget build(BuildContext context) {
+    final ColorScheme colors = Theme.of(context).colorScheme;
+
     return Scaffold(
       appBar:
-          AppBar(title: const Text("Produits proches"), centerTitle: false, backgroundColor: Theme.of(context).primaryColor),
+          AppBar(title: const Text("Produits proches"), centerTitle: false, backgroundColor: colors.secondary, foregroundColor: colors.onSecondary),
       body: CustomScrollView(
         slivers: [
           SliverToBoxAdapter(child: FutureBuilder<List>(
