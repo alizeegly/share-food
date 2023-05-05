@@ -1,14 +1,45 @@
 import 'package:flutter/material.dart';
 import 'package:sharefood/Screens/close_products.dart';
 import 'package:sharefood/SplashScreen/splash_screen.dart';
+import 'package:firebase_core/firebase_core.dart';
+import 'firebase_options.dart';
+import 'package:sharefood/authentication/auth_screen.dart';
+import 'package:sharefood/mainScreens/home_screen.dart';
+import 'package:sharefood/global/global.dart';
 
-Future<void> main() async {
+void main() async {
   WidgetsFlutterBinding.ensureInitialized();
-  runApp(const MyApp());
+  await Firebase.initializeApp(
+    options: DefaultFirebaseOptions.currentPlatform,
+  );
+  runApp(MyApp());
 }
 
-class MyApp extends StatelessWidget {
-  const MyApp({super.key});
+class MyApp extends StatefulWidget {
+  @override
+  _MyAppState createState() => _MyAppState();
+}
+
+class _MyAppState extends State<MyApp> {
+
+  bool _isAuthenticated = false;
+  bool _isLoading = true;
+
+  @override
+  void initState() {
+    super.initState();
+    checkCurrentUser();
+  }
+
+  // Vérifie si l'utilisateur est connecté ou non
+  void checkCurrentUser() async {
+    final user = await firebaseAuth.currentUser;
+    setState(() {
+      _isLoading = false;
+      _isAuthenticated = user != null;
+    });
+  }
+
 
   @override
   Widget build(BuildContext context) {
@@ -39,7 +70,12 @@ class MyApp extends StatelessWidget {
           labelSmall: TextStyle(fontFamily: 'Montserrat SemiBold', fontSize: 12)
         ),
       ),
-      home: const CloseProductsList()
+      // home: const SplashScreen()
+      home: _isLoading
+          ? const SplashScreen()
+          : _isAuthenticated
+              ? const HomeScreen()
+              : const AuthScreen(),
     );
   }
 }
