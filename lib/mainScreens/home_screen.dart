@@ -1,41 +1,79 @@
 import 'package:flutter/material.dart';
-import 'package:sharefood/authentication/auth_screen.dart';
-import 'package:sharefood/global/global.dart';
-import 'package:firebase_auth/firebase_auth.dart';
+import 'package:sharefood/Screens/close_products.dart';
+import 'package:sharefood/mainScreens/cart.dart';
+import 'package:sharefood/mainScreens/profile_screen.dart';
+import 'package:sharefood/widgets/custom_tab.dart';
 
 class HomeScreen extends StatefulWidget {
-  const HomeScreen({super.key});
+  const HomeScreen({Key? key}) : super(key: key);
 
   @override
-  State<HomeScreen> createState() => _HomeScreenState();
+  _HomeScreenState createState() => _HomeScreenState();
 }
 
-class _HomeScreenState extends State<HomeScreen> {
+class _HomeScreenState extends State<HomeScreen> with SingleTickerProviderStateMixin {
+  late TabController _tabController;
 
-  Future<void> _signOut() async {
-    await FirebaseAuth.instance.signOut();
-    Navigator.push(context, MaterialPageRoute(builder: ((context) => const AuthScreen())));
-  }
+  final List<Widget> pages = const [
+    CartScreen(),
+    CloseProductsList(),
+    ProfileScreen(),
+  ];
+
+  int _currentIndex = 1;
+
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: const Text('Accueil'),
+      backgroundColor: const Color(0xffC4DFCB),
+      body: pages[_currentIndex],
+      bottomNavigationBar: buildMyNavBar(context),
+    );
+  }
+
+
+  Container buildMyNavBar(BuildContext context) {
+    return Container(
+      height: 70,
+      decoration: const BoxDecoration(
+        color: Colors.white,
       ),
-      body: Center(
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            const Text('Bienvenue !'),
-            const SizedBox(height: 16.0),
-            ElevatedButton(
-              onPressed: _signOut,
-              child: const Text('Se déconnecter'),
-            ),
-          ],
-        ),
+      padding: const EdgeInsets.all(0),
+      child: Row(
+        mainAxisSize: MainAxisSize.min,
+        crossAxisAlignment: CrossAxisAlignment.stretch,
+        children: [
+          CustomTabItem(
+            isSelected: _currentIndex == 0,
+            iconData: Icons.shopping_cart_outlined,
+            onTap: () {
+              setState(() {
+                _currentIndex = 0;
+              });
+            },
+          ),
+          CustomTabItem(
+            isSelected: _currentIndex == 1,
+            iconData: Icons.home_outlined,
+            onTap: () {
+              setState(() {
+                _currentIndex = 1;
+              });
+            },
+          ),
+          CustomTabItem(
+            isSelected: _currentIndex == 2,
+            iconData: Icons.settings_outlined,
+            onTap: () {
+              setState(() {
+                _currentIndex = 2;
+              });
+            },
+          ),
+        ],
       ),
     );
   }
 }
+

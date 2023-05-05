@@ -72,10 +72,10 @@ class _MyAppState extends State<MyApp> {
       ),
       // home: const SplashScreen()
       home: _isLoading
-          ? const SplashScreen()
-          : _isAuthenticated
-              ? const HomeScreen()
-              : const AuthScreen(),
+        ? const SplashScreen()
+        : _isAuthenticated
+          ? const HomeScreen()
+          : const AuthScreen(),
     );
   }
 }
