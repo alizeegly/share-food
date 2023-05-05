@@ -1,18 +1,18 @@
 import 'package:flutter/material.dart';
 import 'package:sharefood/models/product.dart';
 
-class ProductItem extends StatefulWidget {
-  const ProductItem({
+class CartProductItem extends StatefulWidget {
+  const CartProductItem({
     super.key,
     required this.product
   });
   final Product product;
 
   @override
-  State<ProductItem> createState() => _ProductItemState();
+  State<CartProductItem> createState() => _CartProductItemState();
 }
 
-class _ProductItemState extends State<ProductItem> {
+class _CartProductItemState extends State<CartProductItem> {
   @override
   Widget build(BuildContext context) {
     final ColorScheme colors = Theme.of(context).colorScheme;
@@ -64,9 +64,7 @@ class _ProductItemState extends State<ProductItem> {
 
                   const Spacer(),
 
-                  Container(margin: const EdgeInsets.symmetric(vertical: 10, horizontal: 0), child: Text('${widget.product.price.toStringAsFixed(2)}€', style: const TextStyle(fontFamily: 'Montserrat SemiBold', fontSize: 20), textAlign: TextAlign.center)),
-
-                  ElevatedButton(onPressed: () {}, style: ElevatedButton.styleFrom(shape: const StadiumBorder(), backgroundColor: Theme.of(context).primaryColor),  child: Text("Ajouter au panier", style: TextStyle(fontSize: Theme.of(context).textTheme.labelSmall?.fontSize, color: Colors.white), textAlign: TextAlign.center))
+                  Container(margin: const EdgeInsets.symmetric(vertical: 10, horizontal: 0), child: Text('${widget.product.price.toStringAsFixed(2)}€', style: const TextStyle(fontFamily: 'Montserrat SemiBold', fontSize: 20), textAlign: TextAlign.center))
                 ]
               ),
           ),
@@ -92,6 +90,22 @@ class _ProductItemState extends State<ProductItem> {
                   ) 
               ),
             ),
+          ),
+
+          Positioned(
+            top: -50.0,
+            right: -10,
+            child: IconButton(
+              icon: const Icon(Icons.delete_outline),
+              onPressed: () {},
+              style: IconButton.styleFrom(
+                foregroundColor: colors.onError,
+                backgroundColor: colors.error,
+                disabledBackgroundColor: colors.onSurface.withOpacity(0.12),
+                hoverColor: colors.onError.withOpacity(0.08),
+                focusColor: colors.onError.withOpacity(0.12),
+                highlightColor: colors.onError.withOpacity(0.12),
+              )),
           ),
         ],
       )

@@ -147,9 +147,11 @@ class _RegisterState extends State<RegisterScreen> {
 
   @override
   Widget build(BuildContext context) {
+    final ColorScheme colors = Theme.of(context).colorScheme;
+    
     return SingleChildScrollView(
       child: Container(
-        color: const Color(0xFFF2F2F2),
+        color: colors.background,
         child: Column(
           mainAxisSize: MainAxisSize.max,
           children: [

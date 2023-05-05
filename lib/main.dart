@@ -46,10 +46,8 @@ class _MyAppState extends State<MyApp> {
     return MaterialApp(
       title: 'Share Food',
       theme: ThemeData(
-        // Colors
-        primaryColor: const Color(0xFF4C9311),
-        primaryColorLight: const Color(0xFF6FAE3A),
-        
+        useMaterial3: true,
+
         // Fonts
         fontFamily: 'Montserrat Medium',
 
@@ -69,6 +67,28 @@ class _MyAppState extends State<MyApp> {
           labelMedium: TextStyle(fontFamily: 'Montserrat SemiBold', fontSize: 14),
           labelSmall: TextStyle(fontFamily: 'Montserrat SemiBold', fontSize: 12)
         ),
+
+        colorScheme: ColorScheme.fromSeed(seedColor: const Color(0xFF4C9311),
+          brightness: Brightness.light,
+
+          primary: const Color(0xFF4C9311),
+          onPrimary: const Color(0xFFF6F6F9),
+
+          secondary: const Color(0xFF6FAE3A),
+          onSecondary: const Color(0xFFFFFFFF),
+
+          error: const Color(0xFFCC1111),
+          onError: const Color(0xFFFFFFFF),
+
+          background: const Color(0xFFF5F5F8),
+          onBackground: const Color(0xFF000000),
+          surface: const Color(0xFFFFFFFF),
+          onSurface: const Color(0xFF000000),
+          
+          outline: const Color(0xFF000000),
+
+          shadow: const Color(0x39393939)
+        )
       ),
       // home: const SplashScreen()
       home: _isLoading
