@@ -126,7 +126,7 @@ class _RegisterState extends State<RegisterScreen> {
       "sellersUID": currentUser.uid,
       "sellerEmail": currentUser.email,
       "sellerName": nameController.text.trim(),
-      "sellerFIrstName": firstnameController.text.trim(),
+      "sellerFirstName": firstnameController.text.trim(),
       "sellerAvatarUrl": sellerImageUrl,
       "address": addressController.text.trim(),
       "zipcode": zipcodeController.text.trim(),
@@ -231,7 +231,7 @@ class _RegisterState extends State<RegisterScreen> {
             ),
             const SizedBox(height: 30),
             CustomButton(
-              onPressed: (){formValidation();},
+              onPressed: formValidation,
               color: Theme.of(context).primaryColor,
               text: "S'inscrire",
             ),

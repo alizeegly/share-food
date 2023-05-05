@@ -1,7 +1,7 @@
 import 'dart:async';
 import 'package:flutter/material.dart';
-import 'package:sharefood/authentication/auth_screen.dart';
 import 'package:sharefood/global/global.dart';
+import 'package:sharefood/authentication/auth_screen.dart';
 import 'package:sharefood/mainScreens/home_screen.dart';
 
 class SplashScreen extends StatefulWidget {
@@ -26,7 +26,7 @@ class _SplashScreenState extends State<SplashScreen> {
   @override
   void initState() {
     super.initState();
-    startTimer();
+    // startTimer();
   }
 
   @override
