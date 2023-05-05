@@ -27,9 +27,9 @@ class _AuthScreenState extends State<AuthScreen> {
             width: 120
           ),
           centerTitle: true,
-          bottom: const TabBar(
+          bottom: TabBar(
             labelColor: Colors.black87,
-            tabs: [
+            tabs: const [
               Tab(
                 icon: Icon(Icons.lock, color: Colors.black87),
                 text: "Connexion",
@@ -39,7 +39,7 @@ class _AuthScreenState extends State<AuthScreen> {
                 text: "Inscription",
               )
             ],
-            indicatorColor:  Color(0xFF6FAE3A),
+            indicatorColor: Theme.of(context).colorScheme.secondary,
             indicatorWeight: 3,
           ),
         ),

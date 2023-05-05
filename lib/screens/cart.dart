@@ -1,9 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:sharefood/data/products.dart';
-//import 'package:sharefood/widgets/products/product_item_layout_grid.dart';
 import '../widgets/products/cart_product_item_layout_grid.dart';
-// import 'package:http/http.dart' as http;
-// import 'package:flutter_dotenv/flutter_dotenv.dart';
 
 class CartScreen extends StatefulWidget {
   const CartScreen({super.key});
@@ -44,9 +41,11 @@ class _CartScreenState extends State<CartScreen> {
 
   @override
   Widget build(BuildContext context) {
+    final ColorScheme colors = Theme.of(context).colorScheme;
+
     return Scaffold(
       appBar:
-          AppBar(title: const Text("Panier"), centerTitle: false, backgroundColor: Theme.of(context).primaryColor),
+          AppBar(title: const Text("Panier"), centerTitle: false, backgroundColor: colors.secondary, foregroundColor: colors.onSecondary),
       body: CustomScrollView(
         slivers: [
           SliverToBoxAdapter(
@@ -68,14 +67,14 @@ class _CartScreenState extends State<CartScreen> {
           SliverToBoxAdapter(child: Container(
             margin: const EdgeInsets.symmetric(vertical: 20, horizontal: 20),
             padding: const EdgeInsets.all(20),
-            decoration: const BoxDecoration(
-              color: Color(0xFFFFFFFF),
-              borderRadius: BorderRadius.all(Radius.circular(30)),
+            decoration: BoxDecoration(
+              color: colors.surface,
+              borderRadius: const BorderRadius.all(Radius.circular(30)),
               boxShadow: [BoxShadow(
-                color: Color(0x39393939),
+                color: colors.shadow,
                 spreadRadius: 0,
                 blurRadius: 40,
-                offset: Offset(0, 40)
+                offset: const Offset(0, 40)
               )]
             ),
             child: FutureBuilder<List>(
@@ -141,7 +140,7 @@ class _CartScreenState extends State<CartScreen> {
             ),
           )),
 
-          SliverToBoxAdapter(child: Container(margin: const EdgeInsets.symmetric(horizontal: 20, vertical: 10),child: ElevatedButton(onPressed: () {}, style: ElevatedButton.styleFrom(shape: const StadiumBorder(), backgroundColor: Theme.of(context).primaryColor),  child: Text("Passer commande", style: TextStyle(fontSize: Theme.of(context).textTheme.labelLarge?.fontSize, color: Colors.white), textAlign: TextAlign.center))))
+          SliverToBoxAdapter(child: Container(margin: const EdgeInsets.symmetric(horizontal: 20, vertical: 10),child: ElevatedButton(onPressed: () {}, style: ElevatedButton.styleFrom(shape: const StadiumBorder(), backgroundColor: Theme.of(context).primaryColor),  child: Text("Passer commande", style: TextStyle(fontSize: Theme.of(context).textTheme.labelLarge?.fontSize, color: colors.onPrimary), textAlign: TextAlign.center))))
         ]
       )
     );

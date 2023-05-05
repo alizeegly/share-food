@@ -1,8 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:sharefood/data/products.dart';
 import 'package:sharefood/widgets/products/product_item_layout_grid.dart';
-// import 'package:http/http.dart' as http;
-// import 'package:flutter_dotenv/flutter_dotenv.dart';
 
 class CloseProductsList extends StatefulWidget {
   const CloseProductsList({super.key});

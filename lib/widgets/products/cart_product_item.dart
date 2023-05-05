@@ -25,15 +25,15 @@ class _CartProductItemState extends State<CartProductItem> {
         children: [
           Container(
             padding: const EdgeInsets.fromLTRB(10, 80, 10, 10),
-            decoration: const BoxDecoration(
-              color: Color(0xFFFFFFFF),
+            decoration: BoxDecoration(
+              color: colors.surface,
               boxShadow: [BoxShadow(
-                color: Color(0x39393939),
+                color: colors.shadow,
                 spreadRadius: 0,
                 blurRadius: 60,
-                offset: Offset(0, 30)
+                offset: const Offset(0, 30)
               )],
-              borderRadius: BorderRadius.all(Radius.circular(30))
+              borderRadius: const BorderRadius.all(Radius.circular(30))
             ),
             child:
               Column(

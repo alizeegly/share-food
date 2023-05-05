@@ -15,6 +15,8 @@ class ProductItem extends StatefulWidget {
 class _ProductItemState extends State<ProductItem> {
   @override
   Widget build(BuildContext context) {
+    final ColorScheme colors = Theme.of(context).colorScheme;
+
     return Container(
       margin: const EdgeInsets.fromLTRB(0, 50, 0, 0),
       child: Stack(
@@ -23,15 +25,15 @@ class _ProductItemState extends State<ProductItem> {
         children: [
           Container(
             padding: const EdgeInsets.fromLTRB(10, 80, 10, 10),
-            decoration: const BoxDecoration(
-              color: Color(0xFFFFFFFF),
+            decoration: BoxDecoration(
+              color: colors.surface,
               boxShadow: [BoxShadow(
-                color: Color(0x39393939),
+                color: colors.shadow,
                 spreadRadius: 0,
                 blurRadius: 60,
-                offset: Offset(0, 30)
+                offset: const Offset(0, 30)
               )],
-              borderRadius: BorderRadius.all(Radius.circular(30))
+              borderRadius: const BorderRadius.all(Radius.circular(30))
             ),
             child:
               Column(
