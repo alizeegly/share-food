@@ -1,15 +1,19 @@
 import 'package:flutter/material.dart';
 import 'package:sharefood/data/products.dart';
+import 'package:sharefood/models/cart.dart';
+import 'package:sharefood/models/product.dart';
 import '../widgets/products/cart_product_item_layout_grid.dart';
 
 class CartScreen extends StatefulWidget {
-  const CartScreen({super.key});
+  const CartScreen({super.key, required this.storage});
+
+  final CartStorage storage;
 
   @override
   State<CartScreen> createState() => _CartScreenState();
 }
 
-Future<List> fetchCart() async {
+Future<List<Product>> fetchCart(List<int> productIds) async {
   // var headers = {'X-MAL-CLIENT-ID': dotenv.env['X-MAL-CLIENT-ID']!};
   // var request = http.Request('GET',
   //     Uri.parse('https://api.myanimelist.net/v2/anime/season/2023/winter'));
@@ -27,16 +31,22 @@ Future<List> fetchCart() async {
   // }
 
   // En attendant d'avoir l'API
-  return products;
+  return products.where((product) => productIds.contains(product.id)).toList();
 }
 
 class _CartScreenState extends State<CartScreen> {
-  late Future<List> futureCartScreen;
+  List<int> _productIds = [];
+  late Future<List<Product>> futureCartScreen;
 
   @override
   void initState() {
     super.initState();
-    futureCartScreen = fetchCart();
+    widget.storage.readCart().then((value) {
+      setState(() {
+        _productIds = value;
+        futureCartScreen = fetchCart(_productIds);
+      });
+    });
   }
 
   @override
@@ -49,11 +59,16 @@ class _CartScreenState extends State<CartScreen> {
       body: CustomScrollView(
         slivers: [
           SliverToBoxAdapter(
-            child: FutureBuilder<List>(
+            child: FutureBuilder<List<Product>>(
               future: futureCartScreen,
               builder: (context, snapshot) {
                 if (snapshot.hasData) {
-                  return CartProductItemLayoutGrid(products: products);
+                  if (snapshot.data!.isNotEmpty) {
+                    return CartProductItemLayoutGrid(products: snapshot.data!);
+                  }
+                  else {
+                    return Container(margin: const EdgeInsets.all(20), child: const Text("Ajoutez un produit à votre panier, et il s'affichera ici."));
+                  }
                 } else if (snapshot.hasError) {
                   return Text('${snapshot.error}');
                 }
@@ -65,7 +80,7 @@ class _CartScreenState extends State<CartScreen> {
           ),
 
           SliverToBoxAdapter(child: Container(
-            margin: const EdgeInsets.symmetric(vertical: 20, horizontal: 20),
+            margin: const EdgeInsets.all(20),
             padding: const EdgeInsets.all(20),
             decoration: BoxDecoration(
               color: colors.surface,
@@ -97,7 +112,7 @@ class _CartScreenState extends State<CartScreen> {
                                   crossAxisAlignment: CrossAxisAlignment.stretch,
                                   children: [
                                     Text("Nombre d'articles :", style: Theme.of(context).textTheme.titleSmall),
-                                    Text(products.length.toString(), style: Theme.of(context).textTheme.bodySmall),
+                                    Text(snapshot.data!.length.toString(), style: Theme.of(context).textTheme.bodySmall),
                                   ],
                                 ),
                               ),
@@ -108,7 +123,7 @@ class _CartScreenState extends State<CartScreen> {
                                   crossAxisAlignment: CrossAxisAlignment.stretch,
                                   children: [
                                     Text("Prix total :", style: Theme.of(context).textTheme.titleSmall),
-                                    Text('${products.fold(0.0, (previousValue, element) => previousValue + element.price).toStringAsFixed(2)}€', style: Theme.of(context).textTheme.bodySmall),
+                                    Text('${snapshot.data!.fold(0.0, (previousValue, element) => previousValue + element.price).toStringAsFixed(2)}€', style: Theme.of(context).textTheme.bodySmall),
                                   ],
                                 ),
                               ),
@@ -127,7 +142,7 @@ class _CartScreenState extends State<CartScreen> {
                           ),
                         ),
 
-                        Text('Prix total : ${products.fold(0.0, (previousValue, element) => previousValue + element.price).toStringAsFixed(2)}€', style: const TextStyle(fontFamily: 'Montserrat SemiBold', fontSize: 20), textAlign: TextAlign.center)
+                        Text('Prix total : ${snapshot.data!.fold(0.0, (previousValue, element) => previousValue + element.price).toStringAsFixed(2)}€', style: const TextStyle(fontFamily: 'Montserrat SemiBold', fontSize: 20), textAlign: TextAlign.center)
                     ]
                   );
                 } else if (snapshot.hasError) {
@@ -140,7 +155,7 @@ class _CartScreenState extends State<CartScreen> {
             ),
           )),
 
-          SliverToBoxAdapter(child: Container(margin: const EdgeInsets.symmetric(horizontal: 20, vertical: 10),child: ElevatedButton(onPressed: () {}, style: ElevatedButton.styleFrom(shape: const StadiumBorder(), backgroundColor: Theme.of(context).primaryColor),  child: Text("Passer commande", style: TextStyle(fontSize: Theme.of(context).textTheme.labelLarge?.fontSize, color: colors.onPrimary), textAlign: TextAlign.center))))
+          SliverToBoxAdapter(child: Container(margin: const EdgeInsets.symmetric(horizontal: 20, vertical: 10),child: ElevatedButton(onPressed: () {}, style: ElevatedButton.styleFrom(shape: const StadiumBorder(), backgroundColor: colors.primary),  child: Text("Passer commande", style: TextStyle(fontSize: Theme.of(context).textTheme.labelLarge?.fontSize, color: colors.onPrimary), textAlign: TextAlign.center))))
         ]
       )
     );

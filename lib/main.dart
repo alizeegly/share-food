@@ -3,6 +3,7 @@ import 'package:sharefood/Screens/close_products.dart';
 import 'package:sharefood/SplashScreen/splash_screen.dart';
 import 'package:sharefood/authentication/auth_screen.dart';
 import 'package:sharefood/authentication/register.dart';
+import 'package:sharefood/models/cart.dart';
 import 'package:sharefood/screens/cart.dart';
 
 Future<void> main() async {
@@ -62,7 +63,8 @@ class MyApp extends StatelessWidget {
           shadow: const Color(0x39393939)
         )
       ),
-      home: const AuthScreen()
+      home: CartScreen(storage: CartStorage())
+      // home: CloseProductsList()
     );
   }
 }

@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_layout_grid/flutter_layout_grid.dart';
+import 'package:sharefood/models/cart.dart';
 import 'package:sharefood/models/product.dart';
 import 'package:sharefood/widgets/products/product_item.dart';
 
@@ -21,7 +22,7 @@ class ProductItemLayoutGrid extends StatelessWidget {
         columnGap: 20,
         children: [
           for (var i = 0; i < products.length; i++)
-            ProductItem(product: products[i]),
+            ProductItem(product: products[i], storage: CartStorage(),),
         ],
       ),
     );
