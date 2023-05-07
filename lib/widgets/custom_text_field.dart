@@ -29,7 +29,7 @@ class CustomTextField extends StatelessWidget {
         enabled: enabled,
         controller: controller,
         obscureText: isObsecre!,
-        cursorColor: Theme.of(context).primaryColor,
+        cursorColor: Theme.of(context).colorScheme.primary,
         decoration: InputDecoration(
           border: InputBorder.none,
           contentPadding: const EdgeInsets.symmetric(vertical: 5.0, horizontal: 5.0),
