@@ -37,6 +37,7 @@ dependencies:
   cupertino_icons: ^1.0.2
   flutter_layout_grid: ^2.0.1
   image_picker: ^0.8.7
+  path_provider: ^2.0.14
   firebase_core: ^2.9.0
   firebase_storage: ^11.1.0
   firebase_auth: ^4.4.0

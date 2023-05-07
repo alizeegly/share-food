@@ -1,18 +1,54 @@
 import 'package:flutter/material.dart';
+import 'package:sharefood/models/cart.dart';
 import 'package:sharefood/models/product.dart';
 
 class ProductItem extends StatefulWidget {
   const ProductItem({
     super.key,
-    required this.product
+    required this.product,
+    required this.storage
   });
   final Product product;
+  final CartStorage storage;
 
   @override
   State<ProductItem> createState() => _ProductItemState();
 }
 
 class _ProductItemState extends State<ProductItem> {
+  bool _isInCart = false;
+  List<int> _cart = [];
+
+  void _toggleInCart() {
+    widget.storage.readCart().then((cart) {
+      setState(() {
+        _cart = cart;
+
+        if (_isInCart) {
+          // S'il était dans le panier, alors il ne l'est plus :
+          _cart.remove(widget.product.id);
+        } else {
+          // S'il n'était pas dans le panier, il le devient :
+          _cart.add(widget.product.id);
+        }
+        widget.storage.writeCart(_cart);
+        _isInCart = !_isInCart;
+      });
+    });
+  }
+
+  @override
+  void initState() {
+    super.initState();
+
+    widget.storage.readCart().then((cart) {
+      setState(() {
+        _cart = cart;
+        _isInCart = _cart.contains(widget.product.id);
+      });
+    });
+  }
+  
   @override
   Widget build(BuildContext context) {
     final ColorScheme colors = Theme.of(context).colorScheme;
@@ -66,7 +102,10 @@ class _ProductItemState extends State<ProductItem> {
 
                   Container(margin: const EdgeInsets.symmetric(vertical: 10, horizontal: 0), child: Text('${widget.product.price.toStringAsFixed(2)}€', style: const TextStyle(fontFamily: 'Montserrat SemiBold', fontSize: 20), textAlign: TextAlign.center)),
 
-                  ElevatedButton(onPressed: () {}, style: ElevatedButton.styleFrom(shape: const StadiumBorder(), backgroundColor: Theme.of(context).primaryColor),  child: Text("Ajouter au panier", style: TextStyle(fontSize: Theme.of(context).textTheme.labelSmall?.fontSize, color: Colors.white), textAlign: TextAlign.center))
+                  _isInCart
+                    ? OutlinedButton(onPressed: _toggleInCart, style: OutlinedButton.styleFrom(shape: const StadiumBorder(), side: BorderSide(width: 2, color: colors.primary)), child: Text("Retirer du panier", style: TextStyle(fontSize: Theme.of(context).textTheme.labelSmall?.fontSize, color: colors.primary), textAlign: TextAlign.center))
+
+                    : ElevatedButton(onPressed: _toggleInCart, style: ElevatedButton.styleFrom(shape: const StadiumBorder(), backgroundColor: colors.primary),  child: Text("Ajouter au panier", style: TextStyle(fontSize: Theme.of(context).textTheme.labelSmall?.fontSize, color: colors.onPrimary), textAlign: TextAlign.center))
                 ]
               ),
           ),
