@@ -156,7 +156,7 @@ class _RegisterState extends State<RegisterScreen> {
             const SizedBox(height: 30),
             CustomButton(
               onPressed: (){formValidation();},
-              color: Theme.of(context).primaryColor,
+              color: Theme.of(context).colorScheme.primary,
               text: "S'inscrire",
             ),
             const SizedBox(height: 50),

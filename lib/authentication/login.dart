@@ -41,7 +41,7 @@ class _LoginState extends State<LoginScreen> {
                   const SizedBox(height: 30),
                   CustomButton(
                     onPressed: () => print('My Button tap'),
-                    color: Theme.of(context).primaryColor,
+                    color: Theme.of(context).colorScheme.primary,
                     text: "Se connecter",
                   ),
                   const SizedBox(height: 50),
