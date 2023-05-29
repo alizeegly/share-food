@@ -36,7 +36,7 @@ Future<List<Product>> fetchCart(List<int> productIds) async {
 
 class _CartScreenState extends State<CartScreen> {
   List<int> _productIds = [];
-  late Future<List<Product>> futureCartScreen;
+  Future<List<Product>>? futureCartScreen;
 
   @override
   void initState() {
