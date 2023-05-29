@@ -5,6 +5,7 @@ import 'package:firebase_core/firebase_core.dart';
 import 'firebase_options.dart';
 import 'package:sharefood/authentication/auth_screen.dart';
 import 'package:sharefood/mainScreens/home_screen.dart';
+import 'package:sharefood/models/cart.dart';
 import 'package:sharefood/global/global.dart';
 
 void main() async {
