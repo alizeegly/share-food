@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:sharefood/Screens/close_products.dart';
-import 'package:sharefood/mainScreens/cart.dart';
-import 'package:sharefood/mainScreens/profile_screen.dart';
+import 'package:sharefood/screens/close_products.dart';
+import 'package:sharefood/screens/cart.dart';
+import 'package:sharefood/screens/profile_screen.dart';
 import 'package:sharefood/widgets/custom_tab.dart';
 
 class HomeScreen extends StatefulWidget {
