@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:sharefood/models/cart.dart';
 import 'package:sharefood/screens/close_products.dart';
 import 'package:sharefood/screens/cart.dart';
 import 'package:sharefood/screens/profile_screen.dart';
@@ -14,10 +15,10 @@ class HomeScreen extends StatefulWidget {
 class _HomeScreenState extends State<HomeScreen> with SingleTickerProviderStateMixin {
   late TabController _tabController;
 
-  final List<Widget> pages = const [
-    CartScreen(),
-    CloseProductsList(),
-    ProfileScreen(),
+  final List<Widget> pages = [
+    CartScreen(storage: CartStorage()),
+    const CloseProductsList(),
+    const ProfileScreen(),
   ];
 
   int _currentIndex = 1;
