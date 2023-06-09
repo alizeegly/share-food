@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:sharefood/data/products.dart';
 import 'package:sharefood/models/cart.dart';
 import 'package:sharefood/models/product.dart';
+import 'package:sharefood/screens/payment_confirm.dart';
 import 'package:sharefood/widgets/custom_date_time_field.dart';
 import 'package:date_format/date_format.dart';
 import 'package:intl/intl.dart';
@@ -216,7 +217,7 @@ class _PaymentScreenState extends State<PaymentScreen> {
       
                         ElevatedButton(
                           onPressed: () {
-                            // Navigator.push(context, MaterialPageRoute(builder: (context) => PaymentScreen(storage: CartStorage())));
+                            Navigator.pushAndRemoveUntil(context, MaterialPageRoute(builder: (context) => const PaymentConfirmScreen()), (Route<dynamic> route) => false);
                           },
                           style: ElevatedButton.styleFrom(shape: const StadiumBorder(), backgroundColor: colors.primary, padding: const EdgeInsets.symmetric(horizontal: 40)),
                           child: Text("Valider", style: TextStyle(fontSize: Theme.of(context).textTheme.labelLarge?.fontSize, color: colors.onPrimary), textAlign: TextAlign.center)
