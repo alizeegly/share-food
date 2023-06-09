@@ -217,6 +217,12 @@ class _PaymentScreenState extends State<PaymentScreen> {
       
                         ElevatedButton(
                           onPressed: () {
+                            // TODO Créer la commande
+
+                            // Vider le panier
+                            widget.storage.writeCart([]);
+
+                            // Ecran de confirmation
                             Navigator.pushAndRemoveUntil(context, MaterialPageRoute(builder: (context) => const PaymentConfirmScreen()), (Route<dynamic> route) => false);
                           },
                           style: ElevatedButton.styleFrom(shape: const StadiumBorder(), backgroundColor: colors.primary, padding: const EdgeInsets.symmetric(horizontal: 40)),
