@@ -1,12 +1,11 @@
 import 'package:flutter/material.dart';
-import 'package:sharefood/Screens/close_products.dart';
 import 'package:sharefood/SplashScreen/splash_screen.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'firebase_options.dart';
 import 'package:sharefood/authentication/auth_screen.dart';
 import 'package:sharefood/mainScreens/home_screen.dart';
-import 'package:sharefood/models/cart.dart';
 import 'package:sharefood/global/global.dart';
+import 'package:flutter_localizations/flutter_localizations.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -46,6 +45,7 @@ class _MyAppState extends State<MyApp> {
   Widget build(BuildContext context) {
     return MaterialApp(
       title: 'Share Food',
+      
       theme: ThemeData(
         useMaterial3: true,
 
@@ -91,6 +91,15 @@ class _MyAppState extends State<MyApp> {
           shadow: const Color(0x39393939)
         )
       ),
+
+      localizationsDelegates: const [
+         GlobalMaterialLocalizations.delegate
+       ],
+      supportedLocales: const [
+        Locale('en'),
+        Locale('fr', 'FR')
+      ],
+
       // home: const SplashScreen()
       home: _isLoading
         ? const SplashScreen()
