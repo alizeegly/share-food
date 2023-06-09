@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:sharefood/data/products.dart';
 import 'package:sharefood/models/cart.dart';
 import 'package:sharefood/models/product.dart';
+import 'package:sharefood/screens/payment.dart';
 import 'package:sharefood/widgets/products/cart_product_item_layout_grid.dart';
 
 class CartScreen extends StatefulWidget {
@@ -168,7 +169,9 @@ class _CartScreenState extends State<CartScreen> {
                 return Container(
                   margin: const EdgeInsets.symmetric(horizontal: 20, vertical: 10),
                   child: ElevatedButton(
-                    onPressed: () {},
+                    onPressed: () {
+                      Navigator.push(context, MaterialPageRoute(builder: (context) => PaymentScreen(storage: CartStorage())));
+                    },
                     style: ElevatedButton.styleFrom(shape: const StadiumBorder(), backgroundColor: colors.primary),
                     child: Text("Passer commande", style: TextStyle(fontSize: Theme.of(context).textTheme.labelLarge?.fontSize, color: colors.onPrimary), textAlign: TextAlign.center)
                   )
