@@ -32,6 +32,7 @@ class UserModel {
 
   toJson() {
     return {
+      "id": id,
       "firstname": firstname,
       "lastname": lastname,
       "email": email,
@@ -39,7 +40,10 @@ class UserModel {
       "city": city,
       "zipcode": zipcode,
       "password": password,
-      "avatarUrl": avatarUrl
+      "avatarUrl": avatarUrl,
+      "status": status,
+      "lat": lat,
+      "lng": lng,
     };
   }
 
@@ -47,17 +51,17 @@ class UserModel {
     final data = document.data()!;
     return UserModel(
       id: document.id,
-      firstname: data["sellerFirstName"],
-      lastname: data["sellerLastName"],
+      firstname: data["firstname"],
+      lastname: data["lastname"],
       address: data["address"], 
-      email: data["sellerEmail"],
+      email: data["email"],
       city: data["city"],
       zipcode: data["zipcode"],
       status: data["status"],
       lat: data["lat"],
       lng: data["lng"],
       password: data["password"],
-      avatarUrl: data["sellerAvatarUrl"]
+      avatarUrl: data["avatarUrl"]
     );
   }
 }

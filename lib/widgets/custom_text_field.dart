@@ -7,13 +7,15 @@ class CustomTextField extends StatelessWidget {
   final String? hintText;
   bool? isObsecre = true;
   bool? enabled = true;
+  final intitialValue;
 
   CustomTextField({
     this.controller,
     this.data,
     this.hintText,
     this.isObsecre,
-    this.enabled
+    this.enabled,
+    this.intitialValue
   });
 
 
@@ -28,6 +30,7 @@ class CustomTextField extends StatelessWidget {
       child: TextFormField(
         enabled: enabled,
         controller: controller,
+        initialValue: intitialValue,
         obscureText: isObsecre!,
         cursorColor: Theme.of(context).primaryColor,
         decoration: InputDecoration(

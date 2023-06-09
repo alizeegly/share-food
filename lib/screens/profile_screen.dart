@@ -39,7 +39,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                 width: 120, height: 120,
                 child: ClipRRect(
                   borderRadius: BorderRadius.circular(100),
-                  child: const Image(image: AssetImage("https://firebasestorage.googleapis.com/v0/b/share-food-d3e9b.appspot.com/o/sellers%2F1680876057524?alt=media&token=18254daa-5218-484a-a257-caab07524415"))
+                  // child: const Image(image: AssetImage("https://firebasestorage.googleapis.com/v0/b/share-food-d3e9b.appspot.com/o/sellers%2F1680876057524?alt=media&token=18254daa-5218-484a-a257-caab07524415"))
                 )
               ),
               const SizedBox(height: 17),

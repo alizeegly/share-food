@@ -65,18 +65,17 @@ class _LoginState extends State<LoginScreen> {
         // Faites quelque chose avec les données de l'utilisateur ici
         if (data != null) {
           sharedPreferences = await SharedPreferences.getInstance();
-          await sharedPreferences!.setString("uid", data2["sellersUID"]);
-          await sharedPreferences!.setString("name", data2["sellerName:"]);
-          await sharedPreferences!.setString("firstName", data2["sellerFirstName:"]);
-          await sharedPreferences!.setString("email", data2["sellerEmail:"]);
-          await sharedPreferences!.setString("photoUrl", data2["sellerAvatarUrl:"]);
+          // await sharedPreferences!.setString("uid", data2["sellersUID"]);
+          await sharedPreferences!.setString("name", data2["lastname:"]);
+          await sharedPreferences!.setString("firstName", data2["firstname"]);
+          await sharedPreferences!.setString("email", data2["email"]);
+          await sharedPreferences!.setString("photoUrl", data2["avatarUrl"]);
         }
         // etc.
       } else {
         // Les données de l'utilisateur n'existent pas dans Firestore
         print('Aucune donnée d\'utilisateur trouvée dans Firestore');
       }
-
 
       // Connexion réussie
       Navigator.pushReplacement(
