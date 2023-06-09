@@ -52,7 +52,7 @@ class _CloseProductsListState extends State<CloseProductsList> {
             future: futureCloseProductsList,
             builder: (context, snapshot) {
               if (snapshot.hasData) {
-                return ProductItemLayoutGrid(products: products);
+                return ProductItemLayoutGrid(products: products, notifyParent:() {},);
               } else if (snapshot.hasError) {
                 return Text('${snapshot.error}');
               }
