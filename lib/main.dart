@@ -8,6 +8,7 @@ import 'firebase_options.dart';
 import 'package:sharefood/authentication/auth_screen.dart';
 import 'package:sharefood/mainScreens/home_screen.dart';
 import 'package:sharefood/global/global.dart';
+import 'package:flutter_localizations/flutter_localizations.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -47,6 +48,7 @@ class _MyAppState extends State<MyApp> {
   Widget build(BuildContext context) {
     return GetMaterialApp(
       title: 'Share Food',
+      
       theme: ThemeData(
         useMaterial3: true,
 
@@ -92,6 +94,15 @@ class _MyAppState extends State<MyApp> {
           shadow: const Color(0x39393939)
         )
       ),
+
+      localizationsDelegates: const [
+         GlobalMaterialLocalizations.delegate
+       ],
+      supportedLocales: const [
+        Locale('en'),
+        Locale('fr', 'FR')
+      ],
+
       // home: const SplashScreen()
       home: const SplashScreen()
     );

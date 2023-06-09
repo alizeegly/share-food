@@ -1,21 +1,21 @@
 import 'package:flutter/material.dart';
 
-class CustomTextField extends StatelessWidget {
+class CustomDateTimeField extends StatelessWidget {
 
   final TextEditingController? controller;
+  String? setState;
   final IconData? data;
   final String? hintText;
   bool? isObsecre = true;
   bool? enabled = true;
-  final intitialValue;
 
-  CustomTextField({
+  CustomDateTimeField({
     this.controller,
+    this.setState,
     this.data,
     this.hintText,
     this.isObsecre,
-    this.enabled,
-    this.intitialValue
+    this.enabled
   });
 
 
@@ -28,10 +28,14 @@ class CustomTextField extends StatelessWidget {
         border: Border(bottom: BorderSide(color: Colors.black, style: BorderStyle.solid)),
       ),
       child: TextFormField(
-        enabled: enabled,
+        enabled: false,
         controller: controller,
-        initialValue: intitialValue,
         obscureText: isObsecre!,
+        onSaved: (String? val) {
+          setState = val;
+        },
+        keyboardType: TextInputType.text,
+
         cursorColor: Theme.of(context).colorScheme.primary,
         decoration: InputDecoration(
           border: InputBorder.none,
