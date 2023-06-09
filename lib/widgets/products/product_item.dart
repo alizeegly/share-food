@@ -6,10 +6,12 @@ class ProductItem extends StatefulWidget {
   const ProductItem({
     super.key,
     required this.product,
-    required this.storage
+    required this.storage,
+    required this.notifyParent
   });
   final Product product;
   final CartStorage storage;
+  final Function() notifyParent;
 
   @override
   State<ProductItem> createState() => _ProductItemState();
@@ -22,7 +24,9 @@ class _ProductItemState extends State<ProductItem> {
   void _toggleInCart() {
     widget.storage.readCart().then((cart) {
       setState(() {
+        print("${widget.product.id} is updated");
         _cart = cart;
+        _isInCart = _cart.contains(widget.product.id);
 
         if (_isInCart) {
           // S'il était dans le panier, alors il ne l'est plus :
@@ -31,8 +35,9 @@ class _ProductItemState extends State<ProductItem> {
           // S'il n'était pas dans le panier, il le devient :
           _cart.add(widget.product.id);
         }
+        _isInCart = _cart.contains(widget.product.id);
         widget.storage.writeCart(_cart);
-        _isInCart = !_isInCart;
+        widget.notifyParent();
       });
     });
   }

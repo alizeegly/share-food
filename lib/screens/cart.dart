@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:sharefood/data/products.dart';
 import 'package:sharefood/models/cart.dart';
 import 'package:sharefood/models/product.dart';
-import '../widgets/products/cart_product_item_layout_grid.dart';
+import 'package:sharefood/widgets/products/product_item_layout_grid.dart';
 
 class CartScreen extends StatefulWidget {
   const CartScreen({super.key, required this.storage});
@@ -38,6 +38,15 @@ class _CartScreenState extends State<CartScreen> {
   List<int> _productIds = [];
   Future<List<Product>>? futureCartScreen;
 
+  void refresh() {
+    widget.storage.readCart().then((value) {
+      setState(() {
+        _productIds = value;
+        futureCartScreen = fetchCart(_productIds);
+      });
+    });
+  }
+
   @override
   void initState() {
     super.initState();
@@ -64,7 +73,7 @@ class _CartScreenState extends State<CartScreen> {
               builder: (context, snapshot) {
                 if (snapshot.hasData) {
                   if (snapshot.data!.isNotEmpty) {
-                    return CartProductItemLayoutGrid(products: snapshot.data!);
+                    return ProductItemLayoutGrid(products: snapshot.data!, notifyParent: refresh,);
                   }
                   else {
                     return Container(margin: const EdgeInsets.all(20), child: const Text("Ajoutez un produit à votre panier, et il s'affichera ici."));
