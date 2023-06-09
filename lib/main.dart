@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 import 'package:sharefood/Screens/close_products.dart';
 import 'package:sharefood/SplashScreen/splash_screen.dart';
 import 'package:firebase_core/firebase_core.dart';
+import 'package:sharefood/repository/authentication_repository/auth_repository.dart';
 import 'firebase_options.dart';
 import 'package:sharefood/authentication/auth_screen.dart';
 import 'package:sharefood/mainScreens/home_screen.dart';
@@ -11,7 +13,7 @@ void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await Firebase.initializeApp(
     options: DefaultFirebaseOptions.currentPlatform,
-  );
+  ).then((value) => Get.put(AuthRepository()));
   runApp(MyApp());
 }
 
@@ -43,7 +45,7 @@ class _MyAppState extends State<MyApp> {
 
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
+    return GetMaterialApp(
       title: 'Share Food',
       theme: ThemeData(
         useMaterial3: true,
@@ -91,11 +93,7 @@ class _MyAppState extends State<MyApp> {
         )
       ),
       // home: const SplashScreen()
-      home: _isLoading
-        ? const SplashScreen()
-        : _isAuthenticated
-          ? const HomeScreen()
-          : const AuthScreen(),
+      home: const SplashScreen()
     );
   }
 }

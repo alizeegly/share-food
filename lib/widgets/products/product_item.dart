@@ -57,7 +57,7 @@ class _ProductItemState extends State<ProductItem> {
                       crossAxisAlignment: CrossAxisAlignment.stretch,
                       children: [
                         Text("Localisation :", style: Theme.of(context).textTheme.titleSmall),
-                        Text("${widget.product.seller.address.street}\n${widget.product.seller.address.zipcode} ${widget.product.seller.address.city}", style: Theme.of(context).textTheme.bodySmall)
+                        Text("${widget.product.seller.address}\n${widget.product.seller.zipcode} ${widget.product.seller.city}", style: Theme.of(context).textTheme.bodySmall)
                       ],
                     ),
                   ),

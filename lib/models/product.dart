@@ -1,4 +1,4 @@
-import 'package:sharefood/models/seller.dart';
+import 'package:sharefood/models/user_model.dart';
 
 class Product {
   late int id;
@@ -6,7 +6,7 @@ class Product {
   late String pictureUrl;
   late String type;
   late double price;
-  late Seller seller;
+  late UserModel seller;
 
   Product(this.id, this.name, this.pictureUrl, this.type, this.price, this.seller);
 }
