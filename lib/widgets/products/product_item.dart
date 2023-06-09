@@ -7,11 +7,13 @@ class ProductItem extends StatefulWidget {
     super.key,
     required this.product,
     required this.storage,
-    required this.notifyParent
+    required this.notifyParent,
+    this.screen = "closeProducts"
   });
   final Product product;
   final CartStorage storage;
   final Function() notifyParent;
+  final String screen;
 
   @override
   State<ProductItem> createState() => _ProductItemState();
@@ -24,7 +26,6 @@ class _ProductItemState extends State<ProductItem> {
   void _toggleInCart() {
     widget.storage.readCart().then((cart) {
       setState(() {
-        print("${widget.product.id} is updated");
         _cart = cart;
         _isInCart = _cart.contains(widget.product.id);
 
@@ -107,7 +108,7 @@ class _ProductItemState extends State<ProductItem> {
 
                   Container(margin: const EdgeInsets.symmetric(vertical: 10, horizontal: 0), child: Text('${widget.product.price.toStringAsFixed(2)}€', style: const TextStyle(fontFamily: 'Montserrat SemiBold', fontSize: 20), textAlign: TextAlign.center)),
 
-                  _isInCart
+                  _isInCart || widget.screen=="cart"
                     ? OutlinedButton(onPressed: _toggleInCart, style: OutlinedButton.styleFrom(shape: const StadiumBorder(), side: BorderSide(width: 2, color: colors.primary)), child: Text("Retirer du panier", style: TextStyle(fontSize: Theme.of(context).textTheme.labelSmall?.fontSize, color: colors.primary), textAlign: TextAlign.center))
 
                     : ElevatedButton(onPressed: _toggleInCart, style: ElevatedButton.styleFrom(shape: const StadiumBorder(), backgroundColor: colors.primary),  child: Text("Ajouter au panier", style: TextStyle(fontSize: Theme.of(context).textTheme.labelSmall?.fontSize, color: colors.onPrimary), textAlign: TextAlign.center))
