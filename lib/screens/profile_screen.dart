@@ -1,9 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:sharefood/authentication/auth_screen.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:sharefood/models/user_model.dart';
 import 'package:sharefood/repository/authentication_repository/auth_repository.dart';
 import 'package:sharefood/screens/profile/update_profile_screen.dart';
 import 'package:sharefood/widgets/custom_button.dart';
+import 'package:get/get.dart';
+import 'package:sharefood/controllers/profile_controller.dart';
 
 class ProfileScreen extends StatefulWidget {
   const ProfileScreen({super.key});
@@ -14,18 +17,10 @@ class ProfileScreen extends StatefulWidget {
 
 class _ProfileScreenState extends State<ProfileScreen> {
 
-  // User? user = firebaseAuth.currentUser;
-
-  // Future<void> _signOut() async {
-  //   await FirebaseAuth.instance.signOut();
-  //   Navigator.pushReplacement(
-  //     context,
-  //     MaterialPageRoute(builder: (context) => AuthScreen()),
-  //   );
-  // }
-
   @override
   Widget build(BuildContext context) {
+    final controller = Get.put(ProfileController());
+
     return Scaffold(
       appBar: AppBar(
         title: const Text('Paramètres'),
@@ -33,83 +28,91 @@ class _ProfileScreenState extends State<ProfileScreen> {
       body: SingleChildScrollView(
         child: Container(
           padding: const EdgeInsets.all(30.0),
-          child: Column(
-            children: [
-              SizedBox(
-                width: 120, height: 120,
-                child: ClipRRect(
-                  borderRadius: BorderRadius.circular(100),
-                  // child: const Image(image: AssetImage("https://firebasestorage.googleapis.com/v0/b/share-food-d3e9b.appspot.com/o/sellers%2F1680876057524?alt=media&token=18254daa-5218-484a-a257-caab07524415"))
-                )
-              ),
-              const SizedBox(height: 17),
-              Text(
-                "Alizée Gillouaye",
-                style: Theme.of(context).textTheme.headlineSmall,
-              ),
-              const SizedBox(height: 30),
-              CustomButton(
-                onPressed: () {
-                  Navigator.push(context, MaterialPageRoute(builder: (context) => const UpdateProfileScreen()));
-                },
-                color: Theme.of(context).primaryColor,
-                text: "Modifier mon profil",
-              ),
+          child: FutureBuilder(
+            future: controller.getUserData(),
+            builder: (context, snapshot){
+              if(snapshot.connectionState == ConnectionState.done){
+                if(snapshot.hasData){
+                  UserModel user = snapshot.data as UserModel;
 
-              const SizedBox(height: 30),
-              const Divider(),
-              const SizedBox(height: 30),
-
-              ProfileMenuWidget(
-                title: "Paramètres",
-                icon: Icons.settings_outlined,
-                onPressed: () {},
-              ),
-              ProfileMenuWidget(
-                title: "Gérer mes produits",
-                icon: Icons.shopping_cart_outlined,
-                onPressed: () {},
-              ),
-              ProfileMenuWidget(
-                title: "Consulter mes achats",
-                icon: Icons.wallet_outlined,
-                onPressed: () {},
-              ),
-              ProfileMenuWidget(
-                title: "Consulter mes ventes",
-                icon: Icons.sell,
-                onPressed: () {},
-              ),
-              const Divider(),
-              const SizedBox(height: 10),
-              ProfileMenuWidget(
-                title: "Se déconnecter",
-                icon: Icons.logout,
-                textColor: Colors.red,
-                endIcon: false,
-                onPressed: () {
-                  AuthRepository.instance.logout();
-                },
-              ),
-            ]
-          )
+                  return Column(
+                    children: [
+                      SizedBox(
+                        width: 120, height: 120,
+                        child: ClipRRect(
+                          borderRadius: BorderRadius.circular(100),
+                          child: Image.network(user.avatarUrl, fit: BoxFit.cover)
+                        )
+                      ),
+                      const SizedBox(height: 17),
+                      Text(
+                        "${user.firstname} ${user.lastname}",
+                        style: Theme.of(context).textTheme.headlineSmall,
+                      ),
+                      const SizedBox(height: 30),
+                      CustomButton(
+                        onPressed: () {
+                          Navigator.push(context, MaterialPageRoute(builder: (context) => const UpdateProfileScreen()));
+                        },
+                        color: Theme.of(context).primaryColor,
+                        text: "Modifier mon profil",
+                      ),
+                
+                      const SizedBox(height: 30),
+                      const Divider(),
+                      const SizedBox(height: 30),
+                
+                      ProfileMenuWidget(
+                        title: "Paramètres",
+                        icon: Icons.settings_outlined,
+                        onPressed: () {},
+                      ),
+                      ProfileMenuWidget(
+                        title: "Gérer mes produits",
+                        icon: Icons.shopping_cart_outlined,
+                        onPressed: () {},
+                      ),
+                      ProfileMenuWidget(
+                        title: "Consulter mes achats",
+                        icon: Icons.wallet_outlined,
+                        onPressed: () {},
+                      ),
+                      ProfileMenuWidget(
+                        title: "Consulter mes ventes",
+                        icon: Icons.sell,
+                        onPressed: () {},
+                      ),
+                      const Divider(),
+                      const SizedBox(height: 10),
+                      ProfileMenuWidget(
+                        title: "Se déconnecter",
+                        icon: Icons.logout,
+                        textColor: Colors.red,
+                        endIcon: false,
+                        onPressed: () {
+                          AuthRepository.instance.logout();
+                        },
+                      ),
+                    ]
+                  );
+                } else if(snapshot.hasError){
+                  return Center(
+                    child: Text(snapshot.error.toString()),
+                  );
+                } else {
+                  return const Center(
+                    child: Text("Something went wrong"),
+                  );
+                }
+              } else {
+                return const Center(
+                  child: CircularProgressIndicator(),
+                );
+              }
+            }
+          ),
         )
       )
-      
-      
-    //   Center(
-    //     child: Column(
-    //       mainAxisAlignment: MainAxisAlignment.center,
-    //       children: [
-    //         const Text('Bienvenue !'),
-    //         const SizedBox(height: 16.0),
-    //         ElevatedButton(
-    //           onPressed: _signOut,
-    //           child: const Text('Se déconnecter'),
-    //         ),
-    //       ],
-    //     ),
-    //   ),
     );
   }
 }

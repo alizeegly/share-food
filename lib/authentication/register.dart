@@ -7,6 +7,7 @@ import 'package:sharefood/controllers/auth_controller.dart';
 import 'package:sharefood/models/user_model.dart';
 import 'package:sharefood/widgets/custom_button.dart';
 import 'package:sharefood/widgets/custom_text_field.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 
 class RegisterScreen extends StatefulWidget {
   const RegisterScreen({super.key});
@@ -136,6 +137,7 @@ class _RegisterState extends State<RegisterScreen> {
                     status: 'approuved', 
                     zipcode: controller.zipcodeController.text.trim(), 
                     avatarUrl: '',
+                    createdAt: Timestamp.fromDate(DateTime.now())
                   );
                   AuthController.instance.registerUser(user,imageXFile);
                 }

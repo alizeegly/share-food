@@ -14,14 +14,14 @@ class UserRepository extends GetxController {
   createUser(UserModel user) async {
     await _db.collection("sellers").add(user.toJson()).whenComplete(
       () => Get.snackbar("Success", "Votre compte a bien été créé", 
-        snackPosition: SnackPosition.BOTTOM,
+        snackPosition: SnackPosition.TOP,
         backgroundColor: Colors.green.withOpacity(0.1),
         colorText: Colors.green
       )
     )
     .catchError((error, stackTrace) {
         Get.snackbar("Error", "Something went wrong. Try again.", 
-          snackPosition: SnackPosition.BOTTOM,
+          snackPosition: SnackPosition.TOP,
           backgroundColor: Colors.redAccent.withOpacity(0.1),
           colorText: Colors.red
         );
@@ -38,6 +38,20 @@ class UserRepository extends GetxController {
 
   // Update user details
   Future<void> updateUserRecord(UserModel user) async {
-    await _db.collection("sellers").doc(user.id).update(user.toJson());
+    await _db.collection("sellers").doc(user.id).update(user.toJson()).whenComplete(
+      () => Get.snackbar("Success", "Votre compte a bien été modifié", 
+        snackPosition: SnackPosition.TOP,
+        backgroundColor: Colors.green.withOpacity(0.1),
+        colorText: Colors.green
+      )
+    )
+    .catchError((error, stackTrace) {
+        Get.snackbar("Error", "Something went wrong. Try again.", 
+          snackPosition: SnackPosition.TOP,
+          backgroundColor: Colors.redAccent.withOpacity(0.1),
+          colorText: Colors.red
+        );
+        print(error.toString());
+      });
   }
 }

@@ -3,11 +3,11 @@ import 'dart:io';
 
 import 'package:path_provider/path_provider.dart';
 import 'package:sharefood/models/product.dart';
-import 'package:sharefood/models/seller.dart';
+import 'package:sharefood/models/user_model.dart';
 
 class Cart {
   late List<Product> products;
-  late Seller seller;
+  late UserModel seller;
 
   Cart(this.products, this.seller);
 }

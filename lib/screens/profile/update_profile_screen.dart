@@ -1,11 +1,11 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/src/widgets/framework.dart';
-import 'package:flutter/src/widgets/placeholder.dart';
 import 'package:get/get.dart';
 import 'package:sharefood/controllers/profile_controller.dart';
 import 'package:sharefood/models/user_model.dart';
 import 'package:sharefood/widgets/custom_button.dart';
 import 'package:sharefood/widgets/custom_text_field.dart';
+import 'package:intl/intl.dart';
+
 
 class UpdateProfileScreen extends StatelessWidget {
   const UpdateProfileScreen({super.key});
@@ -13,10 +13,13 @@ class UpdateProfileScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final controller = Get.put(ProfileController());
+
     return Scaffold(
       appBar: AppBar(
         leading: IconButton(
-          onPressed: (){}, 
+          onPressed: (){
+            Get.back();
+          }, 
           icon: const Icon(Icons.arrow_back_ios),
         ),
         title: Text("Modifier mon profil", style: Theme.of(context).textTheme.headlineMedium),
@@ -29,7 +32,6 @@ class UpdateProfileScreen extends StatelessWidget {
             builder: (context, snapshot){
               if(snapshot.connectionState == ConnectionState.done){
                 if(snapshot.hasData){
-                  print(snapshot.data);
                   UserModel user = snapshot.data as UserModel;
 
                   TextEditingController nameController = TextEditingController(text: user.lastname);
@@ -48,7 +50,7 @@ class UpdateProfileScreen extends StatelessWidget {
                             width: 120, height: 120,
                             child: ClipRRect(
                               borderRadius: BorderRadius.circular(100),
-                              // child: const Image(image: AssetImage("https://firebasestorage.googleapis.com/v0/b/share-food-d3e9b.appspot.com/o/sellers%2F1680876057524?alt=media&token=18254daa-5218-484a-a257-caab07524415"))
+                              child: Image.network(user.avatarUrl, fit: BoxFit.cover)
                             )
                           ),
                           Positioned(
@@ -131,8 +133,21 @@ class UpdateProfileScreen extends StatelessWidget {
                       const SizedBox(height: 30),
                       CustomButton(
                         onPressed: () async {
-                          print("clic");
-                          final userData = UserModel(id: user.id, firstname: firstnameController.text.trim(), lastname: nameController.text.trim(), address: addressController.text.trim(), email: emailController.text.trim(), city: cityController.text.trim(), zipcode: zipcodeController.text.trim(), status: "approuved", lat: user.lat, lng: user.lng, password: passwordController.text.trim(), avatarUrl: user.avatarUrl);
+                          final userData = UserModel(
+                            id: user.id, 
+                            firstname: firstnameController.text.trim(), 
+                            lastname: nameController.text.trim(), 
+                            address: addressController.text.trim(), 
+                            email: emailController.text.trim(), 
+                            city: cityController.text.trim(), 
+                            zipcode: zipcodeController.text.trim(), 
+                            status: "approuved", 
+                            lat: user.lat, 
+                            lng: user.lng, 
+                            password: passwordController.text.trim(), 
+                            avatarUrl: user.avatarUrl,
+                            createdAt: user.createdAt
+                          );
                           await controller.updateRecord(userData);
                         },
                         color: Theme.of(context).primaryColor,
@@ -142,14 +157,14 @@ class UpdateProfileScreen extends StatelessWidget {
                       Row(
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: [
-                          const Text.rich(
+                          Text.rich(
                             TextSpan(
                               text: "A rejoint le ",
-                              style: TextStyle(fontSize: 12),
+                              style: const TextStyle(fontSize: 12),
                               children: [
                                 TextSpan(
-                                  text: "12 décembre 2022",
-                                  style: TextStyle(fontWeight: FontWeight.bold, fontSize: 12)
+                                  text: DateFormat('dd MMMM yyyy', 'fr').format(user.createdAt.toDate()),
+                                  style: const TextStyle(fontWeight: FontWeight.bold, fontSize: 12)
                                 )
                               ]
                             )

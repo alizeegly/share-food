@@ -14,6 +14,7 @@ class UserModel {
   final double lng;
   final String password;
   String avatarUrl;
+  final Timestamp createdAt;
 
   UserModel({
     this.id, 
@@ -27,7 +28,8 @@ class UserModel {
     required this.lat, 
     required this.lng, 
     required this.password,
-    required this.avatarUrl
+    required this.avatarUrl,
+    required this.createdAt
   });
 
   toJson() {
@@ -44,6 +46,7 @@ class UserModel {
       "status": status,
       "lat": lat,
       "lng": lng,
+      "createdAt": createdAt
     };
   }
 
@@ -61,7 +64,8 @@ class UserModel {
       lat: data["lat"],
       lng: data["lng"],
       password: data["password"],
-      avatarUrl: data["avatarUrl"]
+      avatarUrl: data["avatarUrl"],
+      createdAt: data["createdAt"]
     );
   }
 }

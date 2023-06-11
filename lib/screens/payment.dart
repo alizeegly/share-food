@@ -154,8 +154,8 @@ class _PaymentScreenState extends State<PaymentScreen> {
                                   crossAxisAlignment: CrossAxisAlignment.stretch,
                                   children: [
                                     Text("Localisation :", style: Theme.of(context).textTheme.titleSmall),
-                                    Text(snapshot.data![0].seller.address.street, style: Theme.of(context).textTheme.bodySmall),
-                                    Text("${snapshot.data![0].seller.address.zipcode} - ${snapshot.data![0].seller.address.city}", style: Theme.of(context).textTheme.bodySmall),
+                                    Text(snapshot.data![0].seller.address, style: Theme.of(context).textTheme.bodySmall),
+                                    Text("${snapshot.data![0].seller.zipcode} - ${snapshot.data![0].seller.city}", style: Theme.of(context).textTheme.bodySmall),
                                   ],
                                 ),
                               ),
