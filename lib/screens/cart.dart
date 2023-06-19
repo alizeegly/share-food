@@ -1,7 +1,8 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
-import 'package:sharefood/data/products.dart';
 import 'package:sharefood/models/cart.dart';
 import 'package:sharefood/models/product.dart';
+import 'package:sharefood/models/user_model.dart';
 import 'package:sharefood/screens/payment.dart';
 import 'package:sharefood/widgets/products/cart_product_item_layout_grid.dart';
 
@@ -15,21 +16,19 @@ class CartScreen extends StatefulWidget {
 }
 
 Future<List<Product>> fetchCart(List<String> productIds) async {
-  // var headers = {'X-MAL-CLIENT-ID': dotenv.env['X-MAL-CLIENT-ID']!};
-  // var request = http.Request('GET',
-  //     Uri.parse('https://api.myanimelist.net/v2/anime/season/2023/winter'));
+  QuerySnapshot productsSnapshot = 
+      await FirebaseFirestore.instance.collection('products').get();
 
-  // request.headers.addAll(headers);
-
-  // http.StreamedResponse streamedResponse = await request.send();
-  // var response = await http.Response.fromStream(streamedResponse);
-
-  // if (response.statusCode == 200) {
-  //   var jsonResponse = jsonDecode(response.body)['data'];
-  //   return jsonResponse;
-  // } else {
-  // throw Exception(response.reasonPhrase);
-  // }
+  var products = productsSnapshot.docs.map(
+    (doc) => Product(
+      doc.reference.id,
+      doc['name'],
+      doc['pictureUrl'],
+      doc['type'],
+      doc['price'],
+      UserModel(id: "1", lastname: "Bukal", firstname: "Johana", address: "1 place Saint Blaise", zipcode: "78955", city: "Carrières sous Poissy", email: "test@mail.com", lat: 1, lng: 2, password: '', status: '', avatarUrl: '', createdAt: Timestamp.fromDate(DateTime.now()))
+      )
+  ).toList();
 
   // En attendant d'avoir l'API
   return products.where((product) => productIds.contains(product.id)).toList();

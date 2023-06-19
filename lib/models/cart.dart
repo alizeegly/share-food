@@ -30,10 +30,19 @@ class CartStorage {
 
       // Read the file
       final contents = await file.readAsString();
+      final decodedContents = json.decode(contents);
 
-      return json.decode(contents).cast<int>();
+      // Ensure that the decoded contents is a list of strings
+      if (decodedContents is List<dynamic>) {
+        final list = decodedContents.cast<String>();
+        return list;
+      } else {
+        // Handle the case when the decoded contents is not a list of strings
+        throw Exception('Invalid data format');
+      }
     } catch (e) {
-      // If encountering an error, return 0
+      print((e.toString()));
+      writeCart([]);
       return [];
     }
   }
@@ -42,6 +51,6 @@ class CartStorage {
     final file = await _localFile;
 
     // Write the file
-    return file.writeAsString('$cart');
+    return file.writeAsString(json.encode(cart));
   }
 }
