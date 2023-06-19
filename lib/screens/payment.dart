@@ -17,7 +17,7 @@ class PaymentScreen extends StatefulWidget {
   State<PaymentScreen> createState() => _PaymentScreenState();
 }
 
-Future<List<Product>> fetchCart(List<int> productIds) async {
+Future<List<Product>> fetchCart(List<String> productIds) async {
   // var headers = {'X-MAL-CLIENT-ID': dotenv.env['X-MAL-CLIENT-ID']!};
   // var request = http.Request('GET',
   //     Uri.parse('https://api.myanimelist.net/v2/anime/season/2023/winter'));
@@ -39,7 +39,7 @@ Future<List<Product>> fetchCart(List<int> productIds) async {
 }
 
 class _PaymentScreenState extends State<PaymentScreen> {
-  List<int> _productIds = [];
+  List<String> _productIds = [];
   Future<List<Product>>? futureCartScreen;
 
   @override

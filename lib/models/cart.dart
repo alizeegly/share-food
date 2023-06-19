@@ -24,7 +24,7 @@ class CartStorage {
     return File('$path/Cart.txt');
   }
 
-  Future<List<int>> readCart() async {
+  Future<List<String>> readCart() async {
     try {
       final file = await _localFile;
 
@@ -38,7 +38,7 @@ class CartStorage {
     }
   }
 
-  Future<File> writeCart(List<int> cart) async {
+  Future<File> writeCart(List<String> cart) async {
     final file = await _localFile;
 
     // Write the file

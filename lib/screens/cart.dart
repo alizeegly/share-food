@@ -14,7 +14,7 @@ class CartScreen extends StatefulWidget {
   State<CartScreen> createState() => _CartScreenState();
 }
 
-Future<List<Product>> fetchCart(List<int> productIds) async {
+Future<List<Product>> fetchCart(List<String> productIds) async {
   // var headers = {'X-MAL-CLIENT-ID': dotenv.env['X-MAL-CLIENT-ID']!};
   // var request = http.Request('GET',
   //     Uri.parse('https://api.myanimelist.net/v2/anime/season/2023/winter'));
@@ -36,7 +36,7 @@ Future<List<Product>> fetchCart(List<int> productIds) async {
 }
 
 class _CartScreenState extends State<CartScreen> {
-  List<int> _productIds = [];
+  List<String> _productIds = [];
   Future<List<Product>>? futureCartScreen;
 
   void refresh() {

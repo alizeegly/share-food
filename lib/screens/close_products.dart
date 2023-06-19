@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:sharefood/data/products.dart';
+import 'package:sharefood/models/product.dart';
+import 'package:sharefood/models/user_model.dart';
 import 'package:sharefood/widgets/products/product_item_layout_grid.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 
 class CloseProductsList extends StatefulWidget {
   const CloseProductsList({super.key});
@@ -9,29 +11,24 @@ class CloseProductsList extends StatefulWidget {
   State<CloseProductsList> createState() => _CloseProductsListState();
 }
 
-Future<List> fetchCloseProducts() async {
-  // var headers = {'X-MAL-CLIENT-ID': dotenv.env['X-MAL-CLIENT-ID']!};
-  // var request = http.Request('GET',
-  //     Uri.parse('https://api.myanimelist.net/v2/anime/season/2023/winter'));
+Future<List<Product>> fetchCloseProducts() async {
+  QuerySnapshot productsSnapshot = 
+      await FirebaseFirestore.instance.collection('products').get();
 
-  // request.headers.addAll(headers);
-
-  // http.StreamedResponse streamedResponse = await request.send();
-  // var response = await http.Response.fromStream(streamedResponse);
-
-  // if (response.statusCode == 200) {
-  //   var jsonResponse = jsonDecode(response.body)['data'];
-  //   return jsonResponse;
-  // } else {
-  // throw Exception(response.reasonPhrase);
-  // }
-
-  // En attendant d'avoir l'API
-  return products;
+  return productsSnapshot.docs.map(
+    (doc) => Product(
+      doc.reference.id,
+      doc['name'],
+      doc['pictureUrl'],
+      doc['type'],
+      doc['price'],
+      UserModel(id: "1", lastname: "Bukal", firstname: "Johana", address: "1 place Saint Blaise", zipcode: "78955", city: "Carrières sous Poissy", email: "test@mail.com", lat: 1, lng: 2, password: '', status: '', avatarUrl: '', createdAt: Timestamp.fromDate(DateTime.now()))
+      )
+  ).toList();
 }
 
 class _CloseProductsListState extends State<CloseProductsList> {
-  late Future<List> futureCloseProductsList;
+  late Future<List<Product>> futureCloseProductsList;
 
   @override
   void initState() {
@@ -48,11 +45,11 @@ class _CloseProductsListState extends State<CloseProductsList> {
           AppBar(title: const Text("Produits proches"), centerTitle: false, backgroundColor: colors.secondary, foregroundColor: colors.onSecondary),
       body: CustomScrollView(
         slivers: [
-          SliverToBoxAdapter(child: FutureBuilder<List>(
+          SliverToBoxAdapter(child: FutureBuilder<List<Product>>(
             future: futureCloseProductsList,
             builder: (context, snapshot) {
               if (snapshot.hasData) {
-                return ProductItemLayoutGrid(products: products, notifyParent:() {},);
+                return ProductItemLayoutGrid(products: snapshot.data!, notifyParent:() {},);
               } else if (snapshot.hasError) {
                 return Text('${snapshot.error}');
               }
