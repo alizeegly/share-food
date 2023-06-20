@@ -20,9 +20,9 @@ Future<List<Product>> fetchCloseProducts() async {
   List<Product> cart = await CartStorage().readCart();
   if (cart.isNotEmpty) {
     String sellerId = cart[0].seller.id!;
-    productsSnapshot =  await FirebaseFirestore.instance.collection('products').where("seller", isEqualTo: FirebaseFirestore.instance.doc("sellers/$sellerId")).get();
+    productsSnapshot =  await FirebaseFirestore.instance.collection('products').where("seller", isEqualTo: FirebaseFirestore.instance.doc("sellers/$sellerId")).where("order", isEqualTo: false).get();
   } else {
-    productsSnapshot = await FirebaseFirestore.instance.collection('products').get();
+    productsSnapshot = await FirebaseFirestore.instance.collection('products').where("order", isEqualTo: false).get();
   }
 
   for (final productSnapshot in productsSnapshot.docs) {
