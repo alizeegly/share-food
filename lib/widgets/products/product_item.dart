@@ -21,10 +21,10 @@ class ProductItem extends StatefulWidget {
 
 class _ProductItemState extends State<ProductItem> {
   bool _isInCart = false;
-  List<int> _cart = [];
+  List<String> _cart = [];
 
   void _toggleInCart() {
-    widget.storage.readCart().then((cart) {
+    widget.storage.readCartToIds().then((cart) {
       setState(() {
         _cart = cart;
         _isInCart = _cart.contains(widget.product.id);
@@ -47,7 +47,7 @@ class _ProductItemState extends State<ProductItem> {
   void initState() {
     super.initState();
 
-    widget.storage.readCart().then((cart) {
+    widget.storage.readCartToIds().then((cart) {
       setState(() {
         _cart = cart;
         _isInCart = _cart.contains(widget.product.id);

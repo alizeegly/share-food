@@ -42,7 +42,7 @@ class UserRepository extends GetxController {
       () => Get.snackbar("Success", "Votre compte a bien été modifié", 
         snackPosition: SnackPosition.TOP,
         backgroundColor: Colors.green.withOpacity(0.1),
-        colorText: Colors.green
+        colorText: Colors.white
       )
     )
     .catchError((error, stackTrace) {

@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:sharefood/data/products.dart';
 import 'package:sharefood/models/cart.dart';
 import 'package:sharefood/models/product.dart';
 import 'package:sharefood/screens/payment.dart';
@@ -14,48 +13,20 @@ class CartScreen extends StatefulWidget {
   State<CartScreen> createState() => _CartScreenState();
 }
 
-Future<List<Product>> fetchCart(List<int> productIds) async {
-  // var headers = {'X-MAL-CLIENT-ID': dotenv.env['X-MAL-CLIENT-ID']!};
-  // var request = http.Request('GET',
-  //     Uri.parse('https://api.myanimelist.net/v2/anime/season/2023/winter'));
-
-  // request.headers.addAll(headers);
-
-  // http.StreamedResponse streamedResponse = await request.send();
-  // var response = await http.Response.fromStream(streamedResponse);
-
-  // if (response.statusCode == 200) {
-  //   var jsonResponse = jsonDecode(response.body)['data'];
-  //   return jsonResponse;
-  // } else {
-  // throw Exception(response.reasonPhrase);
-  // }
-
-  // En attendant d'avoir l'API
-  return products.where((product) => productIds.contains(product.id)).toList();
-}
-
 class _CartScreenState extends State<CartScreen> {
-  List<int> _productIds = [];
   Future<List<Product>>? futureCartScreen;
 
   void refresh() {
-    widget.storage.readCart().then((value) {
-      setState(() {
-        _productIds = value;
-        futureCartScreen = fetchCart(_productIds);
-      });
+    setState(() {
+      futureCartScreen = widget.storage.readCart();
     });
   }
 
   @override
   void initState() {
     super.initState();
-    widget.storage.readCart().then((value) {
-      setState(() {
-        _productIds = value;
-        futureCartScreen = fetchCart(_productIds);
-      });
+    setState(() {
+      futureCartScreen = widget.storage.readCart();
     });
   }
 

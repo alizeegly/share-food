@@ -1,5 +1,4 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:sharefood/models/adress.dart';
 
 class UserModel {
   final String? id;

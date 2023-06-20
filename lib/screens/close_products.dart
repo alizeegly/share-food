@@ -1,6 +1,9 @@
 import 'package:flutter/material.dart';
-import 'package:sharefood/data/products.dart';
+import 'package:sharefood/models/cart.dart';
+import 'package:sharefood/models/product.dart';
+import 'package:sharefood/models/user_model.dart';
 import 'package:sharefood/widgets/products/product_item_layout_grid.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 
 class CloseProductsList extends StatefulWidget {
   const CloseProductsList({super.key});
@@ -9,34 +12,55 @@ class CloseProductsList extends StatefulWidget {
   State<CloseProductsList> createState() => _CloseProductsListState();
 }
 
-Future<List> fetchCloseProducts() async {
-  // var headers = {'X-MAL-CLIENT-ID': dotenv.env['X-MAL-CLIENT-ID']!};
-  // var request = http.Request('GET',
-  //     Uri.parse('https://api.myanimelist.net/v2/anime/season/2023/winter'));
+Future<List<Product>> fetchCloseProducts() async {
+  List<Product> products = [];
+  QuerySnapshot productsSnapshot;
 
-  // request.headers.addAll(headers);
+  // If there's a product in cart, we have to filter the products to get only the products of the same seller
+  List<Product> cart = await CartStorage().readCart();
+  if (cart.isNotEmpty) {
+    String sellerId = cart[0].seller.id!;
+    productsSnapshot =  await FirebaseFirestore.instance.collection('products').where("seller", isEqualTo: FirebaseFirestore.instance.doc("sellers/$sellerId")).get();
+  } else {
+    productsSnapshot = await FirebaseFirestore.instance.collection('products').get();
+  }
 
-  // http.StreamedResponse streamedResponse = await request.send();
-  // var response = await http.Response.fromStream(streamedResponse);
+  for (final productSnapshot in productsSnapshot.docs) {
+    DocumentSnapshot<Map<String, dynamic>> sellerSnapshot = 
+      await productSnapshot["seller"].get();
 
-  // if (response.statusCode == 200) {
-  //   var jsonResponse = jsonDecode(response.body)['data'];
-  //   return jsonResponse;
-  // } else {
-  // throw Exception(response.reasonPhrase);
-  // }
+    Product product = Product(
+      productSnapshot.reference.id,
+      productSnapshot['name'],
+      productSnapshot['pictureUrl'],
+      productSnapshot['type'],
+      productSnapshot['price'],
+      UserModel(id: sellerSnapshot.reference.id, firstname: sellerSnapshot["firstname"], lastname: sellerSnapshot["lastname"], address: sellerSnapshot["address"], email: sellerSnapshot["email"], city: sellerSnapshot["city"], zipcode: sellerSnapshot["zipcode"], status: sellerSnapshot["status"], lat: sellerSnapshot["lat"], lng: sellerSnapshot["lng"], password: sellerSnapshot["password"], avatarUrl: sellerSnapshot["avatarUrl"], createdAt: sellerSnapshot["createdAt"])
+    );
 
-  // En attendant d'avoir l'API
+    products.add(product);
+  }
+
   return products;
 }
 
 class _CloseProductsListState extends State<CloseProductsList> {
-  late Future<List> futureCloseProductsList;
+  late Future<List<Product>> futureCloseProductsList;
+  Key _refreshKey = UniqueKey();
+  
+  void refresh() {
+    setState(() {
+      futureCloseProductsList = fetchCloseProducts();
+      _refreshKey = UniqueKey();
+    });
+  }
 
   @override
   void initState() {
     super.initState();
-    futureCloseProductsList = fetchCloseProducts();
+    setState(() {
+      futureCloseProductsList = fetchCloseProducts();
+    });
   }
 
   @override
@@ -44,15 +68,21 @@ class _CloseProductsListState extends State<CloseProductsList> {
     final ColorScheme colors = Theme.of(context).colorScheme;
 
     return Scaffold(
+      key: _refreshKey,
       appBar:
           AppBar(title: const Text("Produits proches"), centerTitle: false, backgroundColor: colors.secondary, foregroundColor: colors.onSecondary),
       body: CustomScrollView(
         slivers: [
-          SliverToBoxAdapter(child: FutureBuilder<List>(
+          SliverToBoxAdapter(child: FutureBuilder<List<Product>>(
             future: futureCloseProductsList,
             builder: (context, snapshot) {
               if (snapshot.hasData) {
-                return ProductItemLayoutGrid(products: products, notifyParent:() {},);
+                if (snapshot.data!.isNotEmpty) {
+                  return ProductItemLayoutGrid(products: snapshot.data!, notifyParent: refresh);
+                }
+                else {
+                  return Container(margin: const EdgeInsets.all(20), child: const Text("Oups ! Aucun produit n'est en vente à proximité... Revenez plus tard !"));
+                }
               } else if (snapshot.hasError) {
                 return Text('${snapshot.error}');
               }
