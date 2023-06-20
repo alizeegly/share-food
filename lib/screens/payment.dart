@@ -2,10 +2,12 @@ import 'package:flutter/material.dart';
 import 'package:sharefood/data/products.dart';
 import 'package:sharefood/models/cart.dart';
 import 'package:sharefood/models/product.dart';
+import 'package:sharefood/models/user_model.dart';
 import 'package:sharefood/screens/payment_confirm.dart';
 import 'package:sharefood/widgets/custom_date_time_field.dart';
 import 'package:date_format/date_format.dart';
 import 'package:intl/intl.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 
 
 class PaymentScreen extends StatefulWidget {
@@ -18,24 +20,28 @@ class PaymentScreen extends StatefulWidget {
 }
 
 Future<List<Product>> fetchCart(List<String> productIds) async {
-  // var headers = {'X-MAL-CLIENT-ID': dotenv.env['X-MAL-CLIENT-ID']!};
-  // var request = http.Request('GET',
-  //     Uri.parse('https://api.myanimelist.net/v2/anime/season/2023/winter'));
+  List<Product> products = [];
 
-  // request.headers.addAll(headers);
+  for(final productId in productIds) {
+    DocumentSnapshot<Map<String, dynamic>> productSnapshot = 
+      await FirebaseFirestore.instance.collection('products').doc(productId).get();
 
-  // http.StreamedResponse streamedResponse = await request.send();
-  // var response = await http.Response.fromStream(streamedResponse);
+    DocumentSnapshot<Map<String, dynamic>> sellerSnapshot = 
+      await productSnapshot["seller"].get();
 
-  // if (response.statusCode == 200) {
-  //   var jsonResponse = jsonDecode(response.body)['data'];
-  //   return jsonResponse;
-  // } else {
-  // throw Exception(response.reasonPhrase);
-  // }
+    Product product = Product(
+      productSnapshot.reference.id,
+      productSnapshot['name'],
+      productSnapshot['pictureUrl'],
+      productSnapshot['type'],
+      productSnapshot['price'],
+      UserModel(firstname: sellerSnapshot["firstname"], lastname: sellerSnapshot["lastname"], address: sellerSnapshot["address"], email: sellerSnapshot["email"], city: sellerSnapshot["city"], zipcode: sellerSnapshot["zipcode"], status: sellerSnapshot["status"], lat: sellerSnapshot["lat"], lng: sellerSnapshot["lng"], password: sellerSnapshot["password"], avatarUrl: sellerSnapshot["avatarUrl"], createdAt: sellerSnapshot["createdAt"])
+    );
 
-  // En attendant d'avoir l'API
-  return products.where((product) => productIds.contains(product.id)).toList();
+    products.add(product);
+  }
+
+  return products;
 }
 
 class _PaymentScreenState extends State<PaymentScreen> {
