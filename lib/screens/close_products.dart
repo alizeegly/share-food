@@ -12,19 +12,28 @@ class CloseProductsList extends StatefulWidget {
 }
 
 Future<List<Product>> fetchCloseProducts() async {
+  List<Product> products = [];
+  
   QuerySnapshot productsSnapshot = 
       await FirebaseFirestore.instance.collection('products').get();
 
-  return productsSnapshot.docs.map(
-    (doc) => Product(
-      doc.reference.id,
-      doc['name'],
-      doc['pictureUrl'],
-      doc['type'],
-      doc['price'],
-      UserModel(id: "1", lastname: "Bukal", firstname: "Johana", address: "1 place Saint Blaise", zipcode: "78955", city: "Carrières sous Poissy", email: "test@mail.com", lat: 1, lng: 2, password: '', status: '', avatarUrl: '', createdAt: Timestamp.fromDate(DateTime.now()))
-      )
-  ).toList();
+  for (final productSnapshot in productsSnapshot.docs) {
+    DocumentSnapshot<Map<String, dynamic>> sellerSnapshot = 
+      await productSnapshot["seller"].get();
+
+    Product product = Product(
+      productSnapshot.reference.id,
+      productSnapshot['name'],
+      productSnapshot['pictureUrl'],
+      productSnapshot['type'],
+      productSnapshot['price'],
+      UserModel(firstname: sellerSnapshot["firstname"], lastname: sellerSnapshot["lastname"], address: sellerSnapshot["address"], email: sellerSnapshot["email"], city: sellerSnapshot["city"], zipcode: sellerSnapshot["zipcode"], status: sellerSnapshot["status"], lat: sellerSnapshot["lat"], lng: sellerSnapshot["lng"], password: sellerSnapshot["password"], avatarUrl: sellerSnapshot["avatarUrl"], createdAt: sellerSnapshot["createdAt"])
+    );
+
+    products.add(product);
+  }
+
+  return products;
 }
 
 class _CloseProductsListState extends State<CloseProductsList> {
