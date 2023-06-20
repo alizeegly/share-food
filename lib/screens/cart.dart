@@ -1,8 +1,6 @@
-import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:sharefood/models/cart.dart';
 import 'package:sharefood/models/product.dart';
-import 'package:sharefood/models/user_model.dart';
 import 'package:sharefood/screens/payment.dart';
 import 'package:sharefood/widgets/products/cart_product_item_layout_grid.dart';
 
@@ -15,52 +13,20 @@ class CartScreen extends StatefulWidget {
   State<CartScreen> createState() => _CartScreenState();
 }
 
-Future<List<Product>> fetchCart(List<String> productIds) async {
-  List<Product> products = [];
-
-  for(final productId in productIds) {
-    DocumentSnapshot<Map<String, dynamic>> productSnapshot = 
-      await FirebaseFirestore.instance.collection('products').doc(productId).get();
-
-    DocumentSnapshot<Map<String, dynamic>> sellerSnapshot = 
-      await productSnapshot["seller"].get();
-
-    Product product = Product(
-      productSnapshot.reference.id,
-      productSnapshot['name'],
-      productSnapshot['pictureUrl'],
-      productSnapshot['type'],
-      productSnapshot['price'],
-      UserModel(firstname: sellerSnapshot["firstname"], lastname: sellerSnapshot["lastname"], address: sellerSnapshot["address"], email: sellerSnapshot["email"], city: sellerSnapshot["city"], zipcode: sellerSnapshot["zipcode"], status: sellerSnapshot["status"], lat: sellerSnapshot["lat"], lng: sellerSnapshot["lng"], password: sellerSnapshot["password"], avatarUrl: sellerSnapshot["avatarUrl"], createdAt: sellerSnapshot["createdAt"])
-    );
-
-    products.add(product);
-  }
-
-  return products;
-}
-
 class _CartScreenState extends State<CartScreen> {
-  List<String> _productIds = [];
   Future<List<Product>>? futureCartScreen;
 
   void refresh() {
-    widget.storage.readCart().then((value) {
-      setState(() {
-        _productIds = value;
-        futureCartScreen = fetchCart(_productIds);
-      });
+    setState(() {
+      futureCartScreen = widget.storage.readCart();
     });
   }
 
   @override
   void initState() {
     super.initState();
-    widget.storage.readCart().then((value) {
-      setState(() {
-        _productIds = value;
-        futureCartScreen = fetchCart(_productIds);
-      });
+    setState(() {
+      futureCartScreen = widget.storage.readCart();
     });
   }
 

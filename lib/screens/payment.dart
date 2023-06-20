@@ -1,12 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:sharefood/models/cart.dart';
 import 'package:sharefood/models/product.dart';
-import 'package:sharefood/models/user_model.dart';
 import 'package:sharefood/screens/payment_confirm.dart';
 import 'package:sharefood/widgets/custom_date_time_field.dart';
 import 'package:date_format/date_format.dart';
 import 'package:intl/intl.dart';
-import 'package:cloud_firestore/cloud_firestore.dart';
 
 
 class PaymentScreen extends StatefulWidget {
@@ -18,33 +16,7 @@ class PaymentScreen extends StatefulWidget {
   State<PaymentScreen> createState() => _PaymentScreenState();
 }
 
-Future<List<Product>> fetchCart(List<String> productIds) async {
-  List<Product> products = [];
-
-  for(final productId in productIds) {
-    DocumentSnapshot<Map<String, dynamic>> productSnapshot = 
-      await FirebaseFirestore.instance.collection('products').doc(productId).get();
-
-    DocumentSnapshot<Map<String, dynamic>> sellerSnapshot = 
-      await productSnapshot["seller"].get();
-
-    Product product = Product(
-      productSnapshot.reference.id,
-      productSnapshot['name'],
-      productSnapshot['pictureUrl'],
-      productSnapshot['type'],
-      productSnapshot['price'],
-      UserModel(firstname: sellerSnapshot["firstname"], lastname: sellerSnapshot["lastname"], address: sellerSnapshot["address"], email: sellerSnapshot["email"], city: sellerSnapshot["city"], zipcode: sellerSnapshot["zipcode"], status: sellerSnapshot["status"], lat: sellerSnapshot["lat"], lng: sellerSnapshot["lng"], password: sellerSnapshot["password"], avatarUrl: sellerSnapshot["avatarUrl"], createdAt: sellerSnapshot["createdAt"])
-    );
-
-    products.add(product);
-  }
-
-  return products;
-}
-
 class _PaymentScreenState extends State<PaymentScreen> {
-  List<String> _productIds = [];
   Future<List<Product>>? futureCartScreen;
 
   @override
@@ -57,11 +29,8 @@ class _PaymentScreenState extends State<PaymentScreen> {
 
     super.initState();
 
-    widget.storage.readCart().then((value) {
-      setState(() {
-        _productIds = value;
-        futureCartScreen = fetchCart(_productIds);
-      });
+    setState(() {
+      futureCartScreen = widget.storage.readCart();
     });
   }
 
