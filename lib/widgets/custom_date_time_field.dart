@@ -37,6 +37,7 @@ class CustomDateTimeField extends StatelessWidget {
         keyboardType: TextInputType.text,
 
         cursorColor: Theme.of(context).colorScheme.primary,
+        style: const TextStyle(color: Colors.black),
         decoration: InputDecoration(
           border: InputBorder.none,
           contentPadding: const EdgeInsets.symmetric(vertical: 5.0, horizontal: 5.0),

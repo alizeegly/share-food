@@ -1,4 +1,3 @@
-import 'package:sharefood/models/adress.dart';
 import 'package:sharefood/models/product.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:sharefood/models/user_model.dart';

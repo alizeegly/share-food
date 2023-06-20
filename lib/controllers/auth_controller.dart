@@ -6,8 +6,6 @@ import 'package:image_picker/image_picker.dart';
 import 'package:sharefood/models/user_model.dart';
 import 'package:sharefood/repository/authentication_repository/auth_repository.dart';
 import 'package:sharefood/repository/user_repository/user_repository.dart';
-import 'package:sharefood/widgets/error_dialog.dart';
-import 'package:sharefood/widgets/loading_dialog.dart';
 import 'package:firebase_storage/firebase_storage.dart' as fStorage;
 
 class AuthController extends GetxController {

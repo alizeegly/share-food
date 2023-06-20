@@ -13,6 +13,7 @@ class UpdateProfileScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final controller = Get.put(ProfileController());
+    final ColorScheme colors = Theme.of(context).colorScheme;
 
     return Scaffold(
       appBar: AppBar(
@@ -22,7 +23,7 @@ class UpdateProfileScreen extends StatelessWidget {
           }, 
           icon: const Icon(Icons.arrow_back_ios),
         ),
-        title: Text("Modifier mon profil", style: Theme.of(context).textTheme.headlineMedium),
+        title: const Text("Modifier mon profil"), centerTitle: false, backgroundColor: colors.secondary, foregroundColor: colors.onSecondary,
       ),
       body: SingleChildScrollView(
         child: Container(

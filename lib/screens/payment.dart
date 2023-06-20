@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:sharefood/data/products.dart';
 import 'package:sharefood/models/cart.dart';
 import 'package:sharefood/models/product.dart';
 import 'package:sharefood/models/user_model.dart';

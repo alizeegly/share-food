@@ -1,6 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:sharefood/authentication/auth_screen.dart';
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:sharefood/models/user_model.dart';
 import 'package:sharefood/repository/authentication_repository/auth_repository.dart';
 import 'package:sharefood/screens/profile/update_profile_screen.dart';
@@ -20,11 +18,10 @@ class _ProfileScreenState extends State<ProfileScreen> {
   @override
   Widget build(BuildContext context) {
     final controller = Get.put(ProfileController());
+    final ColorScheme colors = Theme.of(context).colorScheme;
 
     return Scaffold(
-      appBar: AppBar(
-        title: const Text('Paramètres'),
-      ),
+      appBar: AppBar(title: const Text("Paramètres"), centerTitle: false, backgroundColor: colors.secondary, foregroundColor: colors.onSecondary),
       body: SingleChildScrollView(
         child: Container(
           padding: const EdgeInsets.all(30.0),

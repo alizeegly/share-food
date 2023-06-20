@@ -1,12 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:sharefood/Screens/close_products.dart';
 import 'package:sharefood/SplashScreen/splash_screen.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:sharefood/repository/authentication_repository/auth_repository.dart';
 import 'firebase_options.dart';
-import 'package:sharefood/authentication/auth_screen.dart';
-import 'package:sharefood/mainScreens/home_screen.dart';
 import 'package:sharefood/global/global.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 
