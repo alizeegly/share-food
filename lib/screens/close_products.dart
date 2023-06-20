@@ -46,10 +46,12 @@ Future<List<Product>> fetchCloseProducts() async {
 
 class _CloseProductsListState extends State<CloseProductsList> {
   late Future<List<Product>> futureCloseProductsList;
-
+  Key _refreshKey = UniqueKey();
+  
   void refresh() {
     setState(() {
       futureCloseProductsList = fetchCloseProducts();
+      _refreshKey = UniqueKey();
     });
   }
 
@@ -66,6 +68,7 @@ class _CloseProductsListState extends State<CloseProductsList> {
     final ColorScheme colors = Theme.of(context).colorScheme;
 
     return Scaffold(
+      key: _refreshKey,
       appBar:
           AppBar(title: const Text("Produits proches"), centerTitle: false, backgroundColor: colors.secondary, foregroundColor: colors.onSecondary),
       body: CustomScrollView(
