@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:sharefood/models/cart.dart';
 import 'package:sharefood/models/product.dart';
 import 'package:sharefood/models/user_model.dart';
 import 'package:sharefood/widgets/products/product_item_layout_grid.dart';
@@ -13,9 +14,16 @@ class CloseProductsList extends StatefulWidget {
 
 Future<List<Product>> fetchCloseProducts() async {
   List<Product> products = [];
-  
-  QuerySnapshot productsSnapshot = 
-      await FirebaseFirestore.instance.collection('products').get();
+  QuerySnapshot productsSnapshot;
+
+  // If there's a product in cart, we have to filter the products to get only the products of the same seller
+  List<Product> cart = await CartStorage().readCart();
+  if (cart.isNotEmpty) {
+    String sellerId = cart[0].seller.id!;
+    productsSnapshot =  await FirebaseFirestore.instance.collection('products').where("seller", isEqualTo: FirebaseFirestore.instance.doc("sellers/$sellerId")).get();
+  } else {
+    productsSnapshot = await FirebaseFirestore.instance.collection('products').get();
+  }
 
   for (final productSnapshot in productsSnapshot.docs) {
     DocumentSnapshot<Map<String, dynamic>> sellerSnapshot = 
@@ -27,7 +35,7 @@ Future<List<Product>> fetchCloseProducts() async {
       productSnapshot['pictureUrl'],
       productSnapshot['type'],
       productSnapshot['price'],
-      UserModel(firstname: sellerSnapshot["firstname"], lastname: sellerSnapshot["lastname"], address: sellerSnapshot["address"], email: sellerSnapshot["email"], city: sellerSnapshot["city"], zipcode: sellerSnapshot["zipcode"], status: sellerSnapshot["status"], lat: sellerSnapshot["lat"], lng: sellerSnapshot["lng"], password: sellerSnapshot["password"], avatarUrl: sellerSnapshot["avatarUrl"], createdAt: sellerSnapshot["createdAt"])
+      UserModel(id: sellerSnapshot.reference.id, firstname: sellerSnapshot["firstname"], lastname: sellerSnapshot["lastname"], address: sellerSnapshot["address"], email: sellerSnapshot["email"], city: sellerSnapshot["city"], zipcode: sellerSnapshot["zipcode"], status: sellerSnapshot["status"], lat: sellerSnapshot["lat"], lng: sellerSnapshot["lng"], password: sellerSnapshot["password"], avatarUrl: sellerSnapshot["avatarUrl"], createdAt: sellerSnapshot["createdAt"])
     );
 
     products.add(product);
@@ -39,10 +47,18 @@ Future<List<Product>> fetchCloseProducts() async {
 class _CloseProductsListState extends State<CloseProductsList> {
   late Future<List<Product>> futureCloseProductsList;
 
+  void refresh() {
+    setState(() {
+      futureCloseProductsList = fetchCloseProducts();
+    });
+  }
+
   @override
   void initState() {
     super.initState();
-    futureCloseProductsList = fetchCloseProducts();
+    setState(() {
+      futureCloseProductsList = fetchCloseProducts();
+    });
   }
 
   @override
@@ -58,7 +74,12 @@ class _CloseProductsListState extends State<CloseProductsList> {
             future: futureCloseProductsList,
             builder: (context, snapshot) {
               if (snapshot.hasData) {
-                return ProductItemLayoutGrid(products: snapshot.data!, notifyParent:() {},);
+                if (snapshot.data!.isNotEmpty) {
+                  return ProductItemLayoutGrid(products: snapshot.data!, notifyParent: refresh);
+                }
+                else {
+                  return Container(margin: const EdgeInsets.all(20), child: const Text("Oups ! Aucun produit n'est en vente à proximité... Revenez plus tard !"));
+                }
               } else if (snapshot.hasError) {
                 return Text('${snapshot.error}');
               }
