@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:sharefood/models/user_model.dart';
 import 'package:sharefood/repository/authentication_repository/auth_repository.dart';
+import 'package:sharefood/screens/profile/orders/purchases.dart';
 import 'package:sharefood/screens/profile/update_profile_screen.dart';
 import 'package:sharefood/widgets/custom_button.dart';
 import 'package:get/get.dart';
@@ -72,7 +73,9 @@ class _ProfileScreenState extends State<ProfileScreen> {
                       ProfileMenuWidget(
                         title: "Consulter mes achats",
                         icon: Icons.wallet_outlined,
-                        onPressed: () {},
+                        onPressed: () {
+                          Navigator.push(context, MaterialPageRoute(builder: (context) => const PurchasesScreen()));
+                        },
                       ),
                       ProfileMenuWidget(
                         title: "Consulter mes ventes",

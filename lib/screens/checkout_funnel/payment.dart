@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:sharefood/models/cart.dart';
 import 'package:sharefood/models/product.dart';
-import 'package:sharefood/screens/payment_confirm.dart';
+import 'package:sharefood/screens/checkout_funnel/payment_confirm.dart';
 import 'package:sharefood/widgets/custom_date_time_field.dart';
 import 'package:date_format/date_format.dart';
 import 'package:intl/intl.dart';
@@ -128,8 +128,8 @@ class _PaymentScreenState extends State<PaymentScreen> {
                                   crossAxisAlignment: CrossAxisAlignment.stretch,
                                   children: [
                                     Text("Localisation :", style: Theme.of(context).textTheme.titleSmall),
-                                    Text(snapshot.data![0].seller.address, style: Theme.of(context).textTheme.bodySmall),
-                                    Text("${snapshot.data![0].seller.zipcode} - ${snapshot.data![0].seller.city}", style: Theme.of(context).textTheme.bodySmall),
+                                    Text(snapshot.data![0].seller!.address, style: Theme.of(context).textTheme.bodySmall),
+                                    Text("${snapshot.data![0].seller!.zipcode} - ${snapshot.data![0].seller!.city}", style: Theme.of(context).textTheme.bodySmall),
                                   ],
                                 ),
                               ),

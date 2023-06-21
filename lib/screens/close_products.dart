@@ -19,15 +19,14 @@ Future<List<Product>> fetchCloseProducts() async {
   // If there's a product in cart, we have to filter the products to get only the products of the same seller
   List<Product> cart = await CartStorage().readCart();
   if (cart.isNotEmpty) {
-    String sellerId = cart[0].seller.id!;
+    String sellerId = cart[0].seller!.id!;
     productsSnapshot =  await FirebaseFirestore.instance.collection('products').where("seller", isEqualTo: FirebaseFirestore.instance.doc("sellers/$sellerId")).where("order", isEqualTo: false).get();
   } else {
     productsSnapshot = await FirebaseFirestore.instance.collection('products').where("order", isEqualTo: false).get();
   }
 
   for (final productSnapshot in productsSnapshot.docs) {
-    DocumentSnapshot<Map<String, dynamic>> sellerSnapshot = 
-      await productSnapshot["seller"].get();
+    DocumentSnapshot<Map<String, dynamic>> sellerSnapshot = await productSnapshot["seller"].get();
 
     Product product = Product(
       productSnapshot.reference.id,
@@ -35,7 +34,7 @@ Future<List<Product>> fetchCloseProducts() async {
       productSnapshot['pictureUrl'],
       productSnapshot['type'],
       productSnapshot['price'],
-      UserModel(id: sellerSnapshot.reference.id, firstname: sellerSnapshot["firstname"], lastname: sellerSnapshot["lastname"], address: sellerSnapshot["address"], email: sellerSnapshot["email"], city: sellerSnapshot["city"], zipcode: sellerSnapshot["zipcode"], status: sellerSnapshot["status"], lat: sellerSnapshot["lat"], lng: sellerSnapshot["lng"], password: sellerSnapshot["password"], avatarUrl: sellerSnapshot["avatarUrl"], createdAt: sellerSnapshot["createdAt"])
+      UserModel.fromSnapshot(sellerSnapshot)
     );
 
     products.add(product);

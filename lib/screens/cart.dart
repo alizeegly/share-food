@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:sharefood/models/cart.dart';
 import 'package:sharefood/models/product.dart';
-import 'package:sharefood/screens/payment.dart';
+import 'package:sharefood/screens/checkout_funnel/payment.dart';
 import 'package:sharefood/widgets/products/cart_product_item_layout_grid.dart';
 
 class CartScreen extends StatefulWidget {
