@@ -3,18 +3,20 @@ import 'package:flutter_layout_grid/flutter_layout_grid.dart';
 import 'package:sharefood/models/order.dart';
 import 'package:sharefood/widgets/orders/order_item.dart';
 
-class PurchaseItemLayoutGrid extends StatefulWidget {
-  const PurchaseItemLayoutGrid({
+class OrderItemLayoutGrid extends StatefulWidget {
+  const OrderItemLayoutGrid({
     super.key,
-    required this.purchases
+    required this.purchases,
+    required this.type
   });
   final List<Order> purchases;
+  final String type;
 
   @override
-  State<PurchaseItemLayoutGrid> createState() => _PurchaseItemLayoutGridState();
+  State<OrderItemLayoutGrid> createState() => _OrderItemLayoutGridState();
 }
 
-class _PurchaseItemLayoutGridState extends State<PurchaseItemLayoutGrid> {
+class _OrderItemLayoutGridState extends State<OrderItemLayoutGrid> {
   @override
   Widget build(BuildContext context) {
     return Padding(
@@ -26,7 +28,7 @@ class _PurchaseItemLayoutGridState extends State<PurchaseItemLayoutGrid> {
         columnGap: 20,
         children: [
           for (var i = 0; i < widget.purchases.length; i++)
-            OrderItem(order: widget.purchases[i], type: 'purchase'),
+            OrderItem(order: widget.purchases[i], type: widget.type),
         ],
       ),
     );

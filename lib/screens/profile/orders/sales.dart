@@ -7,20 +7,20 @@ import 'package:sharefood/models/product.dart';
 import 'package:sharefood/models/user_model.dart';
 import 'package:sharefood/widgets/orders/order_item_layout_grid.dart';
 
-class PurchasesScreen extends StatefulWidget {
-  const PurchasesScreen({super.key});
+class SalesScreen extends StatefulWidget {
+  const SalesScreen({super.key});
 
   @override
-  State<PurchasesScreen> createState() => _PurchasesScreenState();
+  State<SalesScreen> createState() => _SalesScreenState();
 }
 
-Future<List<order_model.Order>> fetchPurchases() async {
+Future<List<order_model.Order>> fetchSales() async {
   List<order_model.Order> orders = [];
 
   final controller = Get.put(ProfileController());
   UserModel user = await controller.getUserData();
 
-  QuerySnapshot ordersSnapshot =  await FirebaseFirestore.instance.collection('orders').where("buyer", isEqualTo: FirebaseFirestore.instance.doc("sellers/${user.id}")).get();
+  QuerySnapshot ordersSnapshot =  await FirebaseFirestore.instance.collection('orders').where("seller", isEqualTo: FirebaseFirestore.instance.doc("sellers/${user.id}")).get();
 
   for (final orderSnapshot in ordersSnapshot.docs) {
     List<Product> products = await order_model.OrderQuery().getOrderProducts(orderSnapshot.reference.id);
@@ -39,14 +39,14 @@ Future<List<order_model.Order>> fetchPurchases() async {
   return orders;
 }
 
-class _PurchasesScreenState extends State<PurchasesScreen> {
-  late Future<List<order_model.Order>> futurePurchasesList;
+class _SalesScreenState extends State<SalesScreen> {
+  late Future<List<order_model.Order>> futureSalesList;
 
   @override
   void initState() {
     super.initState();
     setState(() {
-      futurePurchasesList = fetchPurchases();
+      futureSalesList = fetchSales();
     });
   }
 
@@ -56,18 +56,18 @@ class _PurchasesScreenState extends State<PurchasesScreen> {
 
     return Scaffold(
       appBar:
-          AppBar(title: const Text("Mes achats"), centerTitle: false, backgroundColor: colors.secondary, foregroundColor: colors.onSecondary),
+          AppBar(title: const Text("Mes ventes"), centerTitle: false, backgroundColor: colors.secondary, foregroundColor: colors.onSecondary),
       body: CustomScrollView(
         slivers: [
           SliverToBoxAdapter(child: FutureBuilder<List<order_model.Order>>(
-            future: futurePurchasesList,
+            future: futureSalesList,
             builder: (context, snapshot) {
               if (snapshot.hasData) {
                 if (snapshot.data!.isNotEmpty) {
-                  return OrderItemLayoutGrid(purchases: snapshot.data!, type: 'purchase');
+                  return OrderItemLayoutGrid(purchases: snapshot.data!, type: 'sale',);
                 }
                 else {
-                  return Container(margin: const EdgeInsets.all(20), child: const Text("Vous n'avez pas encore effectué d'achats. Lorsque vous aurez acheté des produits, vous retrouverez le détail de vos commandes ici."));
+                  return Container(margin: const EdgeInsets.all(20), child: const Text("Vous n'avez pas encore fait de ventes. Lorsque vous aurez vendu des produits, vous retrouverez le détail des commandes ici."));
                 }
               } else if (snapshot.hasError) {
                 return Text('${snapshot.error}');

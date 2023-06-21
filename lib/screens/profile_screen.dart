@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:sharefood/models/user_model.dart';
 import 'package:sharefood/repository/authentication_repository/auth_repository.dart';
 import 'package:sharefood/screens/profile/orders/purchases.dart';
+import 'package:sharefood/screens/profile/orders/sales.dart';
 import 'package:sharefood/screens/profile/update_profile_screen.dart';
 import 'package:sharefood/widgets/custom_button.dart';
 import 'package:get/get.dart';
@@ -80,7 +81,9 @@ class _ProfileScreenState extends State<ProfileScreen> {
                       ProfileMenuWidget(
                         title: "Consulter mes ventes",
                         icon: Icons.sell,
-                        onPressed: () {},
+                        onPressed: () {
+                          Navigator.push(context, MaterialPageRoute(builder: (context) => const SalesScreen()));
+                        },
                       ),
                       const Divider(),
                       const SizedBox(height: 10),
