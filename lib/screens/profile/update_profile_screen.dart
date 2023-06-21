@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:sharefood/controllers/profile_controller.dart';
 import 'package:sharefood/models/user_model.dart';
+import 'package:sharefood/widgets/custom_appbar.dart';
 import 'package:sharefood/widgets/custom_button.dart';
 import 'package:sharefood/widgets/custom_text_field.dart';
 import 'package:intl/intl.dart';
@@ -16,15 +17,7 @@ class UpdateProfileScreen extends StatelessWidget {
     final ColorScheme colors = Theme.of(context).colorScheme;
 
     return Scaffold(
-      appBar: AppBar(
-        leading: IconButton(
-          onPressed: (){
-            Get.back();
-          }, 
-          icon: const Icon(Icons.arrow_back_ios),
-        ),
-        title: const Text("Modifier mon profil"), centerTitle: false, backgroundColor: colors.secondary, foregroundColor: colors.onSecondary,
-      ),
+      appBar: const CustomAppBar(text: "Modifier mon profil"),
       body: SingleChildScrollView(
         child: Container(
           padding: const EdgeInsets.all(30.0),

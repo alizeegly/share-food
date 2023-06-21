@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:sharefood/models/cart.dart';
 import 'package:sharefood/models/product.dart';
 import 'package:sharefood/screens/checkout_funnel/payment.dart';
+import 'package:sharefood/widgets/custom_appbar.dart';
 import 'package:sharefood/widgets/products/cart_product_item_layout_grid.dart';
 
 class CartScreen extends StatefulWidget {
@@ -35,8 +36,7 @@ class _CartScreenState extends State<CartScreen> {
     final ColorScheme colors = Theme.of(context).colorScheme;
 
     return Scaffold(
-      appBar:
-          AppBar(title: const Text("Panier"), centerTitle: false, backgroundColor: colors.secondary, foregroundColor: colors.onSecondary),
+      appBar: const CustomAppBar(text: "Panier"),
       body: CustomScrollView(
         slivers: [
           SliverToBoxAdapter(

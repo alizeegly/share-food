@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:sharefood/models/cart.dart';
 import 'package:sharefood/models/product.dart';
 import 'package:sharefood/models/user_model.dart';
+import 'package:sharefood/widgets/custom_appbar.dart';
 import 'package:sharefood/widgets/products/product_item_layout_grid.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 
@@ -64,12 +65,9 @@ class _CloseProductsListState extends State<CloseProductsList> {
 
   @override
   Widget build(BuildContext context) {
-    final ColorScheme colors = Theme.of(context).colorScheme;
-
     return Scaffold(
       key: _refreshKey,
-      appBar:
-          AppBar(title: const Text("Produits proches"), centerTitle: false, backgroundColor: colors.secondary, foregroundColor: colors.onSecondary),
+      appBar: const CustomAppBar(text: "Produits proches"),
       body: CustomScrollView(
         slivers: [
           SliverToBoxAdapter(child: FutureBuilder<List<Product>>(

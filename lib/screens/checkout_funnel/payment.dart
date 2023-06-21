@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:sharefood/models/cart.dart';
 import 'package:sharefood/models/product.dart';
 import 'package:sharefood/screens/checkout_funnel/payment_confirm.dart';
+import 'package:sharefood/widgets/custom_appbar.dart';
 import 'package:sharefood/widgets/custom_date_time_field.dart';
 import 'package:date_format/date_format.dart';
 import 'package:intl/intl.dart';
@@ -90,8 +91,7 @@ class _PaymentScreenState extends State<PaymentScreen> {
     final ColorScheme colors = Theme.of(context).colorScheme;
 
     return Scaffold(
-      appBar:
-          AppBar(title: const Text("Paiement"), centerTitle: false, backgroundColor: colors.secondary, foregroundColor: colors.onSecondary),
+      appBar: const CustomAppBar(text: "Paiement"),
       body: ListView(
         children: [FutureBuilder<List<Product>>(
           future: futureCartScreen,
