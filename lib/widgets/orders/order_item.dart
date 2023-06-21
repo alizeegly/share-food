@@ -63,7 +63,7 @@ class _OrderItemState extends State<OrderItem> {
                   ),
                 ),
 
-                widget.type == 'sale' ?
+                widget.type != 'purchase' ?
                   Container(
                     margin: const EdgeInsets.fromLTRB(0, 10, 0, 0),
                     child: Column(
@@ -90,7 +90,7 @@ class _OrderItemState extends State<OrderItem> {
             ),
         ),
 
-        widget.type == 'sale' ?
+        widget.type == 'awaiting-sale' ?
           Positioned(
             top: -10,
             right: -10,

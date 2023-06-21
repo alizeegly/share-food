@@ -54,30 +54,73 @@ class _SalesScreenState extends State<SalesScreen> {
   Widget build(BuildContext context) {
     final ColorScheme colors = Theme.of(context).colorScheme;
 
-    return Scaffold(
-      appBar:
-          AppBar(title: const Text("Mes ventes"), centerTitle: false, backgroundColor: colors.secondary, foregroundColor: colors.onSecondary),
-      body: CustomScrollView(
-        slivers: [
-          SliverToBoxAdapter(child: FutureBuilder<List<order_model.Order>>(
-            future: futureSalesList,
-            builder: (context, snapshot) {
-              if (snapshot.hasData) {
-                if (snapshot.data!.isNotEmpty) {
-                  return OrderItemLayoutGrid(purchases: snapshot.data!, type: 'sale',);
-                }
-                else {
-                  return Container(margin: const EdgeInsets.all(20), child: const Text("Vous n'avez pas encore fait de ventes. Lorsque vous aurez vendu des produits, vous retrouverez le détail des commandes ici."));
-                }
-              } else if (snapshot.hasError) {
-                return Text('${snapshot.error}');
-              }
+    return DefaultTabController(
+      length: 2,
+      child: Scaffold(
+        appBar: AppBar(
+          title: const Text("Mes ventes"),
+          centerTitle: false,
+          backgroundColor: colors.background,
+          foregroundColor: colors.onBackground,
+          bottom: const TabBar(
+            tabs: [
+              Tab(text: "En attente"),
+              Tab(text: "Passées")
+            ]
+          ),
+        ),
 
-              // By default, show a loading spinner.
-              return const Center(child: CircularProgressIndicator());
-            },
-          ))
-        ]
+        body: TabBarView(
+          children: [
+            // 1) Commandes en attente
+            CustomScrollView(
+              slivers: [
+                SliverToBoxAdapter(child: FutureBuilder<List<order_model.Order>>(
+                  future: futureSalesList,
+                  builder: (context, snapshot) {
+                    if (snapshot.hasData) {
+                      if (snapshot.data!.isNotEmpty && snapshot.data!.where((order) => order.appointment.toDate().toLocal().compareTo(DateTime.now()) > 0).toList().isNotEmpty) {
+                        return OrderItemLayoutGrid(purchases: snapshot.data!.where((order) => order.appointment.toDate().toLocal().compareTo(DateTime.now()) > 0).toList(), type: 'awaiting-sale',);
+                      }
+                      else {
+                        return Container(margin: const EdgeInsets.all(20), child: const Text("Vous n'avez aucune vente en attente."));
+                      }
+                    } else if (snapshot.hasError) {
+                      return Text('${snapshot.error}');
+                    }
+
+                    // By default, show a loading spinner.
+                    return const Center(child: CircularProgressIndicator());
+                  },
+                ))
+              ]
+            ),
+            
+            // 2) Commandes passées
+            CustomScrollView(
+              slivers: [
+                SliverToBoxAdapter(child: FutureBuilder<List<order_model.Order>>(
+                  future: futureSalesList,
+                  builder: (context, snapshot) {
+                    if (snapshot.hasData) {
+                      if (snapshot.data!.isNotEmpty  && snapshot.data!.where((order) => order.appointment.toDate().toLocal().compareTo(DateTime.now()) < 0).toList().isNotEmpty) {
+                        return OrderItemLayoutGrid(purchases: snapshot.data!.where((order) => order.appointment.toDate().toLocal().compareTo(DateTime.now()) < 0).toList(), type: 'passed-sale',);
+                      }
+                      else {
+                        return Container(margin: const EdgeInsets.all(20), child: const Text("Vous n'avez pas encore fait de ventes. Lorsque vous aurez vendu des produits, vous retrouverez le détail des commandes ici."));
+                      }
+                    } else if (snapshot.hasError) {
+                      return Text('${snapshot.error}');
+                    }
+
+                    // By default, show a loading spinner.
+                    return const Center(child: CircularProgressIndicator());
+                  },
+                ))
+              ]
+            ),
+          ],
+        )
       )
     );
   }
