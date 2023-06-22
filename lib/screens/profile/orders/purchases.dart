@@ -53,8 +53,6 @@ class _PurchasesScreenState extends State<PurchasesScreen> {
 
   @override
   Widget build(BuildContext context) {
-    final ColorScheme colors = Theme.of(context).colorScheme;
-
     return Scaffold(
       appBar: const CustomAppBar(text: "Mes achats"),
       body: CustomScrollView(

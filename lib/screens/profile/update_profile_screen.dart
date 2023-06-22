@@ -14,7 +14,6 @@ class UpdateProfileScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final controller = Get.put(ProfileController());
-    final ColorScheme colors = Theme.of(context).colorScheme;
 
     return Scaffold(
       appBar: const CustomAppBar(text: "Modifier mon profil"),

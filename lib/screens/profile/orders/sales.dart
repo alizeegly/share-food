@@ -80,7 +80,7 @@ class _SalesScreenState extends State<SalesScreen> {
                   builder: (context, snapshot) {
                     if (snapshot.hasData) {
                       if (snapshot.data!.isNotEmpty && snapshot.data!.where((order) => order.appointment.toDate().toLocal().compareTo(DateTime.now()) > 0).toList().isNotEmpty) {
-                        return OrderItemLayoutGrid(purchases: snapshot.data!.where((order) => order.appointment.toDate().toLocal().compareTo(DateTime.now()) > 0).toList(), type: 'awaiting-sale',);
+                        return OrderItemLayoutGrid(purchases: snapshot.data!.where((order) => order.appointment.toDate().toLocal().compareTo(DateTime.now()) > 0).toList(), type: 'awaitingSale',);
                       }
                       else {
                         return Container(margin: const EdgeInsets.all(20), child: const Text("Vous n'avez aucune vente en attente."));
@@ -104,7 +104,7 @@ class _SalesScreenState extends State<SalesScreen> {
                   builder: (context, snapshot) {
                     if (snapshot.hasData) {
                       if (snapshot.data!.isNotEmpty  && snapshot.data!.where((order) => order.appointment.toDate().toLocal().compareTo(DateTime.now()) < 0).toList().isNotEmpty) {
-                        return OrderItemLayoutGrid(purchases: snapshot.data!.where((order) => order.appointment.toDate().toLocal().compareTo(DateTime.now()) < 0).toList(), type: 'passed-sale',);
+                        return OrderItemLayoutGrid(purchases: snapshot.data!.where((order) => order.appointment.toDate().toLocal().compareTo(DateTime.now()) < 0).toList(), type: 'passedSale',);
                       }
                       else {
                         return Container(margin: const EdgeInsets.all(20), child: const Text("Vous n'avez pas encore fait de ventes. Lorsque vous aurez vendu des produits, vous retrouverez le détail des commandes ici."));
