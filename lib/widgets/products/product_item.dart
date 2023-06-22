@@ -1,18 +1,19 @@
 import 'package:flutter/material.dart';
 import 'package:sharefood/models/cart.dart';
 import 'package:sharefood/models/product.dart';
+import 'package:sharefood/screens/products/product_details.dart';
 
 class ProductItem extends StatefulWidget {
   const ProductItem({
     super.key,
     required this.product,
     required this.storage,
-    this.notifyParent,
+    required this.notifyParent,
     this.screen = "closeProducts"
   });
   final Product product;
   final CartStorage storage;
-  final Function()? notifyParent;
+  final Function() notifyParent;
   final String screen;
 
   @override
@@ -38,7 +39,16 @@ class _ProductItemState extends State<ProductItem> {
         }
         _isInCart = _cart.contains(widget.product.id);
         widget.storage.writeCart(_cart);
-        widget.notifyParent!();
+        widget.notifyParent();
+      });
+    });
+  }
+
+  void refresh(){
+    widget.storage.readCartToIds().then((cart) {
+      setState(() {
+        _cart = cart;
+        _isInCart = _cart.contains(widget.product.id);
       });
     });
   }
@@ -65,8 +75,7 @@ class _ProductItemState extends State<ProductItem> {
         clipBehavior: Clip.none,
         alignment: Alignment.center,
         children: [
-          Container(
-            padding: const EdgeInsets.fromLTRB(10, 80, 10, 10),
+          Ink(
             decoration: BoxDecoration(
               color: colors.surface,
               boxShadow: [BoxShadow(
@@ -77,47 +86,56 @@ class _ProductItemState extends State<ProductItem> {
               )],
               borderRadius: const BorderRadius.all(Radius.circular(30))
             ),
-            child:
-              Column(
-                children: [
-                  Text(widget.product.name, style: Theme.of(context).textTheme.headlineSmall, textAlign: TextAlign.center),
-
-                  Container(
-                    margin: const EdgeInsets.fromLTRB(0, 10, 0, 0),
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.stretch,
-                      children: [
-                        Text("Type de produit :", style: Theme.of(context).textTheme.titleSmall),
-                        Text(widget.product.type, style: Theme.of(context).textTheme.bodySmall),
-                      ],
-                    ),
-                  ),
-
-                  widget.screen == 'closeProducts' ?
-                    Container(
-                      margin: const EdgeInsets.fromLTRB(0, 10, 0, 0),
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.stretch,
-                        children: [
-                          Text("Localisation :", style: Theme.of(context).textTheme.titleSmall),
-                          Text("${widget.product.seller!.address}\n${widget.product.seller!.zipcode} ${widget.product.seller!.city}", style: Theme.of(context).textTheme.bodySmall)
-                        ],
+            child: InkWell(
+              onTap: () {
+                Navigator.push(context, MaterialPageRoute(builder: (context) => ProductDetailsScreen(product: widget.product, screen: widget.screen, notifyParent: refresh)));
+              },
+              customBorder: RoundedRectangleBorder(borderRadius: BorderRadius.circular(30)),
+              child: Container(
+                padding: const EdgeInsets.fromLTRB(10, 80, 10, 10),
+                child:
+                  Column(
+                    children: [
+                      Text(widget.product.name, style: Theme.of(context).textTheme.headlineSmall, textAlign: TextAlign.center),
+            
+                      Container(
+                        margin: const EdgeInsets.fromLTRB(0, 10, 0, 0),
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.stretch,
+                          children: [
+                            Text("Type de produit :", style: Theme.of(context).textTheme.titleSmall),
+                            Text(widget.product.type, style: Theme.of(context).textTheme.bodySmall),
+                          ],
+                        ),
                       ),
-                    )
-                  : Container(),
-
-                  const Spacer(),
-
-                  Container(margin: const EdgeInsets.symmetric(vertical: 10, horizontal: 0), child: Text('${widget.product.price.toStringAsFixed(2)}€', style: const TextStyle(fontFamily: 'Montserrat SemiBold', fontSize: 20), textAlign: TextAlign.center)),
-
-                  widget.screen != 'order' ?
-                    _isInCart || widget.screen=="cart"
-                      ? OutlinedButton(onPressed: _toggleInCart, style: OutlinedButton.styleFrom(shape: const StadiumBorder(), side: BorderSide(width: 2, color: colors.primary)), child: Text("Retirer du panier", style: TextStyle(fontSize: Theme.of(context).textTheme.labelSmall?.fontSize, color: colors.primary), textAlign: TextAlign.center))
-
-                      : ElevatedButton(onPressed: _toggleInCart, style: ElevatedButton.styleFrom(shape: const StadiumBorder(), backgroundColor: colors.primary),  child: Text("Ajouter au panier", style: TextStyle(fontSize: Theme.of(context).textTheme.labelSmall?.fontSize, color: colors.onPrimary), textAlign: TextAlign.center))
-                    : Container()
-                ]
-              ),
+            
+                      widget.screen == 'closeProducts' ?
+                        Container(
+                          margin: const EdgeInsets.fromLTRB(0, 10, 0, 0),
+                          child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.stretch,
+                            children: [
+                              Text("Localisation :", style: Theme.of(context).textTheme.titleSmall),
+                              Text("${widget.product.seller.address}\n${widget.product.seller.zipcode} ${widget.product.seller.city}", style: Theme.of(context).textTheme.bodySmall)
+                            ],
+                          ),
+                        )
+                      : Container(),
+            
+                      const Spacer(),
+            
+                      Container(margin: const EdgeInsets.symmetric(vertical: 10, horizontal: 0), child: Text('${widget.product.price.toStringAsFixed(2)}€', style: const TextStyle(fontFamily: 'Montserrat SemiBold', fontSize: 20), textAlign: TextAlign.center)),
+            
+                      widget.screen != 'order' ?
+                        _isInCart
+                          ? OutlinedButton(onPressed: _toggleInCart, style: OutlinedButton.styleFrom(shape: const StadiumBorder(), side: BorderSide(width: 2, color: colors.primary)), child: Text("Retirer du panier", style: TextStyle(fontSize: Theme.of(context).textTheme.labelSmall?.fontSize, color: colors.primary), textAlign: TextAlign.center))
+            
+                          : ElevatedButton(onPressed: _toggleInCart, style: ElevatedButton.styleFrom(shape: const StadiumBorder(), backgroundColor: colors.primary),  child: Text("Ajouter au panier", style: TextStyle(fontSize: Theme.of(context).textTheme.labelSmall?.fontSize, color: colors.onPrimary), textAlign: TextAlign.center))
+                        : Container()
+                    ]
+                  )
+                )
+            ),
           ),
 
           Positioned(

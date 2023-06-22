@@ -16,10 +16,12 @@ class CartScreen extends StatefulWidget {
 
 class _CartScreenState extends State<CartScreen> {
   Future<List<Product>>? futureCartScreen;
+  Key _refreshKey = UniqueKey();
 
   void refresh() {
     setState(() {
       futureCartScreen = widget.storage.readCart();
+      _refreshKey = UniqueKey();
     });
   }
 
@@ -36,6 +38,7 @@ class _CartScreenState extends State<CartScreen> {
     final ColorScheme colors = Theme.of(context).colorScheme;
 
     return Scaffold(
+      key: _refreshKey,
       appBar: const CustomAppBar(text: "Panier"),
       body: CustomScrollView(
         slivers: [

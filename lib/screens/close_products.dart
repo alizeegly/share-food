@@ -25,7 +25,7 @@ Future<List<Product>> fetchCloseProducts() async {
   // If there's a product in cart, we have to filter the products to get only the products of the same seller
   List<Product> cart = await CartStorage().readCart();
   if (cart.isNotEmpty) {
-    String sellerId = cart[0].seller!.id!;
+    String sellerId = cart[0].seller.id!;
     productsSnapshot =  await FirebaseFirestore.instance.collection('products').where("seller", isEqualTo: FirebaseFirestore.instance.doc("sellers/$sellerId")).where("order", isEqualTo: false).get();
   } else {
     productsSnapshot = await FirebaseFirestore.instance.collection('products').where("order", isEqualTo: false).where("seller", isNotEqualTo: FirebaseFirestore.instance.doc("sellers/${user.id}")).get();

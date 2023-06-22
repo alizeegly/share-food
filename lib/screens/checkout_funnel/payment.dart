@@ -95,7 +95,7 @@ class _PaymentScreenState extends State<PaymentScreen> {
     final controller = Get.put(ProfileController());
     UserModel user = await controller.getUserData();
     var order = {
-      "seller": FirebaseFirestore.instance.doc("sellers/${snapshot.data![0].seller!.id}"),
+      "seller": FirebaseFirestore.instance.doc("sellers/${snapshot.data![0].seller.id}"),
       "buyer": FirebaseFirestore.instance.doc("sellers/${user.id}"),
       "createdAt": Timestamp.now(),
       "appointment": Timestamp.fromDate(DateTime(selectedDate.year, selectedDate.month, selectedDate.day, selectedTime.hour, selectedTime.minute))
@@ -156,8 +156,8 @@ class _PaymentScreenState extends State<PaymentScreen> {
                                   crossAxisAlignment: CrossAxisAlignment.stretch,
                                   children: [
                                     Text("Localisation :", style: Theme.of(context).textTheme.titleSmall),
-                                    Text(snapshot.data![0].seller!.address, style: Theme.of(context).textTheme.bodySmall),
-                                    Text("${snapshot.data![0].seller!.zipcode} - ${snapshot.data![0].seller!.city}", style: Theme.of(context).textTheme.bodySmall),
+                                    Text(snapshot.data![0].seller.address, style: Theme.of(context).textTheme.bodySmall),
+                                    Text("${snapshot.data![0].seller.zipcode} - ${snapshot.data![0].seller.city}", style: Theme.of(context).textTheme.bodySmall),
                                   ],
                                 ),
                               ),
