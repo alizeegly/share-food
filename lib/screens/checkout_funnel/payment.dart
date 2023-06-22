@@ -1,6 +1,10 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
+import 'package:sharefood/controllers/profile_controller.dart';
 import 'package:sharefood/models/cart.dart';
 import 'package:sharefood/models/product.dart';
+import 'package:sharefood/models/user_model.dart';
 import 'package:sharefood/screens/checkout_funnel/payment_confirm.dart';
 import 'package:sharefood/widgets/custom_appbar.dart';
 import 'package:sharefood/widgets/custom_date_time_field.dart';
@@ -84,6 +88,30 @@ class _PaymentScreenState extends State<PaymentScreen> {
             [HH, ':', nn]).toString();
       });
     }
+  }
+
+  void createOrder(AsyncSnapshot<List<Product>> snapshot) async {
+    // Créer l'objet json
+    final controller = Get.put(ProfileController());
+    UserModel user = await controller.getUserData();
+    var order = {
+      "seller": FirebaseFirestore.instance.doc("sellers/${snapshot.data![0].seller!.id}"),
+      "buyer": FirebaseFirestore.instance.doc("sellers/${user.id}"),
+      "createdAt": Timestamp.now(),
+      "appointment": Timestamp.fromDate(DateTime(selectedDate.year, selectedDate.month, selectedDate.day, selectedTime.hour, selectedTime.minute))
+    };
+
+    // Créer la commande dans Firestore et récupérer son id
+    DocumentReference<Map<String, dynamic>> newOrdersnapshot = await FirebaseFirestore.instance.collection("orders").add(order);
+    String orderId = newOrdersnapshot.id;
+
+    // Ajouter la commande à tous les produits du panier
+    for (var product in snapshot.data!) {
+      FirebaseFirestore.instance.collection("products").doc(product.id).update({"order": FirebaseFirestore.instance.doc("orders/$orderId")});
+    }
+
+    // Vider le panier
+    widget.storage.writeCart([]);
   }
 
   @override
@@ -191,10 +219,7 @@ class _PaymentScreenState extends State<PaymentScreen> {
       
                         ElevatedButton(
                           onPressed: () {
-                            // TODO Créer la commande
-
-                            // Vider le panier
-                            widget.storage.writeCart([]);
+                            createOrder(snapshot);
 
                             // Ecran de confirmation
                             Navigator.pushAndRemoveUntil(context, MaterialPageRoute(builder: (context) => const PaymentConfirmScreen()), (Route<dynamic> route) => false);
