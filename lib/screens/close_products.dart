@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
+import 'package:sharefood/controllers/profile_controller.dart';
 import 'package:sharefood/models/cart.dart';
 import 'package:sharefood/models/product.dart';
 import 'package:sharefood/models/user_model.dart';
@@ -17,13 +19,16 @@ Future<List<Product>> fetchCloseProducts() async {
   List<Product> products = [];
   QuerySnapshot productsSnapshot;
 
+  final controller = Get.put(ProfileController());
+  UserModel user = await controller.getUserData();
+
   // If there's a product in cart, we have to filter the products to get only the products of the same seller
   List<Product> cart = await CartStorage().readCart();
   if (cart.isNotEmpty) {
     String sellerId = cart[0].seller!.id!;
     productsSnapshot =  await FirebaseFirestore.instance.collection('products').where("seller", isEqualTo: FirebaseFirestore.instance.doc("sellers/$sellerId")).where("order", isEqualTo: false).get();
   } else {
-    productsSnapshot = await FirebaseFirestore.instance.collection('products').where("order", isEqualTo: false).get();
+    productsSnapshot = await FirebaseFirestore.instance.collection('products').where("order", isEqualTo: false).where("seller", isNotEqualTo: FirebaseFirestore.instance.doc("sellers/${user.id}")).get();
   }
 
   for (final productSnapshot in productsSnapshot.docs) {
