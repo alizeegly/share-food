@@ -1,7 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:sharefood/models/cart.dart';
 import 'package:sharefood/models/product.dart';
-import 'package:sharefood/screens/payment.dart';
+import 'package:sharefood/screens/checkout_funnel/payment.dart';
+import 'package:sharefood/widgets/custom_appbar.dart';
 import 'package:sharefood/widgets/products/cart_product_item_layout_grid.dart';
 
 class CartScreen extends StatefulWidget {
@@ -35,8 +36,7 @@ class _CartScreenState extends State<CartScreen> {
     final ColorScheme colors = Theme.of(context).colorScheme;
 
     return Scaffold(
-      appBar:
-          AppBar(title: const Text("Panier"), centerTitle: false, backgroundColor: colors.secondary, foregroundColor: colors.onSecondary),
+      appBar: const CustomAppBar(text: "Panier"),
       body: CustomScrollView(
         slivers: [
           SliverToBoxAdapter(
@@ -92,6 +92,28 @@ class _CartScreenState extends State<CartScreen> {
                                   child: Column(
                                     crossAxisAlignment: CrossAxisAlignment.stretch,
                                     children: [
+                                      Text("Vendeur :", style: Theme.of(context).textTheme.titleSmall),
+                                      Text("${snapshot.data![0].seller.firstname} ${snapshot.data![0].seller.lastname}", style: Theme.of(context).textTheme.bodySmall),
+                                    ],
+                                  ),
+                                ),
+
+                                Container(
+                                  margin: const EdgeInsets.symmetric(vertical: 5),
+                                  child: Column(
+                                    crossAxisAlignment: CrossAxisAlignment.stretch,
+                                    children: [
+                                      Text("Lieu de rendez-vous :", style: Theme.of(context).textTheme.titleSmall),
+                                      Text("${snapshot.data![0].seller.address}\n${snapshot.data![0].seller.zipcode} ${snapshot.data![0].seller.city}", style: Theme.of(context).textTheme.bodySmall)
+                                    ],
+                                  ),
+                                ),
+
+                                Container(
+                                  margin: const EdgeInsets.symmetric(vertical: 5),
+                                  child: Column(
+                                    crossAxisAlignment: CrossAxisAlignment.stretch,
+                                    children: [
                                       Text("Nombre d'articles :", style: Theme.of(context).textTheme.titleSmall),
                                       Text(snapshot.data!.length.toString(), style: Theme.of(context).textTheme.bodySmall),
                                     ],
@@ -103,7 +125,7 @@ class _CartScreenState extends State<CartScreen> {
                                   child: Column(
                                     crossAxisAlignment: CrossAxisAlignment.stretch,
                                     children: [
-                                      Text("Prix total :", style: Theme.of(context).textTheme.titleSmall),
+                                      Text("Prix total des articles:", style: Theme.of(context).textTheme.titleSmall),
                                       Text('${snapshot.data!.fold(0.0, (previousValue, element) => previousValue + element.price).toStringAsFixed(2)}€', style: Theme.of(context).textTheme.bodySmall),
                                     ],
                                   ),
@@ -138,7 +160,7 @@ class _CartScreenState extends State<CartScreen> {
             builder: (context, snapshot) {
               if (snapshot.hasData && snapshot.data!.isNotEmpty) {
                 return Container(
-                  margin: const EdgeInsets.symmetric(horizontal: 20, vertical: 10),
+                  margin: const EdgeInsets.fromLTRB(20, 10, 20, 30),
                   child: ElevatedButton(
                     onPressed: () {
                       Navigator.push(context, MaterialPageRoute(builder: (context) => PaymentScreen(storage: CartStorage())));

@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:sharefood/mainScreens/home_screen.dart';
+import 'package:sharefood/widgets/custom_appbar.dart';
 
 
 class PaymentConfirmScreen extends StatefulWidget {
@@ -15,8 +16,7 @@ class _PaymentConfirmScreenState extends State<PaymentConfirmScreen> {
     final ColorScheme colors = Theme.of(context).colorScheme;
 
     return Scaffold(
-      appBar:
-          AppBar(title: const Text("Paiement"), centerTitle: false, backgroundColor: colors.secondary, foregroundColor: colors.onSecondary),
+      appBar: const CustomAppBar(text: "Paiement"),
       body: Container(
         margin: const EdgeInsets.all(20),
         padding: const EdgeInsets.all(20),

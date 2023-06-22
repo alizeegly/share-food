@@ -42,6 +42,10 @@ class CartStorage {
           DocumentSnapshot<Map<String, dynamic>> productSnapshot = 
             await FirebaseFirestore.instance.collection('products').doc(productId).get();
 
+          if(productSnapshot['order'] != false){
+            throw Exception("Le produit n'est plus disponible (déjà commandé dans la commande ${productSnapshot['order'].toString()})");
+          }
+
           DocumentSnapshot<Map<String, dynamic>> sellerSnapshot = 
             await productSnapshot["seller"].get();
 

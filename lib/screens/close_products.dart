@@ -1,7 +1,10 @@
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
+import 'package:sharefood/controllers/profile_controller.dart';
 import 'package:sharefood/models/cart.dart';
 import 'package:sharefood/models/product.dart';
 import 'package:sharefood/models/user_model.dart';
+import 'package:sharefood/widgets/custom_appbar.dart';
 import 'package:sharefood/widgets/products/product_item_layout_grid.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 
@@ -16,18 +19,20 @@ Future<List<Product>> fetchCloseProducts() async {
   List<Product> products = [];
   QuerySnapshot productsSnapshot;
 
+  final controller = Get.put(ProfileController());
+  UserModel user = await controller.getUserData();
+
   // If there's a product in cart, we have to filter the products to get only the products of the same seller
   List<Product> cart = await CartStorage().readCart();
   if (cart.isNotEmpty) {
-    String sellerId = cart[0].seller.id!;
-    productsSnapshot =  await FirebaseFirestore.instance.collection('products').where("seller", isEqualTo: FirebaseFirestore.instance.doc("sellers/$sellerId")).get();
+    String sellerId = cart[0].seller!.id!;
+    productsSnapshot =  await FirebaseFirestore.instance.collection('products').where("seller", isEqualTo: FirebaseFirestore.instance.doc("sellers/$sellerId")).where("order", isEqualTo: false).get();
   } else {
-    productsSnapshot = await FirebaseFirestore.instance.collection('products').get();
+    productsSnapshot = await FirebaseFirestore.instance.collection('products').where("order", isEqualTo: false).where("seller", isNotEqualTo: FirebaseFirestore.instance.doc("sellers/${user.id}")).get();
   }
 
   for (final productSnapshot in productsSnapshot.docs) {
-    DocumentSnapshot<Map<String, dynamic>> sellerSnapshot = 
-      await productSnapshot["seller"].get();
+    DocumentSnapshot<Map<String, dynamic>> sellerSnapshot = await productSnapshot["seller"].get();
 
     Product product = Product(
       productSnapshot.reference.id,
@@ -35,7 +40,7 @@ Future<List<Product>> fetchCloseProducts() async {
       productSnapshot['pictureUrl'],
       productSnapshot['type'],
       productSnapshot['price'],
-      UserModel(id: sellerSnapshot.reference.id, firstname: sellerSnapshot["firstname"], lastname: sellerSnapshot["lastname"], address: sellerSnapshot["address"], email: sellerSnapshot["email"], city: sellerSnapshot["city"], zipcode: sellerSnapshot["zipcode"], status: sellerSnapshot["status"], lat: sellerSnapshot["lat"], lng: sellerSnapshot["lng"], password: sellerSnapshot["password"], avatarUrl: sellerSnapshot["avatarUrl"], createdAt: sellerSnapshot["createdAt"])
+      UserModel.fromSnapshot(sellerSnapshot)
     );
 
     products.add(product);
@@ -65,12 +70,9 @@ class _CloseProductsListState extends State<CloseProductsList> {
 
   @override
   Widget build(BuildContext context) {
-    final ColorScheme colors = Theme.of(context).colorScheme;
-
     return Scaffold(
       key: _refreshKey,
-      appBar:
-          AppBar(title: const Text("Produits proches"), centerTitle: false, backgroundColor: colors.secondary, foregroundColor: colors.onSecondary),
+      appBar: const CustomAppBar(text: "Produits proches"),
       body: CustomScrollView(
         slivers: [
           SliverToBoxAdapter(child: FutureBuilder<List<Product>>(
