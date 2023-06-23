@@ -5,7 +5,6 @@ import 'package:sharefood/models/product.dart';
 import 'package:sharefood/models/user_model.dart';
 import 'package:sharefood/widgets/custom_appbar.dart';
 import 'package:sharefood/widgets/products/my_product_item_layout_grid.dart';
-import 'package:sharefood/widgets/products/product_item_layout_grid.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 
 class MyProductsList extends StatefulWidget {
@@ -87,7 +86,7 @@ class _MyProductsListState extends State<MyProductsList> {
             builder: (context, snapshot) {
               if (snapshot.hasData) {
                 if (snapshot.data!.isNotEmpty) {
-                  return MyProductItemLayoutGrid(products: snapshot.data!);
+                  return MyProductItemLayoutGrid(products: snapshot.data!, notifyParent: refresh,);
                 }
                 else {
                   return Container(margin: const EdgeInsets.all(20), child: const Text("Vous n'avez aucun produit... Ajoutez votre premier produit à l'aide du bouton ci-dessus !"));

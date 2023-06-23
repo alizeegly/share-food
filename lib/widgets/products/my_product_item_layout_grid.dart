@@ -7,15 +7,20 @@ import 'package:sharefood/widgets/products/product_item.dart';
 class MyProductItemLayoutGrid extends StatefulWidget {
   const MyProductItemLayoutGrid({
     super.key,
-    required this.products
+    required this.products,
+    required this.notifyParent
   });
   final List<Product> products;
+  final Function() notifyParent;
 
   @override
   State<MyProductItemLayoutGrid> createState() => _MyProductItemLayoutGridState();
 }
 
 class _MyProductItemLayoutGridState extends State<MyProductItemLayoutGrid> {
+  void refresh(){
+    widget.notifyParent();
+  }
   @override
   Widget build(BuildContext context) {
     return Padding(
@@ -27,7 +32,7 @@ class _MyProductItemLayoutGridState extends State<MyProductItemLayoutGrid> {
         columnGap: 20,
         children: [
           for (var i = 0; i < widget.products.length; i++)
-            ProductItem(product: widget.products[i], storage: CartStorage(), screen: "myProducts", notifyParent: (){},),
+            ProductItem(product: widget.products[i], storage: CartStorage(), screen: "myProducts", notifyParent: refresh,),
         ],
       ),
     );

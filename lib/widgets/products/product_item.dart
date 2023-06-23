@@ -1,3 +1,4 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:sharefood/models/cart.dart';
 import 'package:sharefood/models/product.dart';
@@ -42,6 +43,11 @@ class _ProductItemState extends State<ProductItem> {
         widget.notifyParent();
       });
     });
+  }
+
+  void deleteProduct() async {
+    await FirebaseFirestore.instance.doc("products/${widget.product.id}").delete();
+    widget.notifyParent();
   }
 
   void refresh(){
@@ -138,7 +144,7 @@ class _ProductItemState extends State<ProductItem> {
                         widget.product.sold ?
                           OutlinedButton(onPressed: null, style: OutlinedButton.styleFrom(shape: const StadiumBorder(), side: BorderSide(width: 2, color: colors.primary)), child: Text("Vendu", style: TextStyle(fontSize: Theme.of(context).textTheme.labelSmall?.fontSize, color: colors.primary), textAlign: TextAlign.center))
             
-                          : ElevatedButton(onPressed: () {}, style: ElevatedButton.styleFrom(shape: const StadiumBorder(), backgroundColor: colors.error),  child: Text("Supprimer", style: TextStyle(fontSize: Theme.of(context).textTheme.labelSmall?.fontSize, color: colors.onPrimary), textAlign: TextAlign.center))
+                          : ElevatedButton(onPressed: deleteProduct, style: ElevatedButton.styleFrom(shape: const StadiumBorder(), backgroundColor: colors.error),  child: Text("Supprimer", style: TextStyle(fontSize: Theme.of(context).textTheme.labelSmall?.fontSize, color: colors.onPrimary), textAlign: TextAlign.center))
 
                       : Container()
                     ]
