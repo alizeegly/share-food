@@ -26,6 +26,8 @@ class OrderQuery {
         productSnapshot['pictureUrl'],
         productSnapshot['type'],
         productSnapshot['price'],
+        productSnapshot['expirationDate'].toDate(),
+        productSnapshot['description'],
         seller
       );
 

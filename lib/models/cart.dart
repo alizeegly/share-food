@@ -55,7 +55,9 @@ class CartStorage {
             productSnapshot['pictureUrl'],
             productSnapshot['type'],
             productSnapshot['price'],
-            UserModel(id: sellerSnapshot.reference.id, firstname: sellerSnapshot["firstname"], lastname: sellerSnapshot["lastname"], address: sellerSnapshot["address"], email: sellerSnapshot["email"], city: sellerSnapshot["city"], zipcode: sellerSnapshot["zipcode"], status: sellerSnapshot["status"], lat: sellerSnapshot["lat"], lng: sellerSnapshot["lng"], password: sellerSnapshot["password"], avatarUrl: sellerSnapshot["avatarUrl"], createdAt: sellerSnapshot["createdAt"])
+            productSnapshot['expirationDate'].toDate(),
+            productSnapshot['description'],
+            UserModel.fromSnapshot(sellerSnapshot)
           );
 
           products.add(product);

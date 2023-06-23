@@ -40,30 +40,28 @@ class _CartScreenState extends State<CartScreen> {
     return Scaffold(
       key: _refreshKey,
       appBar: const CustomAppBar(text: "Panier"),
-      body: CustomScrollView(
-        slivers: [
-          SliverToBoxAdapter(
-            child: FutureBuilder<List<Product>>(
-              future: futureCartScreen,
-              builder: (context, snapshot) {
-                if (snapshot.hasData) {
-                  if (snapshot.data!.isNotEmpty) {
-                    return CartProductItemLayoutGrid(products: snapshot.data!, notifyParent: refresh);
-                  }
-                  else {
-                    return Container(margin: const EdgeInsets.all(20), child: const Text("Ajoutez un produit à votre panier, et il s'affichera ici."));
-                  }
-                } else if (snapshot.hasError) {
-                  return Text('${snapshot.error}');
+      body: ListView(
+        children: [
+          FutureBuilder<List<Product>>(
+            future: futureCartScreen,
+            builder: (context, snapshot) {
+              if (snapshot.hasData) {
+                if (snapshot.data!.isNotEmpty) {
+                  return CartProductItemLayoutGrid(products: snapshot.data!, notifyParent: refresh);
                 }
+                else {
+                  return Container(margin: const EdgeInsets.all(20), child: const Text("Ajoutez un produit à votre panier, et il s'affichera ici."));
+                }
+              } else if (snapshot.hasError) {
+                return Text('${snapshot.error}');
+              }
 
-                // By default, show a loading spinner.
-                return const Center(child: CircularProgressIndicator());
-              },
-            )
+              // By default, show a loading spinner.
+              return const Center(child: CircularProgressIndicator());
+            },
           ),
 
-          SliverToBoxAdapter(child: FutureBuilder<List>(
+          FutureBuilder<List>(
               future: futureCartScreen,
               builder: (context, snapshot) {
                 if (snapshot.hasData && snapshot.data!.isNotEmpty) {
@@ -155,10 +153,9 @@ class _CartScreenState extends State<CartScreen> {
                 }
                 return Container();
               },
-            )
-          ),
+            ),
 
-          SliverToBoxAdapter(child: FutureBuilder<List>(
+          FutureBuilder<List>(
             future: futureCartScreen,
             builder: (context, snapshot) {
               if (snapshot.hasData && snapshot.data!.isNotEmpty) {
@@ -176,7 +173,7 @@ class _CartScreenState extends State<CartScreen> {
 
               return Container();
             }
-          ))
+          )
         ]
       )
     );

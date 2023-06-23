@@ -73,9 +73,9 @@ class _SalesScreenState extends State<SalesScreen> {
         body: TabBarView(
           children: [
             // 1) Commandes en attente
-            CustomScrollView(
-              slivers: [
-                SliverToBoxAdapter(child: FutureBuilder<List<order_model.Order>>(
+            ListView(
+              children: [
+                FutureBuilder<List<order_model.Order>>(
                   future: futureSalesList,
                   builder: (context, snapshot) {
                     if (snapshot.hasData) {
@@ -92,14 +92,14 @@ class _SalesScreenState extends State<SalesScreen> {
                     // By default, show a loading spinner.
                     return const Center(child: CircularProgressIndicator());
                   },
-                ))
+                )
               ]
             ),
             
             // 2) Commandes passées
-            CustomScrollView(
-              slivers: [
-                SliverToBoxAdapter(child: FutureBuilder<List<order_model.Order>>(
+            ListView(
+              children: [
+                FutureBuilder<List<order_model.Order>>(
                   future: futureSalesList,
                   builder: (context, snapshot) {
                     if (snapshot.hasData) {
@@ -116,7 +116,7 @@ class _SalesScreenState extends State<SalesScreen> {
                     // By default, show a loading spinner.
                     return const Center(child: CircularProgressIndicator());
                   },
-                ))
+                )
               ]
             ),
           ],

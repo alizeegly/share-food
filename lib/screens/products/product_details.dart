@@ -1,5 +1,6 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:intl/intl.dart';
 import 'package:sharefood/models/cart.dart';
 import 'package:sharefood/models/product.dart';
 import 'package:sharefood/widgets/custom_appbar.dart';
@@ -63,9 +64,9 @@ class _ProductDetailsScreenState extends State<ProductDetailsScreen> {
 
     return Scaffold(
       appBar: const CustomAppBar(text: "Informations"),
-      body: CustomScrollView(
-        slivers: [
-          SliverToBoxAdapter(child: SizedBox(
+      body: ListView(
+        children: [
+          SizedBox(
             height: 245,
             width: MediaQuery.of(context).size.width,
             child: Image.network(
@@ -73,9 +74,9 @@ class _ProductDetailsScreenState extends State<ProductDetailsScreen> {
               fit: BoxFit.cover,
               errorBuilder: (context, error, stackTrace) => const Icon(Icons.error)
             )
-          )),
+          ),
 
-          SliverToBoxAdapter(child: Container(
+          Container(
             margin: const EdgeInsets.all(20),
             padding: const EdgeInsets.all(20),
             decoration: BoxDecoration(
@@ -113,17 +114,42 @@ class _ProductDetailsScreenState extends State<ProductDetailsScreen> {
                             Text(widget.product.type, style: Theme.of(context).textTheme.bodySmall),
                           ],
                         ),
+                      ),
+
+                      Container(
+                        margin: const EdgeInsets.symmetric(vertical: 5),
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.stretch,
+                          children: [
+                            Text("Date de péremption :", style: Theme.of(context).textTheme.titleSmall),
+                            Text(DateFormat("dd/MM/yyyy").format(widget.product.expirationDate.toLocal()), style: Theme.of(context).textTheme.bodySmall),
+                          ],
+                        ),
                       )
                     ],
                   ),
-                )
+                ),
+
+                Container(
+                  margin: const EdgeInsets.symmetric(vertical: 5),
+                  child: Container(
+                    margin: const EdgeInsets.symmetric(vertical: 5),
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.stretch,
+                      children: [
+                        Text("Description :", style: Theme.of(context).textTheme.titleSmall),
+                        Text(widget.product.description, style: Theme.of(context).textTheme.bodySmall),
+                      ],
+                    ),
+                  ),
+                ),
               ]
             )
-          )),
+          ),
 
           widget.product.seller.email != user.email ?
-            SliverToBoxAdapter(child: Container(
-              margin: const EdgeInsets.all(20),
+            Container(
+              margin: const EdgeInsets.fromLTRB(20, 10, 20, 20),
               padding: const EdgeInsets.all(20),
               decoration: BoxDecoration(
                 color: colors.surface,
@@ -160,18 +186,18 @@ class _ProductDetailsScreenState extends State<ProductDetailsScreen> {
                   )
                 ]
               )
-            ))
-          : SliverToBoxAdapter(child:Container()),
+            )
+          : Container(),
 
-          SliverToBoxAdapter(child: Container(
+          Container(
             margin: const EdgeInsets.fromLTRB(20, 10, 20, 30),
             child: widget.screen != 'order' ?
             _isInCart
-              ? OutlinedButton(onPressed: _toggleInCart, style: OutlinedButton.styleFrom(shape: const StadiumBorder(), side: BorderSide(width: 2, color: colors.primary)), child: Text("Retirer du panier", style: TextStyle(fontSize: Theme.of(context).textTheme.labelSmall?.fontSize, color: colors.primary), textAlign: TextAlign.center))
+              ? OutlinedButton(onPressed: _toggleInCart, style: OutlinedButton.styleFrom(shape: const StadiumBorder(), side: BorderSide(width: 2, color: colors.primary), backgroundColor: colors.surface), child: Text("Retirer du panier", style: TextStyle(fontSize: Theme.of(context).textTheme.labelSmall?.fontSize, color: colors.primary), textAlign: TextAlign.center))
 
               : ElevatedButton(onPressed: _toggleInCart, style: ElevatedButton.styleFrom(shape: const StadiumBorder(), backgroundColor: colors.primary),  child: Text("Ajouter au panier", style: TextStyle(fontSize: Theme.of(context).textTheme.labelSmall?.fontSize, color: colors.onPrimary), textAlign: TextAlign.center))
             : Container()
-          ))
+          )
         ]
       )
     );

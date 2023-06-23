@@ -40,6 +40,8 @@ Future<List<Product>> fetchCloseProducts() async {
       productSnapshot['pictureUrl'],
       productSnapshot['type'],
       productSnapshot['price'],
+      productSnapshot['expirationDate'].toDate(),
+      productSnapshot['description'],
       UserModel.fromSnapshot(sellerSnapshot)
     );
 
@@ -73,9 +75,9 @@ class _CloseProductsListState extends State<CloseProductsList> {
     return Scaffold(
       key: _refreshKey,
       appBar: const CustomAppBar(text: "Produits proches"),
-      body: CustomScrollView(
-        slivers: [
-          SliverToBoxAdapter(child: FutureBuilder<List<Product>>(
+      body: ListView(
+        children: [
+          FutureBuilder<List<Product>>(
             future: futureCloseProductsList,
             builder: (context, snapshot) {
               if (snapshot.hasData) {
@@ -92,7 +94,7 @@ class _CloseProductsListState extends State<CloseProductsList> {
               // By default, show a loading spinner.
               return const Center(child: CircularProgressIndicator());
             },
-          ))
+          )
         ]
       )
     );

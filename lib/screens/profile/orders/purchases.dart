@@ -55,9 +55,9 @@ class _PurchasesScreenState extends State<PurchasesScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: const CustomAppBar(text: "Mes achats"),
-      body: CustomScrollView(
-        slivers: [
-          SliverToBoxAdapter(child: FutureBuilder<List<order_model.Order>>(
+      body: ListView(
+        children: [
+          FutureBuilder<List<order_model.Order>>(
             future: futurePurchasesList,
             builder: (context, snapshot) {
               if (snapshot.hasData) {
@@ -74,7 +74,7 @@ class _PurchasesScreenState extends State<PurchasesScreen> {
               // By default, show a loading spinner.
               return const Center(child: CircularProgressIndicator());
             },
-          ))
+          )
         ]
       )
     );
