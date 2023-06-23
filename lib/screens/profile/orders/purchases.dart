@@ -24,13 +24,13 @@ Future<List<order_model.Order>> fetchPurchases() async {
   QuerySnapshot ordersSnapshot =  await FirebaseFirestore.instance.collection('orders').where("buyer", isEqualTo: FirebaseFirestore.instance.doc("sellers/${user.id}")).get();
 
   for (final orderSnapshot in ordersSnapshot.docs) {
-    List<Product> products = await order_model.OrderQuery().getOrderProducts(orderSnapshot.reference.id);
-
     DocumentSnapshot<Map<String, dynamic>> sellerSnapshot = await orderSnapshot["seller"].get();
     UserModel seller = UserModel.fromSnapshot(sellerSnapshot);
 
     DocumentSnapshot<Map<String, dynamic>> buyerSnapshot = await orderSnapshot["buyer"].get();
     UserModel buyer = UserModel.fromSnapshot(buyerSnapshot);
+
+    List<Product> products = await order_model.OrderQuery().getOrderProducts(orderSnapshot.reference.id, seller);
 
     order_model.Order order = order_model.Order(orderSnapshot.reference.id, seller, buyer, orderSnapshot['createdAt'], orderSnapshot['appointment'], products);
 
@@ -55,9 +55,9 @@ class _PurchasesScreenState extends State<PurchasesScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: const CustomAppBar(text: "Mes achats"),
-      body: CustomScrollView(
-        slivers: [
-          SliverToBoxAdapter(child: FutureBuilder<List<order_model.Order>>(
+      body: ListView(
+        children: [
+          FutureBuilder<List<order_model.Order>>(
             future: futurePurchasesList,
             builder: (context, snapshot) {
               if (snapshot.hasData) {
@@ -74,7 +74,7 @@ class _PurchasesScreenState extends State<PurchasesScreen> {
               // By default, show a loading spinner.
               return const Center(child: CircularProgressIndicator());
             },
-          ))
+          )
         ]
       )
     );

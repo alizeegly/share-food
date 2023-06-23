@@ -6,7 +6,9 @@ class Product {
   late String pictureUrl;
   late String type;
   late num price;
-  late UserModel? seller;
+  late DateTime expirationDate;
+  late String description;
+  late UserModel seller;
 
-  Product(this.id, this.name, this.pictureUrl, this.type, this.price, [this.seller]);
+  Product(this.id, this.name, this.pictureUrl, this.type, this.price, this.expirationDate, this.description, this.seller);
 }

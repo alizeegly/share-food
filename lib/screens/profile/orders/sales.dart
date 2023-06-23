@@ -23,13 +23,13 @@ Future<List<order_model.Order>> fetchSales() async {
   QuerySnapshot ordersSnapshot =  await FirebaseFirestore.instance.collection('orders').where("seller", isEqualTo: FirebaseFirestore.instance.doc("sellers/${user.id}")).get();
 
   for (final orderSnapshot in ordersSnapshot.docs) {
-    List<Product> products = await order_model.OrderQuery().getOrderProducts(orderSnapshot.reference.id);
-
     DocumentSnapshot<Map<String, dynamic>> sellerSnapshot = await orderSnapshot["seller"].get();
     UserModel seller = UserModel.fromSnapshot(sellerSnapshot);
 
     DocumentSnapshot<Map<String, dynamic>> buyerSnapshot = await orderSnapshot["buyer"].get();
     UserModel buyer = UserModel.fromSnapshot(buyerSnapshot);
+
+    List<Product> products = await order_model.OrderQuery().getOrderProducts(orderSnapshot.reference.id, seller);
 
     order_model.Order order = order_model.Order(orderSnapshot.reference.id, seller, buyer, orderSnapshot['createdAt'], orderSnapshot['appointment'], products);
 
@@ -73,9 +73,9 @@ class _SalesScreenState extends State<SalesScreen> {
         body: TabBarView(
           children: [
             // 1) Commandes en attente
-            CustomScrollView(
-              slivers: [
-                SliverToBoxAdapter(child: FutureBuilder<List<order_model.Order>>(
+            ListView(
+              children: [
+                FutureBuilder<List<order_model.Order>>(
                   future: futureSalesList,
                   builder: (context, snapshot) {
                     if (snapshot.hasData) {
@@ -92,14 +92,14 @@ class _SalesScreenState extends State<SalesScreen> {
                     // By default, show a loading spinner.
                     return const Center(child: CircularProgressIndicator());
                   },
-                ))
+                )
               ]
             ),
             
             // 2) Commandes passées
-            CustomScrollView(
-              slivers: [
-                SliverToBoxAdapter(child: FutureBuilder<List<order_model.Order>>(
+            ListView(
+              children: [
+                FutureBuilder<List<order_model.Order>>(
                   future: futureSalesList,
                   builder: (context, snapshot) {
                     if (snapshot.hasData) {
@@ -116,7 +116,7 @@ class _SalesScreenState extends State<SalesScreen> {
                     // By default, show a loading spinner.
                     return const Center(child: CircularProgressIndicator());
                   },
-                ))
+                )
               ]
             ),
           ],

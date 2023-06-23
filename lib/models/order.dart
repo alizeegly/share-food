@@ -14,7 +14,7 @@ class Order {
 }
 
 class OrderQuery {
-  Future<List<Product>> getOrderProducts(orderId) async {
+  Future<List<Product>> getOrderProducts(String orderId, UserModel seller) async {
     List<Product> products = [];
 
     QuerySnapshot productsSnapshot =  await FirebaseFirestore.instance.collection('products').where("order", isEqualTo: FirebaseFirestore.instance.doc("orders/$orderId")).get();
@@ -25,7 +25,10 @@ class OrderQuery {
         productSnapshot['name'],
         productSnapshot['pictureUrl'],
         productSnapshot['type'],
-        productSnapshot['price']
+        productSnapshot['price'],
+        productSnapshot['expirationDate'].toDate(),
+        productSnapshot['description'],
+        seller
       );
 
       products.add(product);

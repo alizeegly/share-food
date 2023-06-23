@@ -25,7 +25,7 @@ Future<List<Product>> fetchCloseProducts() async {
   // If there's a product in cart, we have to filter the products to get only the products of the same seller
   List<Product> cart = await CartStorage().readCart();
   if (cart.isNotEmpty) {
-    String sellerId = cart[0].seller!.id!;
+    String sellerId = cart[0].seller.id!;
     productsSnapshot =  await FirebaseFirestore.instance.collection('products').where("seller", isEqualTo: FirebaseFirestore.instance.doc("sellers/$sellerId")).where("order", isEqualTo: false).get();
   } else {
     productsSnapshot = await FirebaseFirestore.instance.collection('products').where("order", isEqualTo: false).where("seller", isNotEqualTo: FirebaseFirestore.instance.doc("sellers/${user.id}")).get();
@@ -40,6 +40,8 @@ Future<List<Product>> fetchCloseProducts() async {
       productSnapshot['pictureUrl'],
       productSnapshot['type'],
       productSnapshot['price'],
+      productSnapshot['expirationDate'].toDate(),
+      productSnapshot['description'],
       UserModel.fromSnapshot(sellerSnapshot)
     );
 
@@ -73,9 +75,9 @@ class _CloseProductsListState extends State<CloseProductsList> {
     return Scaffold(
       key: _refreshKey,
       appBar: const CustomAppBar(text: "Produits proches"),
-      body: CustomScrollView(
-        slivers: [
-          SliverToBoxAdapter(child: FutureBuilder<List<Product>>(
+      body: ListView(
+        children: [
+          FutureBuilder<List<Product>>(
             future: futureCloseProductsList,
             builder: (context, snapshot) {
               if (snapshot.hasData) {
@@ -92,7 +94,7 @@ class _CloseProductsListState extends State<CloseProductsList> {
               // By default, show a loading spinner.
               return const Center(child: CircularProgressIndicator());
             },
-          ))
+          )
         ]
       )
     );

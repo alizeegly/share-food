@@ -27,7 +27,7 @@ class _OrderProductItemLayoutGridState extends State<OrderProductItemLayoutGrid>
         columnGap: 20,
         children: [
           for (var i = 0; i < widget.products.length; i++)
-            ProductItem(product: widget.products[i], storage: CartStorage(), screen: "order",),
+            ProductItem(product: widget.products[i], storage: CartStorage(), screen: "order", notifyParent: (){},),
         ],
       ),
     );

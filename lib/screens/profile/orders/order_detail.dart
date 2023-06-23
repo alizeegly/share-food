@@ -21,13 +21,11 @@ class _OrderDetailScreenState extends State<OrderDetailScreen> {
 
     return Scaffold(
       appBar: CustomAppBar(text: widget.type == 'purchase' ? "Commande n° ${widget.order.id}" : "Vente n° ${widget.order.id}"),
-      body: CustomScrollView(
-        slivers: [
-          SliverToBoxAdapter(
-            child: OrderProductItemLayoutGrid(products: widget.order.products)
-          ),
+      body: ListView(
+        children: [
+          OrderProductItemLayoutGrid(products: widget.order.products),
 
-          SliverToBoxAdapter(child: Container(
+          Container(
               margin: const EdgeInsets.all(20),
               padding: const EdgeInsets.all(20),
               decoration: BoxDecoration(
@@ -156,7 +154,6 @@ class _OrderDetailScreenState extends State<OrderDetailScreen> {
                 ]
               )
             )
-          )
         ]
       )
     );
