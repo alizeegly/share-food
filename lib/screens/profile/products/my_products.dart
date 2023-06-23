@@ -1,39 +1,30 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:sharefood/controllers/profile_controller.dart';
-import 'package:sharefood/models/cart.dart';
 import 'package:sharefood/models/product.dart';
 import 'package:sharefood/models/user_model.dart';
 import 'package:sharefood/widgets/custom_appbar.dart';
+import 'package:sharefood/widgets/products/my_product_item_layout_grid.dart';
 import 'package:sharefood/widgets/products/product_item_layout_grid.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 
-class CloseProductsList extends StatefulWidget {
-  const CloseProductsList({super.key});
+class MyProductsList extends StatefulWidget {
+  const MyProductsList({super.key});
 
   @override
-  State<CloseProductsList> createState() => _CloseProductsListState();
+  State<MyProductsList> createState() => _MyProductsListState();
 }
 
-Future<List<Product>> fetchCloseProducts() async {
+Future<List<Product>> fetchMyProducts() async {
   List<Product> products = [];
   QuerySnapshot productsSnapshot;
 
   final controller = Get.put(ProfileController());
   UserModel user = await controller.getUserData();
-
-  // If there's a product in cart, we have to filter the products to get only the products of the same seller
-  List<Product> cart = await CartStorage().readCart();
-  if (cart.isNotEmpty) {
-    String sellerId = cart[0].seller.id!;
-    productsSnapshot =  await FirebaseFirestore.instance.collection('products').where("seller", isEqualTo: FirebaseFirestore.instance.doc("sellers/$sellerId")).where("order", isEqualTo: false).get();
-  } else {
-    productsSnapshot = await FirebaseFirestore.instance.collection('products').where("order", isEqualTo: false).where("seller", isNotEqualTo: FirebaseFirestore.instance.doc("sellers/${user.id}")).get();
-  }
+  
+  productsSnapshot = await FirebaseFirestore.instance.collection('products').where("seller", isEqualTo: FirebaseFirestore.instance.doc("sellers/${user.id}")).get();
 
   for (final productSnapshot in productsSnapshot.docs) {
-    DocumentSnapshot<Map<String, dynamic>> sellerSnapshot = await productSnapshot["seller"].get();
-
     Product product = Product(
       productSnapshot.reference.id,
       productSnapshot['name'],
@@ -42,8 +33,8 @@ Future<List<Product>> fetchCloseProducts() async {
       productSnapshot['price'],
       productSnapshot['expirationDate'].toDate(),
       productSnapshot['description'],
-      UserModel.fromSnapshot(sellerSnapshot),
-      false
+      user,
+      productSnapshot['order'] != false ? true : false
     );
 
     products.add(product);
@@ -52,13 +43,13 @@ Future<List<Product>> fetchCloseProducts() async {
   return products;
 }
 
-class _CloseProductsListState extends State<CloseProductsList> {
-  late Future<List<Product>> futureCloseProductsList;
+class _MyProductsListState extends State<MyProductsList> {
+  late Future<List<Product>> futureMyProductsList;
   Key _refreshKey = UniqueKey();
   
   void refresh() {
     setState(() {
-      futureCloseProductsList = fetchCloseProducts();
+      futureMyProductsList = fetchMyProducts();
       _refreshKey = UniqueKey();
     });
   }
@@ -67,26 +58,39 @@ class _CloseProductsListState extends State<CloseProductsList> {
   void initState() {
     super.initState();
     setState(() {
-      futureCloseProductsList = fetchCloseProducts();
+      futureMyProductsList = fetchMyProducts();
     });
   }
 
   @override
   Widget build(BuildContext context) {
+    final ColorScheme colors = Theme.of(context).colorScheme;
+
     return Scaffold(
       key: _refreshKey,
-      appBar: const CustomAppBar(text: "Produits proches"),
+      appBar: const CustomAppBar(text: "Mes produits"),
       body: ListView(
         children: [
+          Container(
+            margin: const EdgeInsets.fromLTRB(20, 10, 20, 30),
+            child: ElevatedButton(
+              onPressed: () {
+                // Navigator.push(context, MaterialPageRoute(builder: (context) => PaymentScreen(storage: CartStorage())));
+              },
+              style: ElevatedButton.styleFrom(shape: const StadiumBorder(), backgroundColor: colors.primary),
+              child: Text("Ajouter un produit", style: TextStyle(fontSize: Theme.of(context).textTheme.labelLarge?.fontSize, color: colors.onPrimary), textAlign: TextAlign.center)
+            )
+          ),
+
           FutureBuilder<List<Product>>(
-            future: futureCloseProductsList,
+            future: futureMyProductsList,
             builder: (context, snapshot) {
               if (snapshot.hasData) {
                 if (snapshot.data!.isNotEmpty) {
-                  return ProductItemLayoutGrid(products: snapshot.data!, notifyParent: refresh);
+                  return MyProductItemLayoutGrid(products: snapshot.data!);
                 }
                 else {
-                  return Container(margin: const EdgeInsets.all(20), child: const Text("Oups ! Aucun produit n'est en vente à proximité... Revenez plus tard !"));
+                  return Container(margin: const EdgeInsets.all(20), child: const Text("Vous n'avez aucun produit... Ajoutez votre premier produit à l'aide du bouton ci-dessus !"));
                 }
               } else if (snapshot.hasError) {
                 return Text('${snapshot.error}');

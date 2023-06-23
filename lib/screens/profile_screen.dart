@@ -3,6 +3,7 @@ import 'package:sharefood/models/user_model.dart';
 import 'package:sharefood/repository/authentication_repository/auth_repository.dart';
 import 'package:sharefood/screens/profile/orders/purchases.dart';
 import 'package:sharefood/screens/profile/orders/sales.dart';
+import 'package:sharefood/screens/profile/products/my_products.dart';
 import 'package:sharefood/screens/profile/update_profile_screen.dart';
 import 'package:sharefood/widgets/custom_appbar.dart';
 import 'package:sharefood/widgets/custom_button.dart';
@@ -69,7 +70,9 @@ class _ProfileScreenState extends State<ProfileScreen> {
                       ProfileMenuWidget(
                         title: "Gérer mes produits",
                         icon: Icons.shopping_cart_outlined,
-                        onPressed: () {},
+                        onPressed: () {
+                          Navigator.push(context, MaterialPageRoute(builder: (context) => const MyProductsList()));
+                        },
                       ),
                       ProfileMenuWidget(
                         title: "Consulter mes achats",

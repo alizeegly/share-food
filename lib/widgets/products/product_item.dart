@@ -126,12 +126,21 @@ class _ProductItemState extends State<ProductItem> {
             
                       Container(margin: const EdgeInsets.symmetric(vertical: 10, horizontal: 0), child: Text('${widget.product.price.toStringAsFixed(2)}€', style: const TextStyle(fontFamily: 'Montserrat SemiBold', fontSize: 20), textAlign: TextAlign.center)),
             
-                      widget.screen != 'order' ?
-                        _isInCart
-                          ? OutlinedButton(onPressed: _toggleInCart, style: OutlinedButton.styleFrom(shape: const StadiumBorder(), side: BorderSide(width: 2, color: colors.primary)), child: Text("Retirer du panier", style: TextStyle(fontSize: Theme.of(context).textTheme.labelSmall?.fontSize, color: colors.primary), textAlign: TextAlign.center))
+                      widget.screen != 'order'  && widget.screen != 'myProducts' ?
+                        
+                        _isInCart ?
+                          OutlinedButton(onPressed: _toggleInCart, style: OutlinedButton.styleFrom(shape: const StadiumBorder(), side: BorderSide(width: 2, color: colors.primary)), child: Text("Retirer du panier", style: TextStyle(fontSize: Theme.of(context).textTheme.labelSmall?.fontSize, color: colors.primary), textAlign: TextAlign.center))
             
                           : ElevatedButton(onPressed: _toggleInCart, style: ElevatedButton.styleFrom(shape: const StadiumBorder(), backgroundColor: colors.primary),  child: Text("Ajouter au panier", style: TextStyle(fontSize: Theme.of(context).textTheme.labelSmall?.fontSize, color: colors.onPrimary), textAlign: TextAlign.center))
-                        : Container()
+                      
+                      : widget.screen == 'myProducts' ? 
+                        
+                        widget.product.sold ?
+                          OutlinedButton(onPressed: null, style: OutlinedButton.styleFrom(shape: const StadiumBorder(), side: BorderSide(width: 2, color: colors.primary)), child: Text("Vendu", style: TextStyle(fontSize: Theme.of(context).textTheme.labelSmall?.fontSize, color: colors.primary), textAlign: TextAlign.center))
+            
+                          : ElevatedButton(onPressed: () {}, style: ElevatedButton.styleFrom(shape: const StadiumBorder(), backgroundColor: colors.error),  child: Text("Supprimer", style: TextStyle(fontSize: Theme.of(context).textTheme.labelSmall?.fontSize, color: colors.onPrimary), textAlign: TextAlign.center))
+
+                      : Container()
                     ]
                   )
                 )
