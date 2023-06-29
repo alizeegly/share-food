@@ -95,8 +95,9 @@ class _ProductDetailsScreenState extends State<ProductDetailsScreen> {
                 Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
-                    Text(widget.product.name, style: Theme.of(context).textTheme.headlineSmall),
-                    Text("${widget.product.price.toStringAsFixed(2)}€", style: Theme.of(context).textTheme.headlineSmall)
+                    Flexible(child: Text(widget.product.name, style: Theme.of(context).textTheme.headlineSmall),),
+                    const SizedBox(width: 5),
+                    Text("${widget.product.price.toStringAsFixed(2)}€",style: Theme.of(context).textTheme.headlineSmall),
                   ]
                 ),
 
