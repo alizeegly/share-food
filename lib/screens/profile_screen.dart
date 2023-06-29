@@ -26,7 +26,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
       appBar: const CustomAppBar(text: "Paramètres"),
       body: SingleChildScrollView(
         child: Container(
-          padding: const EdgeInsets.all(30.0),
+          padding: const EdgeInsets.all(15.0),
           child: FutureBuilder(
             future: controller.getUserData(),
             builder: (context, snapshot){
