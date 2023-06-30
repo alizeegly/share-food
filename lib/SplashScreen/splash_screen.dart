@@ -39,14 +39,14 @@ class _SplashScreenState extends State<SplashScreen> {
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
               Image.asset(
-                "assets/images/image2.png",
+                "assets/images/icon.png",
                 width: 100
               ),
               const SizedBox(height: 10),
               const Padding(
                 padding: EdgeInsets.all(18.0),
                 child: Text(
-                  "Slogan de l'app",
+                  "Share My Food",
                   textAlign: TextAlign.center,
                   style: TextStyle(
                     color: Colors.black54,
