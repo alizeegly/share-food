@@ -7,7 +7,7 @@ import 'package:sharefood/models/product.dart';
 import 'package:sharefood/models/user_model.dart';
 import 'package:sharefood/screens/checkout_funnel/payment_confirm.dart';
 import 'package:sharefood/widgets/custom_appbar.dart';
-import 'package:sharefood/widgets/custom_date_time_field.dart';
+import 'package:sharefood/widgets/form_fields/custom_date_time_field.dart';
 import 'package:date_format/date_format.dart';
 import 'package:intl/intl.dart';
 
