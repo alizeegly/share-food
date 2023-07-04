@@ -44,7 +44,7 @@ class _PaymentScreenState extends State<PaymentScreen> {
   late String _hour, _minute, _time;
   late String dateTime;
   DateTime selectedDate = DateTime.now();
-  TimeOfDay selectedTime = const TimeOfDay(hour: 12, minute: 00);
+  TimeOfDay selectedTime = TimeOfDay(hour: DateTime.now().hour, minute: DateTime.now().minute);
 
   final TextEditingController _dateController = TextEditingController();
   final TextEditingController _timeController = TextEditingController();
