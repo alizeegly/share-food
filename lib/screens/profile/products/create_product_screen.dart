@@ -6,6 +6,7 @@ import 'package:sharefood/controllers/profile_controller.dart';
 import 'package:sharefood/models/user_model.dart';
 import 'package:sharefood/widgets/custom_appbar.dart';
 import 'package:sharefood/widgets/custom_button.dart';
+import 'package:sharefood/widgets/form_fields/custom_date_time_field.dart';
 import 'package:sharefood/widgets/form_fields/custom_number_field.dart';
 import 'package:sharefood/widgets/form_fields/custom_text_field.dart';
 
@@ -28,7 +29,7 @@ class _CreateProductScreenState extends State<CreateProductScreen> {
     UserModel user = await controller.getUserData();
     var product = {
       "description": descriptionController.text.trim(),
-      "expirationDate": Timestamp.now(),
+      "expirationDate": Timestamp.fromDate(DateTime(selectedDate.year, selectedDate.month, selectedDate.day, 0, 0)),
       "name": nameController.text.trim(),
       "order": false,
       "pictureUrl": "https://www.bricozor.com/static/img/visuel-indisponible-650.png",
@@ -39,6 +40,36 @@ class _CreateProductScreenState extends State<CreateProductScreen> {
 
     // Créer le produit dans Firestore
     /*DocumentReference<Map<String, dynamic>> newProductsnapshot =*/ await FirebaseFirestore.instance.collection("products").add(product);
+  }
+
+  // Datetime picker
+  String? _setDate;
+  late String dateTime;
+  DateTime selectedDate = DateTime.now();
+
+  final TextEditingController _dateController = TextEditingController();
+  
+  Future<void> _selectDate(BuildContext context) async {
+    final DateTime? picked = await showDatePicker(
+      context: context,
+      initialDate: selectedDate,
+      initialDatePickerMode: DatePickerMode.day,
+      firstDate: DateTime(2023),
+      lastDate: DateTime(2100),
+      locale: const Locale('fr', 'FR')
+    );
+    if (picked != null){
+      setState(() {
+        selectedDate = picked;
+        _dateController.text = DateFormat("dd/MM/yyyy").format(selectedDate);
+      });
+    }
+  }
+
+  @override
+  void initState() {
+    _dateController.text = "";
+    super.initState();
   }
 
   @override
@@ -60,19 +91,39 @@ class _CreateProductScreenState extends State<CreateProductScreen> {
                       hintText: "Nom",
                       isObsecre: false,
                     ),
+
                     const SizedBox(height: 17),
+
                     CustomTextField(
                       controller: typeController,
                       hintText: "Type de produit",
                       isObsecre: false,
                     ),
+
                     const SizedBox(height: 17),
+
                     CustomTextField(
                       controller: descriptionController,
                       hintText: "Description",
                       isObsecre: false,
                     ),
+
                     const SizedBox(height: 17),
+
+                    InkWell(
+                      onTap: () {
+                        _selectDate(context);
+                      },
+                      child: CustomDateTimeField(
+                        controller: _dateController,
+                        setState: _setDate,
+                        hintText: "Date de péremption",
+                        isObsecre: false,
+                      )
+                    ),
+
+                    const SizedBox(height: 17),
+
                     CustomNumberField(
                       controller: priceController,
                       hintText: "Prix (en euros)",
