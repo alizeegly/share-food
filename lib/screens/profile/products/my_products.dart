@@ -75,7 +75,9 @@ class _MyProductsListState extends State<MyProductsList> {
             margin: const EdgeInsets.fromLTRB(20, 10, 20, 0),
             child: ElevatedButton(
               onPressed: () {
-                Navigator.push(context, MaterialPageRoute(builder: (context) => const CreateProductScreen()));
+                Navigator.push(context, MaterialPageRoute(builder: (context) => const CreateProductScreen())).then((_) {
+                  refresh();
+                });
               },
               style: ElevatedButton.styleFrom(shape: const StadiumBorder(), backgroundColor: colors.primary),
               child: Text("Ajouter un produit", style: TextStyle(fontSize: Theme.of(context).textTheme.labelLarge?.fontSize, color: colors.onPrimary), textAlign: TextAlign.center)

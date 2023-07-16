@@ -1,12 +1,13 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 import 'package:intl/intl.dart';
+import 'package:sharefood/controllers/profile_controller.dart';
 import 'package:sharefood/models/user_model.dart';
 import 'package:sharefood/widgets/custom_appbar.dart';
 import 'package:sharefood/widgets/custom_button.dart';
 import 'package:sharefood/widgets/form_fields/custom_number_field.dart';
 import 'package:sharefood/widgets/form_fields/custom_text_field.dart';
-
-import 'package:intl/number_symbols.dart' as symbols;
 
 class CreateProductScreen extends StatefulWidget {
   const CreateProductScreen({super.key});
@@ -20,6 +21,25 @@ class _CreateProductScreenState extends State<CreateProductScreen> {
   TextEditingController descriptionController = TextEditingController(text: "");
   TextEditingController priceController = TextEditingController(text: "");
   TextEditingController typeController = TextEditingController(text: "");
+
+  void saveProduct() async {
+    // Créer l'objet json
+    final controller = Get.put(ProfileController());
+    UserModel user = await controller.getUserData();
+    var product = {
+      "description": descriptionController.text.trim(),
+      "expirationDate": Timestamp.now(),
+      "name": nameController.text.trim(),
+      "order": false,
+      "pictureUrl": "https://www.bricozor.com/static/img/visuel-indisponible-650.png",
+      "price": double.parse(priceController.text.trim().replaceAll(',', '.')),
+      "seller": FirebaseFirestore.instance.doc("sellers/${user.id}"),
+      "type": typeController.text.trim()
+    };
+
+    // Créer le produit dans Firestore
+    /*DocumentReference<Map<String, dynamic>> newProductsnapshot =*/ await FirebaseFirestore.instance.collection("products").add(product);
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -64,10 +84,8 @@ class _CreateProductScreenState extends State<CreateProductScreen> {
               const SizedBox(height: 30),
               CustomButton(
                 onPressed: () {
-                  print(nameController.text.trim());
-                  print(typeController.text.trim());
-                  print(descriptionController.text.trim());
-                  print(double.parse(priceController.text.trim().replaceAll(',', '.')));
+                  saveProduct();
+                  Navigator.pop(context);
                 },
                 color: colors.primary,
                 text: "Proposer mon produit",
