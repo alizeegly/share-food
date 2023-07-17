@@ -54,6 +54,7 @@ class _CreateProductScreenState extends State<CreateProductScreen> {
     });
 
     // Validation
+    // Valeurs nulles
     if (
       descriptionController.text.trim() == "" ||
       selectedDate == null ||
@@ -71,6 +72,22 @@ class _CreateProductScreenState extends State<CreateProductScreen> {
         colorText: Colors.white
       );
       throw Exception("Tous les champs sont obligatoires");
+    }
+
+    // Prix valide
+    if (
+      double.tryParse(priceController.text.trim().replaceAll(',', '.')) == null ||
+      double.parse(priceController.text.trim().replaceAll(',', '.')) <= 0
+    ) {
+      setState(() {
+        isLoading = false;
+      });
+      Get.snackbar("Erreur", "Le prix n'est pas valide", 
+        snackPosition: SnackPosition.BOTTOM,
+        backgroundColor: Colors.redAccent.withOpacity(0.8),
+        colorText: Colors.white
+      );
+      throw Exception("Le prix n'est pas valide");
     }
 
     // Uploader l'image
