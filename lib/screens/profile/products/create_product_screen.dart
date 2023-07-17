@@ -12,6 +12,7 @@ import 'package:sharefood/widgets/form_fields/custom_date_time_field.dart';
 import 'package:sharefood/widgets/form_fields/custom_number_field.dart';
 import 'package:sharefood/widgets/form_fields/custom_text_field.dart';
 import 'package:firebase_storage/firebase_storage.dart' as fStorage;
+import 'package:dropdown_button2/dropdown_button2.dart';
 
 class CreateProductScreen extends StatefulWidget {
   const CreateProductScreen({super.key});
@@ -24,7 +25,18 @@ class _CreateProductScreenState extends State<CreateProductScreen> {
   TextEditingController nameController = TextEditingController(text: "");
   TextEditingController descriptionController = TextEditingController(text: "");
   TextEditingController priceController = TextEditingController(text: "");
-  TextEditingController typeController = TextEditingController(text: "");
+
+  final List<String> types = [
+    'Fruit',
+    'Légume',
+    'Féculent',
+    'Conserve',
+    'Produit laitier',
+    'Eau et boisson',
+    'Dessert',
+    'Plat préparé'
+  ];
+  String? selectedType;
 
   String? _setDate;
   late String dateTime;
@@ -48,7 +60,7 @@ class _CreateProductScreenState extends State<CreateProductScreen> {
       nameController.text.trim() == "" ||
       imageXFile == null ||
       priceController.text.trim() == "" ||
-      typeController.text.trim() == ""
+      selectedType == null
     ) {
       setState(() {
         isLoading = false;
@@ -79,7 +91,7 @@ class _CreateProductScreenState extends State<CreateProductScreen> {
       "pictureUrl": pictureUrl,
       "price": double.parse(priceController.text.trim().replaceAll(',', '.')),
       "seller": FirebaseFirestore.instance.doc("sellers/${user.id}"),
-      "type": typeController.text.trim()
+      "type": selectedType
     };
 
     // Créer le produit dans Firestore
@@ -170,10 +182,51 @@ class _CreateProductScreenState extends State<CreateProductScreen> {
 
                     const SizedBox(height: 17),
 
-                    CustomTextField(
-                      controller: typeController,
-                      hintText: "Type de produit",
-                      isObsecre: false,
+                    DropdownButtonHideUnderline(
+                      child: DropdownButton2<String>(
+                        isExpanded: true,
+                        hint: Text(
+                          'Type de produit',
+                          style: TextStyle(
+                            fontFamily: 'Montserrat Medium',
+                            fontSize: 15,
+                            color: Colors.grey.shade800
+                          ),
+                        ),
+                        items: types
+                            .map((String item) => DropdownMenuItem<String>(
+                                  value: item,
+                                  child: Text(
+                                    item,
+                                    style: const TextStyle(
+                                      fontFamily: 'Montserrat Medium',
+                                      fontSize: 15,
+                                      color: Colors.black
+                                    ),
+                                  ),
+                                ))
+                            .toList(),
+                        value: selectedType,
+                        onChanged: (String? value) {
+                          setState(() {
+                            selectedType = value;
+                          });
+                        },
+                        buttonStyleData: const ButtonStyleData(
+                          padding: EdgeInsets.all(5),
+                          height: 50,
+                          width: 140,
+                          decoration: BoxDecoration(
+                            border: Border(bottom: BorderSide(color: Colors.black, style: BorderStyle.solid)),
+                          )
+                        ),
+                        menuItemStyleData: const MenuItemStyleData(
+                          height: 40
+                        ),
+                        dropdownStyleData: const DropdownStyleData(
+                          maxHeight: 170,
+                        ),
+                      )
                     ),
 
                     const SizedBox(height: 17),
