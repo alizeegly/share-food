@@ -28,7 +28,7 @@ class _CreateProductScreenState extends State<CreateProductScreen> {
 
   String? _setDate;
   late String dateTime;
-  DateTime selectedDate = DateTime.now();
+  DateTime? selectedDate;
   final TextEditingController _dateController = TextEditingController();
 
   XFile? imageXFile;
@@ -41,10 +41,30 @@ class _CreateProductScreenState extends State<CreateProductScreen> {
       isLoading = true;
     });
 
+    // Validation
+    if (
+      descriptionController.text.trim() == "" ||
+      selectedDate == null ||
+      nameController.text.trim() == "" ||
+      imageXFile == null ||
+      priceController.text.trim() == "" ||
+      typeController.text.trim() == ""
+    ) {
+      setState(() {
+        isLoading = false;
+      });
+      Get.snackbar("Erreur", "Tous les champs sont obligatoires", 
+        snackPosition: SnackPosition.BOTTOM,
+        backgroundColor: Colors.redAccent.withOpacity(0.8),
+        colorText: Colors.white
+      );
+      throw Exception("Tous les champs sont obligatoires");
+    }
+
     // Uploader l'image
     String filename = DateTime.now().millisecondsSinceEpoch.toString();
     fStorage.Reference reference = fStorage.FirebaseStorage.instance.ref().child("products").child(filename);
-    fStorage.UploadTask uploadTask = reference.putFile(File(imageXFile!.path)); // TODO VALIDATION
+    fStorage.UploadTask uploadTask = reference.putFile(File(imageXFile!.path));
     fStorage.TaskSnapshot taskSnapshot = await uploadTask.whenComplete(() => {});
     pictureUrl = await taskSnapshot.ref.getDownloadURL();
 
@@ -53,7 +73,7 @@ class _CreateProductScreenState extends State<CreateProductScreen> {
     UserModel user = await controller.getUserData();
     var product = {
       "description": descriptionController.text.trim(),
-      "expirationDate": Timestamp.fromDate(DateTime(selectedDate.year, selectedDate.month, selectedDate.day, 0, 0)),
+      "expirationDate": Timestamp.fromDate(DateTime(selectedDate!.year, selectedDate!.month, selectedDate!.day, 0, 0)),
       "name": nameController.text.trim(),
       "order": false,
       "pictureUrl": pictureUrl,
@@ -73,7 +93,7 @@ class _CreateProductScreenState extends State<CreateProductScreen> {
   Future<void> _selectDate(BuildContext context) async {
     final DateTime? picked = await showDatePicker(
       context: context,
-      initialDate: selectedDate,
+      initialDate: DateTime.now(),
       initialDatePickerMode: DatePickerMode.day,
       firstDate: DateTime(2023),
       lastDate: DateTime(2100),
@@ -82,7 +102,7 @@ class _CreateProductScreenState extends State<CreateProductScreen> {
     if (picked != null){
       setState(() {
         selectedDate = picked;
-        _dateController.text = DateFormat("dd/MM/yyyy").format(selectedDate);
+        _dateController.text = DateFormat("dd/MM/yyyy").format(selectedDate!);
       });
     }
   }
