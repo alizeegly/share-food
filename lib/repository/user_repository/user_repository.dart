@@ -15,15 +15,15 @@ class UserRepository extends GetxController {
     await _db.collection("sellers").add(user.toJson()).whenComplete(
       () => Get.snackbar("Success", "Votre compte a bien été créé", 
         snackPosition: SnackPosition.TOP,
-        backgroundColor: Colors.green.withOpacity(0.1),
-        colorText: Colors.green
+        backgroundColor: Colors.green.withOpacity(0.8),
+        colorText: Colors.white
       )
     )
     .catchError((error, stackTrace) {
         Get.snackbar("Error", "Something went wrong. Try again.", 
           snackPosition: SnackPosition.TOP,
-          backgroundColor: Colors.redAccent.withOpacity(0.1),
-          colorText: Colors.red
+          backgroundColor: Colors.redAccent.withOpacity(0.8),
+          colorText: Colors.white
         );
         print(error.toString());
       });
@@ -41,15 +41,15 @@ class UserRepository extends GetxController {
     await _db.collection("sellers").doc(user.id).update(user.toJson()).whenComplete(
       () => Get.snackbar("Success", "Votre compte a bien été modifié", 
         snackPosition: SnackPosition.TOP,
-        backgroundColor: Colors.green.withOpacity(0.1),
+        backgroundColor: Colors.green.withOpacity(0.8),
         colorText: Colors.white
       )
     )
     .catchError((error, stackTrace) {
-        Get.snackbar("Error", "Something went wrong. Try again.", 
+        Get.snackbar("Error", "Oups ! Une erreur s'est produite. Réessayez.", 
           snackPosition: SnackPosition.TOP,
-          backgroundColor: Colors.redAccent.withOpacity(0.1),
-          colorText: Colors.red
+          backgroundColor: Colors.redAccent.withOpacity(0.8),
+          colorText: Colors.white
         );
         print(error.toString());
       });
