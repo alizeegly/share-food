@@ -36,7 +36,7 @@ class _HomeScreenState extends State<HomeScreen> with SingleTickerProviderStateM
 
   Container buildMyNavBar(BuildContext context) {
     return Container(
-      height: 70,
+      height: 55,
       decoration: const BoxDecoration(
         color: Colors.white,
       ),

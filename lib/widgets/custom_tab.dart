@@ -17,8 +17,7 @@ class CustomTabItem extends StatelessWidget {
     return Expanded(
       child: Container(
         decoration: BoxDecoration(
-          color: isSelected ? Theme.of(context).primaryColor : null,
-          border: const Border(right: BorderSide(width: 2.0, color: Colors.black)),
+          color: isSelected ? Theme.of(context).colorScheme.secondary : null
         ),
         padding: const EdgeInsets.all(0),
         child: IconButton(

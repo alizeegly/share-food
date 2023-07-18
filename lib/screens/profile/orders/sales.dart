@@ -58,7 +58,7 @@ class _SalesScreenState extends State<SalesScreen> {
       length: 2,
       child: Scaffold(
         appBar: AppBar(
-          title: const Text("Mes ventes"),
+          title: Text("Mes ventes", style: Theme.of(context).textTheme.headlineMedium),
           centerTitle: false,
           backgroundColor: colors.background,
           foregroundColor: colors.onBackground,
