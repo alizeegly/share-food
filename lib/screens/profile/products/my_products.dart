@@ -3,6 +3,7 @@ import 'package:get/get.dart';
 import 'package:sharefood/controllers/profile_controller.dart';
 import 'package:sharefood/models/product.dart';
 import 'package:sharefood/models/user_model.dart';
+import 'package:sharefood/screens/profile/products/create_product_screen.dart';
 import 'package:sharefood/widgets/custom_appbar.dart';
 import 'package:sharefood/widgets/products/my_product_item_layout_grid.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
@@ -71,10 +72,12 @@ class _MyProductsListState extends State<MyProductsList> {
       body: ListView(
         children: [
           Container(
-            margin: const EdgeInsets.fromLTRB(20, 10, 20, 30),
+            margin: const EdgeInsets.fromLTRB(20, 10, 20, 0),
             child: ElevatedButton(
               onPressed: () {
-                // Navigator.push(context, MaterialPageRoute(builder: (context) => PaymentScreen(storage: CartStorage())));
+                Navigator.push(context, MaterialPageRoute(builder: (context) => const CreateProductScreen())).then((_) {
+                  refresh();
+                });
               },
               style: ElevatedButton.styleFrom(shape: const StadiumBorder(), backgroundColor: colors.primary),
               child: Text("Ajouter un produit", style: TextStyle(fontSize: Theme.of(context).textTheme.labelLarge?.fontSize, color: colors.onPrimary), textAlign: TextAlign.center)

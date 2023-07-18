@@ -46,8 +46,9 @@ class CustomDateTimeField extends StatelessWidget {
           //   color: Colors.cyan
           // ),
           focusColor: Colors.grey,
-          labelStyle: const TextStyle(
-            fontSize: 15
+          labelStyle: TextStyle(
+            fontSize: 15,
+            color: Colors.grey.shade800
           ),
           // hintText: hintText,
           labelText: hintText
