@@ -4,7 +4,7 @@ import 'package:sharefood/controllers/profile_controller.dart';
 import 'package:sharefood/models/user_model.dart';
 import 'package:sharefood/widgets/custom_appbar.dart';
 import 'package:sharefood/widgets/custom_button.dart';
-import 'package:sharefood/widgets/custom_text_field.dart';
+import 'package:sharefood/widgets/form_fields/custom_text_field.dart';
 import 'package:intl/intl.dart';
 
 

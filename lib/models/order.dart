@@ -28,7 +28,8 @@ class OrderQuery {
         productSnapshot['price'],
         productSnapshot['expirationDate'].toDate(),
         productSnapshot['description'],
-        seller
+        seller,
+        true
       );
 
       products.add(product);

@@ -192,7 +192,7 @@ class _ProductDetailsScreenState extends State<ProductDetailsScreen> {
 
           Container(
             margin: const EdgeInsets.fromLTRB(20, 10, 20, 30),
-            child: widget.screen != 'order' ?
+            child: widget.screen != 'order' && widget.screen != 'myProducts' ?
             _isInCart
               ? OutlinedButton(onPressed: _toggleInCart, style: OutlinedButton.styleFrom(shape: const StadiumBorder(), side: BorderSide(width: 2, color: colors.primary), backgroundColor: colors.surface), child: Text("Retirer du panier", style: TextStyle(fontSize: Theme.of(context).textTheme.labelSmall?.fontSize, color: colors.primary), textAlign: TextAlign.center))
 

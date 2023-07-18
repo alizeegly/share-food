@@ -57,7 +57,8 @@ class CartStorage {
             productSnapshot['price'],
             productSnapshot['expirationDate'].toDate(),
             productSnapshot['description'],
-            UserModel.fromSnapshot(sellerSnapshot)
+            UserModel.fromSnapshot(sellerSnapshot),
+            false
           );
 
           products.add(product);

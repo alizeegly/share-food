@@ -4,7 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:sharefood/global/global.dart';
 import 'package:sharefood/mainScreens/home_screen.dart';
 import 'package:sharefood/widgets/custom_button.dart';
-import 'package:sharefood/widgets/custom_text_field.dart';
+import 'package:sharefood/widgets/form_fields/custom_text_field.dart';
 import 'package:sharefood/widgets/error_dialog.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 

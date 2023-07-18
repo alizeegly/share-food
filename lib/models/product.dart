@@ -9,6 +9,7 @@ class Product {
   late DateTime expirationDate;
   late String description;
   late UserModel seller;
+  late bool sold;
 
-  Product(this.id, this.name, this.pictureUrl, this.type, this.price, this.expirationDate, this.description, this.seller);
+  Product(this.id, this.name, this.pictureUrl, this.type, this.price, this.expirationDate, this.description, this.seller, this.sold);
 }
