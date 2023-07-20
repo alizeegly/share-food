@@ -50,12 +50,15 @@ class _ProfileScreenState extends State<ProfileScreen> {
                         style: Theme.of(context).textTheme.headlineSmall,
                       ),
                       const SizedBox(height: 30),
-                      CustomButton(
-                        onPressed: () {
-                          Navigator.push(context, MaterialPageRoute(builder: (context) => const UpdateProfileScreen()));
-                        },
-                        color: Theme.of(context).primaryColor,
-                        text: "Modifier mon profil",
+                      Container(
+                        padding: const EdgeInsets.symmetric(horizontal: 30),
+                        child: CustomButton(
+                          onPressed: () {
+                            Navigator.push(context, MaterialPageRoute(builder: (context) => const UpdateProfileScreen()));
+                          },
+                          color: Theme.of(context).primaryColor,
+                          text: "Modifier mon profil",
+                        ),
                       ),
                 
                       const SizedBox(height: 30),

@@ -120,32 +120,32 @@ class _RegisterState extends State<RegisterScreen> {
                 )
               ),
             ),
-            const SizedBox(height: 30),
-            CustomButton(
-              // onPressed: formValidation,
-              onPressed: () {
-                if(_formkey.currentState!.validate()){
-                  final user = UserModel(
-                    address: controller.addressController.text.trim(), 
-                    city: controller.cityController.text.trim(), 
-                    email: controller.emailController.text.trim(), 
-                    firstname: controller.firstnameController.text.trim(), 
-                    lastname: controller.nameController.text.trim(), 
-                    lat: 0,
-                    lng: 0,
-                    password: controller.passwordController.text.trim(), 
-                    status: 'approuved', 
-                    zipcode: controller.zipcodeController.text.trim(), 
-                    avatarUrl: '',
-                    createdAt: Timestamp.fromDate(DateTime.now())
-                  );
-                  AuthController.instance.registerUser(user,imageXFile);
-                }
-              },
-              color: Theme.of(context).primaryColor,
-              text: "S'inscrire",
-            ),
-            const SizedBox(height: 50),
+            Container(
+              padding: const EdgeInsets.fromLTRB(30, 30, 30, 50),
+              child: CustomButton(
+                onPressed: () {
+                  if(_formkey.currentState!.validate()){
+                    final user = UserModel(
+                      address: controller.addressController.text.trim(), 
+                      city: controller.cityController.text.trim(), 
+                      email: controller.emailController.text.trim(), 
+                      firstname: controller.firstnameController.text.trim(), 
+                      lastname: controller.nameController.text.trim(), 
+                      lat: 0,
+                      lng: 0,
+                      password: controller.passwordController.text.trim(), 
+                      status: 'approuved', 
+                      zipcode: controller.zipcodeController.text.trim(), 
+                      avatarUrl: '',
+                      createdAt: Timestamp.fromDate(DateTime.now())
+                    );
+                    AuthController.instance.registerUser(user,imageXFile);
+                  }
+                },
+                color: Theme.of(context).primaryColor,
+                text: "S'inscrire",
+              )
+            )
           ],
         )
       ),
