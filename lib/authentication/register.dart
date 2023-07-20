@@ -126,12 +126,12 @@ class _RegisterState extends State<RegisterScreen> {
               onPressed: () {
                 if(_formkey.currentState!.validate()){
                   final user = UserModel(
-                    address: controller.emailController.text.trim(), 
+                    address: controller.addressController.text.trim(), 
                     city: controller.cityController.text.trim(), 
                     email: controller.emailController.text.trim(), 
                     firstname: controller.firstnameController.text.trim(), 
                     lastname: controller.nameController.text.trim(), 
-                    lat: 0, 
+                    lat: 0,
                     lng: 0,
                     password: controller.passwordController.text.trim(), 
                     status: 'approuved', 
